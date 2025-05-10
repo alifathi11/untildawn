@@ -17,7 +17,8 @@ public class LoginMenuView implements Screen, AppMenu {
     private final TextButton loginButton;
     private final Label loginTitle;
     private final TextField usernameField;
-    private final TextField emailField;
+    private final TextField passwordField;
+    private final TextButton forgetPasswordButton;
     public Table table;
 
     private LoginMenuController controller;
@@ -25,11 +26,12 @@ public class LoginMenuView implements Screen, AppMenu {
     public LoginMenuView(LoginMenuController controller, Skin skin) {
         this.controller = controller;
         this.loginButton = new TextButton("LOGIN", skin);
+        this.forgetPasswordButton = new TextButton("I've forgotten my password", skin, "textButtonNoBg");
         this.loginTitle = new Label("LOGIN MENU", skin);
         this.usernameField = new TextField("", skin);
         this.getUsernameField().setMessageText("Enter your username");
-        this.emailField = new TextField("", skin);
-        this.emailField.setMessageText("Enter your email");
+        this.passwordField = new TextField("", skin);
+        this.passwordField.setMessageText("Enter your password");
         this.table = new Table();
 
         controller.setView(this);
@@ -45,9 +47,11 @@ public class LoginMenuView implements Screen, AppMenu {
         table.row().pad(10, 5, 10, 5);
         table.add(usernameField).width(800).height(80);
         table.row().pad(10, 5, 10, 5);
-        table.add(emailField).width(800).height(80);
+        table.add(passwordField).width(800).height(80);
         table.row().pad(50, 5, 10, 5);
         table.add(loginButton).width(200).height(60);
+        table.row().pad(20, 5, 10, 5);
+        table.add(forgetPasswordButton).width(150).height(30);
 
         stage.addActor(table);
         controller.handleLoginMenuButtons();
@@ -133,19 +137,44 @@ public class LoginMenuView implements Screen, AppMenu {
             (stage.getHeight() - messageDialog.getHeight()) / 2
         );
     }
+    public void showMessageAndExecute(String message, Runnable onClose) {
+        Skin skin = GameAssetManager.getGameAssetManager().getSkin();
+        Dialog messageDialog = new Dialog("Alert", skin) {
+            @Override
+            protected void result(Object object) {
+                if (onClose != null) {
+                    onClose.run();
+                }
+            }
+        };
 
-    public Label getLoginTitle() {
-        return loginTitle;
+        messageDialog.text(message);
+        TextButton closeButton = new TextButton("Close", skin);
+        closeButton.getStyle().fontColor = Color.RED;
+
+        messageDialog.button(closeButton, true);
+        messageDialog.show(stage);
+
+        messageDialog.setSize(400, 200);
+        messageDialog.setPosition(
+            (stage.getWidth() - messageDialog.getWidth()) / 2,
+            (stage.getHeight() - messageDialog.getHeight()) / 2
+        );
     }
+
     public TextButton getLoginButton() {
         return loginButton;
     }
 
-    public TextField getEmailField() {
-        return emailField;
+    public TextField getPasswordField() {
+        return passwordField;
     }
 
     public TextField getUsernameField() {
         return usernameField;
+    }
+
+    public TextButton getForgetPasswordButton() {
+        return forgetPasswordButton;
     }
 }

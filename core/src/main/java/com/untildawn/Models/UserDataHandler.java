@@ -7,39 +7,41 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 
 public class UserDataHandler {
+
     public static void loadUsers() {
-        List<User> users = new ArrayList<>();
-        FileHandle file = Gdx.files.internal("com/untildawn/Data/UserData.json");
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        if (!file.exists()) {
-            System.err.println("users.json not found!");
-            return;
+        try {
+            List<User> users = objectMapper.readValue(
+                new File("core/src/main/java/com/untildawn/Data/UserData.json"),
+                new TypeReference<List<User>>() {}
+            );
+
+            App.setUsers(users);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        Json json = new Json();
-        JsonReader reader = new JsonReader();
-        JsonValue root = reader.parse(file);
-
-        for (JsonValue userJson : root) {
-            User user = json.readValue(User.class, userJson);
-            users.add(user);
-        }
-
-        App.setUsers(users);
     }
 
     public static void saveUsers() {
         List<User> users = App.getUsers();
-        Json json = new Json();
-        json.setOutputType(JsonWriter.OutputType.json);
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        String usersJson = json.toJson(users);
-        FileHandle file = Gdx.files.local("com/untildawn/Data/UserData.json");
-
-        file.writeString(usersJson, false);
+        try {
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File("core/src/main/java/com/untildawn/Data/UserData.json"), users);
+            System.out.println("Users written to " + "core/src/main/java/com/untildawn/Data/UserData.json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

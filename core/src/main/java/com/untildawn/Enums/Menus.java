@@ -12,6 +12,7 @@ import com.untildawn.Views.SignupMenuView;
 public enum Menus {
     LOGIN_MENU,
     SIGNUP_MENU,
+    MAIN_MENU,
     ;
 
 }

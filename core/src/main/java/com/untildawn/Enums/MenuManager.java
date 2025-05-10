@@ -6,7 +6,6 @@ import com.untildawn.Controllers.SignupMenuController;
 import com.untildawn.Models.GameAssetManager;
 import com.untildawn.Views.LoginMenuView;
 import com.untildawn.Views.SignupMenuView;
-import jdk.internal.icu.text.UCharacterIterator;
 import com.untildawn.Main;
 
 import java.util.EnumMap;

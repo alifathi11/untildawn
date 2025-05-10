@@ -6,9 +6,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.untildawn.Enums.MenuManager;
 import com.untildawn.Enums.Menus;
 import com.untildawn.Models.App;
+import com.untildawn.Models.SecurityQuestion;
 import com.untildawn.Models.User;
 import com.untildawn.Views.LoginMenuView;
 import com.untildawn.Views.SignupMenuView;
+
+import java.awt.*;
+import java.util.Map;
 
 public class SignupMenuController {
     private SignupMenuView view;
@@ -24,8 +28,17 @@ public class SignupMenuController {
                     String username = view.getUsernameField().getText();
                     String email = view.getEmailField().getText();
                     String password = view.getPasswordField().getText();
+                    String question = view.getSecurityQuestionBox().getSelected();
+                    String answer = view.getUserAnswer().getText();
 
-                    register(username, email, password);
+                    register(username, email, password, question, answer);
+                }
+            });
+
+            view.getPlayAsGuestButton().addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // handle play as guest
                 }
             });
 
@@ -33,7 +46,11 @@ public class SignupMenuController {
     }
 
 
-    private void register(String username, String email, String password) {
+    private void register(String username,
+                          String email,
+                          String password,
+                          String question,
+                          String answer) {
         if (username.isEmpty()) {
             this.view.showError("Please enter your username");
             return;
@@ -46,6 +63,11 @@ public class SignupMenuController {
             this.view.showError("Please enter your password.");
             return;
         }
+        if (answer.isEmpty()) {
+            this.view.showError("Please answer one security question.");
+            return;
+        }
+
         if (App.hasUser(username)) {
             this.view.showError("Username exists.");
             return;
@@ -53,7 +75,7 @@ public class SignupMenuController {
 
         Validation validator = new Validation();
 
-        if (!validator.isUserNameValid(username)) {
+        if (!validator.isUsernameValid(username)) {
             this.view.showError("Username format is not valid.");
             return;
         }
@@ -65,11 +87,17 @@ public class SignupMenuController {
             this.view.showError("Password format is not valid.");
             return;
         }
+        if (!validator.isPasswordStrong(password)) {
+            this.view.showError("Password is not strong enough.");
+            return;
+        }
 
-        User newUser = new User(username, email, password);
+        SecurityQuestion securityQuestion = new SecurityQuestion(question, answer);
+        User newUser = new User(username, email, password, securityQuestion);
         App.addUser(newUser);
-        this.view.showMessage("User has been created successfully."); 
-        MenuManager.setScreen(Menus.LOGIN_MENU);
+        this.view.showMessageAndExecute("User has created successfully", () -> {
+            MenuManager.setScreen(Menus.LOGIN_MENU);
+        });
     }
 
 

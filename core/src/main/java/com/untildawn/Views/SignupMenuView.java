@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.untildawn.Controllers.SignupMenuController;
@@ -16,10 +17,13 @@ import com.untildawn.Models.GameAssetManager;
 public class SignupMenuView implements Screen, AppMenu {
     private Stage stage;
     private final TextButton signupButton;
+    private final TextButton playAsGuestButton;
     private final Label signupTitle;
     private final TextField usernameField;
     private final TextField emailField;
     private final TextField passwordField;
+    private SelectBox<String> securityQuestionBox;
+    private TextField userAnswer;
     public Table table;
 
     private SignupMenuController controller;
@@ -27,6 +31,7 @@ public class SignupMenuView implements Screen, AppMenu {
     public SignupMenuView(SignupMenuController controller, Skin skin) {
         this.controller = controller;
         this.signupButton = new TextButton("SIGN UP", skin);
+        this.playAsGuestButton = new TextButton("Play as guest", skin, "textButtonNoBg");
         this.signupTitle = new Label("SIGN UP", skin);
         this.usernameField = new TextField("", skin);
         usernameField.setMessageText("Enter your username");
@@ -34,6 +39,24 @@ public class SignupMenuView implements Screen, AppMenu {
         emailField.setMessageText("Enter your email address");
         this.passwordField = new TextField("", skin);
         passwordField.setMessageText("Enter your password");
+        securityQuestionBox = new SelectBox<>(skin);
+        Array<String> questions = new Array<>();
+        questions.add("What was the name of your first pet?");
+        questions.add("What is your mother's maiden name?");
+        questions.add("What was the name of your elementary school?");
+        questions.add("In what city were you born?");
+        questions.add("What is your favorite food?");
+        questions.add("What is the name of your best childhood friend?");
+        questions.add("What is your favorite movie?");
+        questions.add("What is your father's middle name?");
+        questions.add("What was the make of your first car?");
+        questions.add("What was the name of your first teacher?");
+
+        securityQuestionBox.setItems(questions);
+        securityQuestionBox.setPosition(100, 100);
+        this.userAnswer = new TextField("", skin);
+        userAnswer.setMessageText("Enter your answer here.");
+
         this.table = new Table();
 
         controller.setView(this);
@@ -54,7 +77,14 @@ public class SignupMenuView implements Screen, AppMenu {
         table.row().pad(10, 5, 10, 5);
         table.add(passwordField).width(800).height(80);
         table.row().pad(50, 5, 10, 5);
+        table.row().pad(40, 5, 10, 5);
+        table.add(securityQuestionBox).width(400).height(80);
+        table.row().pad(20, 5, 10, 5);
+        table.add(userAnswer).width(400).height(80);
+        table.row().pad(60, 5, 10, 5);
         table.add(signupButton).width(200).height(60);
+        table.row().pad(20, 5, 10, 5);
+        table.add(playAsGuestButton).width(150).height(30);
 
         stage.addActor(table);
         controller.handleSignupMenuButtons();
@@ -140,6 +170,30 @@ public class SignupMenuView implements Screen, AppMenu {
             (stage.getHeight() - messageDialog.getHeight()) / 2
         );
     }
+    public void showMessageAndExecute(String message, Runnable onClose) {
+        Skin skin = GameAssetManager.getGameAssetManager().getSkin();
+        Dialog messageDialog = new Dialog("Alert", skin) {
+            @Override
+            protected void result(Object object) {
+                if (onClose != null) {
+                    onClose.run();
+                }
+            }
+        };
+
+        messageDialog.text(message);
+        TextButton closeButton = new TextButton("Close", skin);
+        closeButton.getStyle().fontColor = Color.RED;
+
+        messageDialog.button(closeButton, true);
+        messageDialog.show(stage);
+
+        messageDialog.setSize(400, 200);
+        messageDialog.setPosition(
+            (stage.getWidth() - messageDialog.getWidth()) / 2,
+            (stage.getHeight() - messageDialog.getHeight()) / 2
+        );
+    }
 
     public TextField getEmailField() {
         return emailField;
@@ -155,5 +209,17 @@ public class SignupMenuView implements Screen, AppMenu {
 
     public TextButton getSignupButton() {
         return signupButton;
+    }
+
+    public TextField getUserAnswer() {
+        return userAnswer;
+    }
+
+    public SelectBox<String> getSecurityQuestionBox() {
+        return securityQuestionBox;
+    }
+
+    public TextButton getPlayAsGuestButton() {
+        return playAsGuestButton;
     }
 }
