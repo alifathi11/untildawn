@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.untildawn.Controllers.LoginMenuController;
 import com.untildawn.Controllers.SignupMenuController;
+import com.untildawn.Enums.MenuManager;
+import com.untildawn.Enums.Menus;
 import com.untildawn.Models.GameAssetManager;
 import com.untildawn.Models.UserDataHandler;
 import com.untildawn.Views.LoginMenuView;
@@ -20,14 +22,20 @@ public class Main extends Game {
     private static SpriteBatch batch;
     private Texture image;
 
+    public Main() {
+        main = this;
+    }
+
+    public static Main getInstance() {
+        return main;
+    }
+
     @Override
     public void create() {
-        main = this;
         batch = new SpriteBatch();
         image = new Texture("libgdx.png");
 
         prepareStartingApp();
-        main.setScreen(new SignupMenuView(new SignupMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
     }
 
     @Override
@@ -51,5 +59,6 @@ public class Main extends Game {
 
     private void prepareStartingApp() {
         UserDataHandler.loadUsers();
+        MenuManager.setScreen(Menus.SIGNUP_MENU);
     }
 }

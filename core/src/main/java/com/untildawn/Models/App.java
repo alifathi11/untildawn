@@ -1,9 +1,12 @@
 package com.untildawn.Models;
 
+import com.untildawn.Enums.Menus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class App {
+    private static Menus currentMenu = Menus.SIGNUP_MENU;
     private static List<User> users = new ArrayList<>();
 
     public static void setUsers(List<User> users) {
@@ -23,5 +26,13 @@ public class App {
     }
     public static void addUser(User newUser) {
         App.users.add(newUser);
+    }
+
+    public static Menus getCurrentMenu() {
+        return currentMenu;
+    }
+
+    public static void setCurrentMenu(Menus currentMenu) {
+        App.currentMenu = currentMenu;
     }
 }

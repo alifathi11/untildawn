@@ -3,6 +3,8 @@ package com.untildawn.Controllers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.untildawn.Enums.MenuManager;
+import com.untildawn.Enums.Menus;
 import com.untildawn.Models.App;
 import com.untildawn.Models.User;
 import com.untildawn.Views.LoginMenuView;
@@ -66,7 +68,8 @@ public class SignupMenuController {
 
         User newUser = new User(username, email, password);
         App.addUser(newUser);
-        this.view.showMessage("User has been created successfully.");
+        this.view.showMessage("User has been created successfully."); 
+        MenuManager.setScreen(Menus.LOGIN_MENU);
     }
 
 
