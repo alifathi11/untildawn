@@ -1,0 +1,159 @@
+package com.untildawn.Views;
+
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.untildawn.Controllers.SignupMenuController;
+import com.untildawn.Main;
+import com.untildawn.Models.App;
+import com.untildawn.Models.GameAssetManager;
+
+public class SignupMenuView implements Screen, AppMenu {
+    private Stage stage;
+    private final TextButton signupButton;
+    private final Label signupTitle;
+    private final TextField usernameField;
+    private final TextField emailField;
+    private final TextField passwordField;
+    public Table table;
+
+    private SignupMenuController controller;
+
+    public SignupMenuView(SignupMenuController controller, Skin skin) {
+        this.controller = controller;
+        this.signupButton = new TextButton("SIGN UP", skin);
+        this.signupTitle = new Label("SIGN UP", skin);
+        this.usernameField = new TextField("", skin);
+        usernameField.setMessageText("Enter your username");
+        this.emailField = new TextField("", skin);
+        emailField.setMessageText("Enter your email address");
+        this.passwordField = new TextField("", skin);
+        passwordField.setMessageText("Enter your password");
+        this.table = new Table();
+
+        controller.setView(this);
+    }
+
+    @Override
+    public void show() {
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+
+        table.setFillParent(true);
+        table.center();
+        table.add(signupTitle);
+        table.row().pad(10, 5, 10, 5);
+        table.add(usernameField).width(800).height(80);
+        table.row().pad(10, 5, 10, 5);
+        table.add(emailField).width(800).height(80);
+        table.row().pad(10, 5, 10, 5);
+        table.add(passwordField).width(800).height(80);
+        table.row().pad(50, 5, 10, 5);
+        table.add(signupButton).width(200).height(60);
+
+        stage.addActor(table);
+        controller.handleSignupMenuButtons();
+    }
+
+    @Override
+    public void render(float v) {
+        ScreenUtils.clear(Color.BLACK, true);
+        Main.getBatch().begin();
+        Main.getBatch().end();
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        if (stage != null) {
+            stage.getViewport().update(width, height, true);
+        }
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+
+    public void showError(String error) {
+        Skin skin = GameAssetManager.getGameAssetManager().getSkin();
+        Dialog errorDialog = new Dialog("Error", skin) {
+            @Override
+            protected void result(Object object) {
+            }
+        };
+
+        errorDialog.text(error);
+
+        TextButton closeButton = new TextButton("Close", skin);
+        closeButton.getStyle().fontColor = Color.RED;
+        errorDialog.button(closeButton);
+
+        errorDialog.show(stage);
+
+        errorDialog.setSize(400, 200);
+        errorDialog.setPosition(
+            (stage.getWidth() - errorDialog.getWidth()) / 2,
+            (stage.getHeight() - errorDialog.getHeight()) / 2
+        );
+    }
+    public void showMessage(String message) {
+        Skin skin = GameAssetManager.getGameAssetManager().getSkin();
+        Dialog messageDialog = new Dialog("Alert", skin) {
+            @Override
+            protected void result(Object object) {
+            }
+        };
+
+        messageDialog.text(message);
+
+        TextButton closeButton = new TextButton("Close", skin);
+        closeButton.getStyle().fontColor = Color.RED;
+        messageDialog.button(closeButton);
+
+        messageDialog.show(stage);
+
+        messageDialog.setSize(400, 200);
+        messageDialog.setPosition(
+            (stage.getWidth() - messageDialog.getWidth()) / 2,
+            (stage.getHeight() - messageDialog.getHeight()) / 2
+        );
+    }
+
+    public TextField getEmailField() {
+        return emailField;
+    }
+
+    public TextField getUsernameField() {
+        return usernameField;
+    }
+
+    public TextField getPasswordField() {
+        return passwordField;
+    }
+
+    public TextButton getSignupButton() {
+        return signupButton;
+    }
+}
