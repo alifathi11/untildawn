@@ -8,6 +8,7 @@ public class User {
     private String email;
     private String password;
     private SecurityQuestion securityQuestion;
+    private int score;
 
     public User() {}
 
@@ -19,6 +20,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.securityQuestion = securityQuestion;
+        this.score = 0;
     }
 
     public String getEmail() {
@@ -47,5 +49,13 @@ public class User {
 
     public SecurityQuestion getSecurityQuestion() {
         return securityQuestion;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

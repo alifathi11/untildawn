@@ -2,10 +2,11 @@ package com.untildawn.Views;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.untildawn.Controllers.ProfileMenuController;
+import com.untildawn.Controllers.ScoreBoardMenuController;
 
-public class ProfileMenuView implements Screen, AppMenu {
-    public ProfileMenuView(ProfileMenuController controller, Skin skin) {
+public class ScoreBoardMenuView implements Screen, AppMenu {
+
+    public ScoreBoardMenuView(ScoreBoardMenuController controller, Skin skin) {
 
     }
     @Override

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
@@ -16,6 +17,9 @@ import com.untildawn.Models.GameAssetManager;
 
 public class SignupMenuView implements Screen, AppMenu {
     private Stage stage;
+    private Texture backgroundTexture;
+    private Image backgroundImage;
+
     private final TextButton signupButton;
     private final TextButton playAsGuestButton;
     private final Label signupTitle;
@@ -59,6 +63,9 @@ public class SignupMenuView implements Screen, AppMenu {
 
         this.table = new Table();
 
+        this.backgroundTexture = new Texture("images/background-image.png");
+        backgroundImage = new Image(backgroundTexture);
+
         controller.setView(this);
     }
 
@@ -86,13 +93,14 @@ public class SignupMenuView implements Screen, AppMenu {
         table.row().pad(20, 5, 10, 5);
         table.add(playAsGuestButton).width(150).height(30);
 
+        backgroundImage.setSize(stage.getWidth(), stage.getHeight());
+        stage.addActor(backgroundImage);
         stage.addActor(table);
         controller.handleSignupMenuButtons();
     }
 
     @Override
     public void render(float v) {
-        ScreenUtils.clear(Color.BLACK, true);
         Main.getBatch().begin();
         Main.getBatch().end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));

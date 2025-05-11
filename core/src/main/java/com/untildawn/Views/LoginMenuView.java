@@ -4,6 +4,7 @@ package com.untildawn.Views;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -11,9 +12,13 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.untildawn.Controllers.LoginMenuController;
 import com.untildawn.Main;
 import com.untildawn.Models.GameAssetManager;
+import org.w3c.dom.Text;
 
 public class LoginMenuView implements Screen, AppMenu {
     private Stage stage;
+    private Texture backgroundTexture;
+    private Image backgroundImage;
+
     private final TextButton loginButton;
     private final Label loginTitle;
     private final TextField usernameField;
@@ -34,6 +39,9 @@ public class LoginMenuView implements Screen, AppMenu {
         this.passwordField.setMessageText("Enter your password");
         this.table = new Table();
 
+        this.backgroundTexture = new Texture("images/background-image.png");
+        backgroundImage = new Image(backgroundTexture);
+
         controller.setView(this);
     }
     @Override
@@ -53,6 +61,8 @@ public class LoginMenuView implements Screen, AppMenu {
         table.row().pad(20, 5, 10, 5);
         table.add(forgetPasswordButton).width(150).height(30);
 
+        backgroundImage.setSize(stage.getWidth(), stage.getHeight());
+        stage.addActor(backgroundImage);
         stage.addActor(table);
         controller.handleLoginMenuButtons();
     }

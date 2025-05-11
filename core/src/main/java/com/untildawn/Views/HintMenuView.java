@@ -2,12 +2,13 @@ package com.untildawn.Views;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.untildawn.Controllers.ProfileMenuController;
+import com.untildawn.Controllers.HintMenuController;
 
-public class ProfileMenuView implements Screen, AppMenu {
-    public ProfileMenuView(ProfileMenuController controller, Skin skin) {
+public class HintMenuView implements Screen, AppMenu {
+    public HintMenuView(HintMenuController controller, Skin skin) {
 
     }
+
     @Override
     public void show() {
 

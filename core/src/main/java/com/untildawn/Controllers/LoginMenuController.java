@@ -69,8 +69,6 @@ public class LoginMenuController {
 
         App.setCurrentUser(targetUser);
         this.view.showMessageAndExecute("You have logged in successfully.", () -> {
-            UserDataHandler.saveUsers();
-            Gdx.app.exit();
             MenuManager.setScreen(Menus.MAIN_MENU);
         });
     }

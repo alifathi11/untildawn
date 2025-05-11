@@ -1,25 +1,10 @@
 [ {
-  "username" : "alifathi",
-  "email" : "ali@mgail.com",
-  "password" : "585178Ali!",
-  "securityQuestion" : {
-    "question" : "What was the name of your first pet?",
-    "answer" : "leo"
-  }
-}, {
   "username" : "ali",
-  "email" : "Li@gmail.comf",
+  "email" : "fathi@gmail.com",
   "password" : "585178Ali!",
   "securityQuestion" : {
-    "question" : "What is your favorite movie?",
-    "answer" : "inter"
-  }
-}, {
-  "username" : "biigali",
-  "email" : "fathisut@gmail.com",
-  "password" : "585178Ali!",
-  "securityQuestion" : {
-    "question" : "What was the name of your first pet?",
-    "answer" : "leo"
-  }
+    "question" : "What was the name of your first teacher?",
+    "answer" : "ll"
+  },
+  "score" : 0
 } ]
