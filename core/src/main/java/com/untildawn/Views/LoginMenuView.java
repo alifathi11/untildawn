@@ -14,23 +14,28 @@ import com.untildawn.Main;
 import com.untildawn.Models.GameAssetManager;
 import org.w3c.dom.Text;
 
+import java.util.function.Consumer;
+
 public class LoginMenuView implements Screen, AppMenu {
     private Stage stage;
     private Texture backgroundTexture;
     private Image backgroundImage;
 
     private final TextButton loginButton;
+    private final TextButton signupButton;
     private final Label loginTitle;
     private final TextField usernameField;
     private final TextField passwordField;
     private final TextButton forgetPasswordButton;
-    public Table table;
+    private Table table;
 
     private LoginMenuController controller;
 
     public LoginMenuView(LoginMenuController controller, Skin skin) {
         this.controller = controller;
+
         this.loginButton = new TextButton("LOGIN", skin);
+        this.signupButton = new TextButton("I don't have an account.", skin, "textButtonNoBg");
         this.forgetPasswordButton = new TextButton("I've forgotten my password", skin, "textButtonNoBg");
         this.loginTitle = new Label("LOGIN MENU", skin);
         this.usernameField = new TextField("", skin);
@@ -39,13 +44,17 @@ public class LoginMenuView implements Screen, AppMenu {
         this.passwordField.setMessageText("Enter your password");
         this.table = new Table();
 
-        this.backgroundTexture = new Texture("images/background-image.png");
+        this.backgroundTexture = new Texture("images/background-image-4.png");
         backgroundImage = new Image(backgroundTexture);
 
         controller.setView(this);
     }
     @Override
     public void show() {
+        if (stage != null) {
+            stage.clear();
+            table.clear();
+        }
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -60,6 +69,8 @@ public class LoginMenuView implements Screen, AppMenu {
         table.add(loginButton).width(200).height(60);
         table.row().pad(20, 5, 10, 5);
         table.add(forgetPasswordButton).width(150).height(30);
+        table.row().pad(20, 5, 10, 5);
+        table.add(signupButton).width(150).height(30);
 
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);
@@ -172,6 +183,31 @@ public class LoginMenuView implements Screen, AppMenu {
         );
     }
 
+    public void showConfirmation(String message, final Consumer<Boolean> resultCallback) {
+        Skin skin = GameAssetManager.getGameAssetManager().getSkin();
+        Dialog dialog = new Dialog("Confirm", skin) {
+            @Override
+            protected void result(Object object) {
+                if (object instanceof Boolean) {
+                    resultCallback.accept((Boolean) object);
+                }
+            }
+        };
+
+        dialog.text(message);
+
+        dialog.button("Yes", true);
+        dialog.button("No", false);
+
+        dialog.show(stage);
+
+        dialog.setSize(400, 200);
+        dialog.setPosition(
+            (stage.getWidth() - dialog.getWidth()) / 2,
+            (stage.getHeight() - dialog.getHeight()) / 2
+        );
+    }
+
     public TextButton getLoginButton() {
         return loginButton;
     }
@@ -186,5 +222,9 @@ public class LoginMenuView implements Screen, AppMenu {
 
     public TextButton getForgetPasswordButton() {
         return forgetPasswordButton;
+    }
+
+    public TextButton getSignupButton() {
+        return signupButton;
     }
 }

@@ -53,4 +53,7 @@ public class App {
         }
         return null;
     }
+    public static void removeUser(User user) {
+        App.users.remove(user);
+    }
 }

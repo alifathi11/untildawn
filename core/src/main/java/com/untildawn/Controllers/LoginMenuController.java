@@ -37,6 +37,13 @@ public class LoginMenuController {
                     forgetPassword(username);
                 }
             });
+
+            view.getSignupButton().addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    MenuManager.setScreen(Menus.SIGNUP_MENU);
+                }
+            });
         }
     }
 

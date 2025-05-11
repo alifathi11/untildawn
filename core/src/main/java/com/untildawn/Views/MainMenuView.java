@@ -37,7 +37,7 @@ public class MainMenuView implements Screen, AppMenu {
     private final TextButton hintMenuButton;
     private final TextButton logoutButton;
     private final Label mainMenuLabel;
-    public Table table;
+    private Table table;
 
     private MainMenuController controller;
 
@@ -71,6 +71,10 @@ public class MainMenuView implements Screen, AppMenu {
     }
     @Override
     public void show() {
+        if (stage != null) {
+            stage.clear();
+            table.clear();
+        }
         Skin skin = GameAssetManager.getGameAssetManager().getSkin();
         String usernameStr = App.getCurrentUser() != null ? App.getCurrentUser().getUsername() : "Unknown";
         String scoreStr = App.getCurrentUser() != null ? Integer.toString(App.getCurrentUser().getScore()) : "0";

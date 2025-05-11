@@ -15,12 +15,15 @@ import com.untildawn.Main;
 import com.untildawn.Models.App;
 import com.untildawn.Models.GameAssetManager;
 
+import java.util.function.Consumer;
+
 public class SignupMenuView implements Screen, AppMenu {
     private Stage stage;
     private Texture backgroundTexture;
     private Image backgroundImage;
 
     private final TextButton signupButton;
+    private final TextButton loginButton;
     private final TextButton playAsGuestButton;
     private final Label signupTitle;
     private final TextField usernameField;
@@ -28,13 +31,15 @@ public class SignupMenuView implements Screen, AppMenu {
     private final TextField passwordField;
     private SelectBox<String> securityQuestionBox;
     private TextField userAnswer;
-    public Table table;
+    private Table table;
 
     private SignupMenuController controller;
 
     public SignupMenuView(SignupMenuController controller, Skin skin) {
         this.controller = controller;
+
         this.signupButton = new TextButton("SIGN UP", skin);
+        this.loginButton = new TextButton("I've already have an account.", skin, "textButtonNoBg");
         this.playAsGuestButton = new TextButton("Play as guest", skin, "textButtonNoBg");
         this.signupTitle = new Label("SIGN UP", skin);
         this.usernameField = new TextField("", skin);
@@ -63,7 +68,7 @@ public class SignupMenuView implements Screen, AppMenu {
 
         this.table = new Table();
 
-        this.backgroundTexture = new Texture("images/background-image.png");
+        this.backgroundTexture = new Texture("images/background-image-4.png");
         backgroundImage = new Image(backgroundTexture);
 
         controller.setView(this);
@@ -71,6 +76,10 @@ public class SignupMenuView implements Screen, AppMenu {
 
     @Override
     public void show() {
+        if (stage != null) {
+            stage.clear();
+            table.clear();
+        }
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -90,6 +99,8 @@ public class SignupMenuView implements Screen, AppMenu {
         table.add(userAnswer).width(400).height(80);
         table.row().pad(60, 5, 10, 5);
         table.add(signupButton).width(200).height(60);
+        table.row().pad(20, 5, 10, 5);
+        table.add(loginButton).width(150).height(30);
         table.row().pad(20, 5, 10, 5);
         table.add(playAsGuestButton).width(150).height(30);
 
@@ -131,6 +142,12 @@ public class SignupMenuView implements Screen, AppMenu {
 
     @Override
     public void dispose() {
+
+    }
+
+    private void resetUI() {
+        stage.clear();
+        table.clear();
 
     }
 
@@ -178,6 +195,7 @@ public class SignupMenuView implements Screen, AppMenu {
             (stage.getHeight() - messageDialog.getHeight()) / 2
         );
     }
+
     public void showMessageAndExecute(String message, Runnable onClose) {
         Skin skin = GameAssetManager.getGameAssetManager().getSkin();
         Dialog messageDialog = new Dialog("Alert", skin) {
@@ -200,6 +218,31 @@ public class SignupMenuView implements Screen, AppMenu {
         messageDialog.setPosition(
             (stage.getWidth() - messageDialog.getWidth()) / 2,
             (stage.getHeight() - messageDialog.getHeight()) / 2
+        );
+    }
+
+    public void showConfirmation(String message, final Consumer<Boolean> resultCallback) {
+        Skin skin = GameAssetManager.getGameAssetManager().getSkin();
+        Dialog dialog = new Dialog("Confirm", skin) {
+            @Override
+            protected void result(Object object) {
+                if (object instanceof Boolean) {
+                    resultCallback.accept((Boolean) object);
+                }
+            }
+        };
+
+        dialog.text(message);
+
+        dialog.button("Yes", true);
+        dialog.button("No", false);
+
+        dialog.show(stage);
+
+        dialog.setSize(400, 200);
+        dialog.setPosition(
+            (stage.getWidth() - dialog.getWidth()) / 2,
+            (stage.getHeight() - dialog.getHeight()) / 2
         );
     }
 
@@ -230,4 +273,9 @@ public class SignupMenuView implements Screen, AppMenu {
     public TextButton getPlayAsGuestButton() {
         return playAsGuestButton;
     }
+
+    public TextButton getLoginButton() {
+        return loginButton;
+    }
+
 }
