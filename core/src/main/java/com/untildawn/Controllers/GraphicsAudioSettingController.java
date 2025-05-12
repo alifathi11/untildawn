@@ -7,16 +7,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.untildawn.Enums.MenuManager;
 import com.untildawn.Enums.Menus;
 import com.untildawn.Models.MusicManager;
-import com.untildawn.Views.SettingMenuView;
+import com.untildawn.Views.GraphicsAudioSettingView;
 
-public class SettingMenuController {
-    private SettingMenuView view;
+public class GraphicsAudioSettingController {
+    private GraphicsAudioSettingView view;
 
-    public void setView(SettingMenuView view) {
+    public void setView(GraphicsAudioSettingView view) {
         this.view = view;
     }
 
-    public void handleSettingMenuButtons() {
+    public void handleGraphicAudioSettingMenuButtons() {
         if (view != null) {
             view.getMusicVolumnSlider().addListener(new ChangeListener() {
                 @Override
@@ -48,6 +48,20 @@ public class SettingMenuController {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     MenuManager.setScreen(Menus.MAIN_MENU);
+                }
+            });
+
+            view.getKeyboardSettingButton().addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    MenuManager.setScreen(Menus.KEYBOARD_SETTING_MENU);
+                }
+            });
+
+            view.getGraphicAndAudioSettingButton().addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    MenuManager.setScreen(Menus.GRAPHICS_AUDIO_SETTING_MENU);
                 }
             });
         }

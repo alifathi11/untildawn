@@ -4,43 +4,64 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.untildawn.Controllers.ProfileMenuController;
-import com.untildawn.Controllers.SettingMenuController;
+import com.untildawn.Controllers.GraphicsAudioSettingController;
 import com.untildawn.Main;
-import com.untildawn.Models.App;
 import com.untildawn.Models.GameAssetManager;
 import com.untildawn.Models.MusicManager;
 
 import java.util.function.Consumer;
 
-public class SettingMenuView implements Screen, AppMenu {
+public class GraphicsAudioSettingView implements Screen, AppMenu {
     private Stage stage;
 
     private Texture backgroundTexture;
     private Image backgroundImage;
 
     private final Label settingLabel;
+
+    private Texture graphicsAndAudioSettingTexture;
+    private Texture keyboardSettingTexture;
+
+    private TextureRegionDrawable graphicsAndAudioDrawable;
+    private TextureRegionDrawable keyboardDrawable;
+
+    private ImageButton graphicAndAudioSettingButton;
+    private ImageButton keyboardSettingButton;
+
     private TextButton changeMusicButton;
     private TextButton musicToggleButton;
     private Slider musicVolumnSlider;
     private final TextButton submitButton;
-    // TODO: change keyboard controllers keys
+
 
     private Table table;
 
-    private SettingMenuController controller;
+    private GraphicsAudioSettingController controller;
 
-    public SettingMenuView(SettingMenuController controller, Skin skin) {
+    public GraphicsAudioSettingView(GraphicsAudioSettingController controller, Skin skin) {
         this.controller = controller;
 
         this.settingLabel = new Label("SETTING", skin);
+
+        graphicsAndAudioSettingTexture = new Texture(Gdx.files.internal("images/graphic-audio-setting-icon.png"));
+        keyboardSettingTexture = new Texture(Gdx.files.internal("images/keyboard-setting-icon.png"));
+
+        graphicsAndAudioDrawable = new TextureRegionDrawable(new TextureRegion(graphicsAndAudioSettingTexture));
+        keyboardDrawable = new TextureRegionDrawable(new TextureRegion(keyboardSettingTexture));
+
+        graphicAndAudioSettingButton = new ImageButton(graphicsAndAudioDrawable);
+        keyboardSettingButton = new ImageButton(keyboardDrawable);
+
         this.submitButton = new TextButton("SUBMIT", skin);
         this.changeMusicButton = new TextButton("", skin);
         this.musicToggleButton = new TextButton("ON", skin);
         this.musicVolumnSlider = new Slider(0f, 1f,0.1f, false, skin);
+        musicVolumnSlider.setValue(0.5f);
 
         this.table = new Table();
 
@@ -64,9 +85,21 @@ public class SettingMenuView implements Screen, AppMenu {
         changeMusicButton.setText(currentMusic);
         musicToggleButton.setText(musicState);
 
+        Container<ImageButton> graphicAudioSettingContainer = new Container<>(graphicAndAudioSettingButton);
+        graphicAudioSettingContainer.size(60, 60);
+        Container<ImageButton> keyboardSettingContainer = new Container<>(keyboardSettingButton);
+        keyboardSettingContainer.size(60, 60);
+
+        HorizontalGroup settingIcons = new HorizontalGroup();
+        settingIcons.addActor(graphicAudioSettingContainer);
+        settingIcons.addActor(keyboardSettingContainer);
+        settingIcons.space(20);
+
         table.setFillParent(true);
         table.center();
         table.add(settingLabel);
+        table.row().pad(40, 5, 10, 5);
+        table.add(settingIcons).center().width(800).height(80);
         table.row().pad(20, 5, 10, 5);
         table.add(changeMusicButton).width(800).height(80);
         table.row().pad(10, 5, 10, 5);
@@ -79,7 +112,7 @@ public class SettingMenuView implements Screen, AppMenu {
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);
         stage.addActor(table);
-        controller.handleSettingMenuButtons();
+        controller.handleGraphicAudioSettingMenuButtons();
     }
 
     @Override
@@ -225,5 +258,13 @@ public class SettingMenuView implements Screen, AppMenu {
 
     public TextButton getMusicToggleButton() {
         return musicToggleButton;
+    }
+
+    public ImageButton getGraphicAndAudioSettingButton() {
+        return graphicAndAudioSettingButton;
+    }
+
+    public ImageButton getKeyboardSettingButton() {
+        return keyboardSettingButton;
     }
 }

@@ -62,6 +62,7 @@ public class Main extends Game {
     private void prepareStartingApp() {
         UserDataHandler.loadUsers();
         MusicManager.changeTrack(0);
+        MusicManager.setVolume(0.5f);
         MusicManager.play();
         MenuManager.setScreen(Menus.SIGNUP_MENU);
     }

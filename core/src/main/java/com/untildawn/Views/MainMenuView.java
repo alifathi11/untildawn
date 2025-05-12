@@ -58,7 +58,7 @@ public class MainMenuView implements Screen, AppMenu {
         this.hintMenuButton = new TextButton("HINT MENU", skin);
         this.settingMenuButton = new TextButton("SETTING", skin);
         this.profileMenuButton = new TextButton("PROFILE", skin);
-        this.logoutButton = new TextButton("EXIT", skin);
+        this.logoutButton = new TextButton("LOGOUT", skin);
 
         this.mainMenuLabel = new Label("MAIN MENU", skin);
 
