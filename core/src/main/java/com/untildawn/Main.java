@@ -3,6 +3,7 @@ package com.untildawn;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.loaders.MusicLoader;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,6 +13,7 @@ import com.untildawn.Controllers.SignupMenuController;
 import com.untildawn.Enums.MenuManager;
 import com.untildawn.Enums.Menus;
 import com.untildawn.Models.GameAssetManager;
+import com.untildawn.Models.MusicManager;
 import com.untildawn.Models.UserDataHandler;
 import com.untildawn.Views.LoginMenuView;
 import com.untildawn.Views.SignupMenuView;
@@ -59,6 +61,8 @@ public class Main extends Game {
 
     private void prepareStartingApp() {
         UserDataHandler.loadUsers();
+        MusicManager.changeTrack(0);
+        MusicManager.play();
         MenuManager.setScreen(Menus.SIGNUP_MENU);
     }
 }

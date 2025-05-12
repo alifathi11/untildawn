@@ -25,6 +25,7 @@ public class ProfileMenuView implements Screen, AppMenu {
     private TextField passwordField;
     private final TextButton submitButton;
     private final TextButton deleteUserButton;
+    // TODO: change profile avatars
 
     private Table table;
 
@@ -33,7 +34,7 @@ public class ProfileMenuView implements Screen, AppMenu {
     public ProfileMenuView(ProfileMenuController controller, Skin skin) {
         this.controller = controller;
 
-        this.profileLabel = new Label("PROFILE MENU", skin);
+        this.profileLabel = new Label("PROFILEs", skin);
         this.submitButton = new TextButton("SUBMIT", skin);
         this.deleteUserButton = new TextButton("Delete my account", skin, "textButtonNoBg");
 

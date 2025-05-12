@@ -44,6 +44,7 @@ public class ProfileMenuController {
 
         User currentUser = App.getCurrentUser();
         String oldUsername = currentUser.getUsername();
+        String oldPassword = currentUser.getPassword();
 
         Validation validator = new Validation();
 
@@ -77,11 +78,14 @@ public class ProfileMenuController {
 
         currentUser.setUsername(username);
         currentUser.setPassword(password);
-//        this.view.showMessageAndExecute("Your profile is updated.", () -> {
-//            MenuManager.setScreen(Menus.MAIN_MENU);
-//        });
-        MenuManager.setScreen(Menus.MAIN_MENU);
-
+        if (username.equalsIgnoreCase(oldUsername) && password.equals(oldPassword)) {
+            MenuManager.setScreen(Menus.MAIN_MENU);
+        }
+        else {
+            this.view.showMessageAndExecute("Your profile is updated.", () -> {
+                MenuManager.setScreen(Menus.MAIN_MENU);
+            });
+        }
     }
 
     private void deleteCurrentUser() {

@@ -48,7 +48,7 @@ public class MainMenuController {
             this.view.getSettingMenuButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    MenuManager.setScreen(Menus.SIGNUP_MENU);
+                    MenuManager.setScreen(Menus.SETTING_MENU);
                 }
             });
             this.view.getScoreBoardMenuButton().addListener(new ClickListener() {
