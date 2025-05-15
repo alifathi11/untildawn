@@ -77,7 +77,7 @@ public class MainMenuView implements Screen, AppMenu {
         }
         Skin skin = GameAssetManager.getGameAssetManager().getSkin();
         String usernameStr = App.getCurrentUser() != null ? App.getCurrentUser().getUsername() : "Unknown";
-        String scoreStr = App.getCurrentUser() != null ? Integer.toString(App.getCurrentUser().getScore()) : "0";
+        String scoreStr = App.getCurrentUser() != null ? Integer.toString(App.getCurrentUser().getGameProfile().getScore()) : "0";
         usernameLabel = new Label(usernameStr, skin);
         scoreLabel = new Label(scoreStr, skin);
 
