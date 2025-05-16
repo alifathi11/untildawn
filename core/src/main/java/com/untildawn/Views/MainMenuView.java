@@ -28,7 +28,6 @@ public class MainMenuView implements Screen, AppMenu {
     private Label usernameLabel;
     private Label scoreLabel;
 
-    private final TextButton newGameButton;
     private final TextButton resumeSavedGameButton;
     private final TextButton preGameMenuButton;
     private final TextButton scoreBoardMenuButton;
@@ -51,7 +50,6 @@ public class MainMenuView implements Screen, AppMenu {
         coinContainer.size(40, 40);
         coinContainer.align(Align.center);
 
-        this.newGameButton = new TextButton("NEW GAME", skin);
         this.resumeSavedGameButton = new TextButton("LOAD SAVED GAME", skin);
         this.preGameMenuButton = new TextButton("PREGAME MENU", skin);
         this.scoreBoardMenuButton = new TextButton("SCOREBOARD", skin);
@@ -104,8 +102,6 @@ public class MainMenuView implements Screen, AppMenu {
         table.add(mainMenuLabel).center();
         table.row().pad(10, 5, 10, 5);
         table.add(userInfoContainer).width(580).height(50).center();
-        table.row().pad(10, 5, 10, 5);
-        table.add(newGameButton).width(600).height(100);
         table.row().pad(10, 5, 10, 5);
         table.add(resumeSavedGameButton).width(600).height(100);
         table.row().pad(10, 5, 10, 5);
@@ -200,10 +196,6 @@ public class MainMenuView implements Screen, AppMenu {
 
     public TextButton getLogoutButton() {
         return logoutButton;
-    }
-
-    public TextButton getNewGameButton() {
-        return newGameButton;
     }
 
     public TextButton getResumeSavedGameButton() {

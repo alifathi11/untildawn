@@ -16,15 +16,16 @@ import java.util.stream.Collectors;
 public class ScoreBoardMenuController {
     private ScoreBoardMenuView view;
     private int sortMethodIndex;
-    private final String[] options = {
-        "SORT BY SCORE",
-        "SORT BY KILL",
-        "SORT BY LONGEST TIME ALIVE",
-        "SORT BY USERNAME"
-    };
+    private final String[] options;
 
     public ScoreBoardMenuController() {
         sortMethodIndex = 0;
+        options = new String[] {
+            "SORT BY SCORE",
+            "SORT BY KILL",
+            "SORT BY LONGEST TIME ALIVE",
+            "SORT BY USERNAME"
+        };
     }
 
     public void setView(ScoreBoardMenuView view) {
@@ -43,8 +44,6 @@ public class ScoreBoardMenuController {
             view.getSortTypeButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-
-                    String sortMethod;
 
                     sortMethodIndex = (sortMethodIndex + 1) % 4;
                     view.getSortTypeButton().setText(options[sortMethodIndex]);

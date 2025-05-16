@@ -1,16 +1,15 @@
 package com.untildawn.Models;
 
 import com.untildawn.Enums.Menus;
-import sun.rmi.server.UnicastServerRef;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class App {
     private static User currentUser = null;
     private static Menus currentMenu = Menus.SIGNUP_MENU;
     private static List<User> users = new ArrayList<>();
+    private static Game currentGame;
 
     public static void setUsers(List<User> users) {
         App.users = new ArrayList<>(users);
@@ -57,5 +56,13 @@ public class App {
     }
     public static void removeUser(User user) {
         App.users.remove(user);
+    }
+
+    public static Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public static void setCurrentGame(Game currentGame) {
+        App.currentGame = currentGame;
     }
 }

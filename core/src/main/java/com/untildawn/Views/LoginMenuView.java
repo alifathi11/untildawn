@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.untildawn.Controllers.LoginMenuController;
 import com.untildawn.Main;
 import com.untildawn.Models.GameAssetManager;
-import org.w3c.dom.Text;
 
 import java.util.function.Consumer;
 
@@ -23,7 +22,7 @@ public class LoginMenuView implements Screen, AppMenu {
 
     private final TextButton loginButton;
     private final TextButton signupButton;
-    private final Label loginTitle;
+    private final Label loginLabel;
     private final TextField usernameField;
     private final TextField passwordField;
     private final TextButton forgetPasswordButton;
@@ -37,7 +36,7 @@ public class LoginMenuView implements Screen, AppMenu {
         this.loginButton = new TextButton("LOGIN", skin);
         this.signupButton = new TextButton("I don't have an account.", skin, "textButtonNoBg");
         this.forgetPasswordButton = new TextButton("I've forgotten my password", skin, "textButtonNoBg");
-        this.loginTitle = new Label("LOGIN MENU", skin);
+        this.loginLabel = new Label("LOGIN MENU", skin);
         this.usernameField = new TextField("", skin);
         this.getUsernameField().setMessageText("Enter your username");
         this.passwordField = new TextField("", skin);
@@ -60,7 +59,7 @@ public class LoginMenuView implements Screen, AppMenu {
 
         table.setFillParent(true);
         table.center();
-        table.add(loginTitle);
+        table.add(loginLabel);
         table.row().pad(10, 5, 10, 5);
         table.add(usernameField).width(800).height(80);
         table.row().pad(10, 5, 10, 5);

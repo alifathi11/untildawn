@@ -15,12 +15,6 @@ public class MainMenuController {
 
     public void handleMainMenuButtons() {
         if (view != null) {
-            this.view.getNewGameButton().addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    MenuManager.setScreen(Menus.NEW_GAME_MENU);
-                }
-            });
             this.view.getResumeSavedGameButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {

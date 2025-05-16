@@ -10,7 +10,6 @@ public enum Menus {
     KEYBOARD_SETTING_MENU,
     SCOREBOARD_MENU,
     HINT_MENU,
-    NEW_GAME_MENU,
     RESUME_LAST_GAME_MENU,
     LOGOUT_MENU,
     ;
