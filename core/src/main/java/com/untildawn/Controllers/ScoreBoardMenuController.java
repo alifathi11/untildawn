@@ -16,14 +16,16 @@ import java.util.stream.Collectors;
 public class ScoreBoardMenuController {
     private ScoreBoardMenuView view;
     private int sortMethodIndex;
-    private String[] options = {
+    private final String[] options = {
         "SORT BY SCORE",
         "SORT BY KILL",
         "SORT BY LONGEST TIME ALIVE",
         "SORT BY USERNAME"
     };
 
-    public ScoreBoardMenuController() { sortMethodIndex = 0; }
+    public ScoreBoardMenuController() {
+        sortMethodIndex = 0;
+    }
 
     public void setView(ScoreBoardMenuView view) {
         this.view = view;
@@ -47,20 +49,7 @@ public class ScoreBoardMenuController {
                     sortMethodIndex = (sortMethodIndex + 1) % 4;
                     view.getSortTypeButton().setText(options[sortMethodIndex]);
 
-                    switch (sortMethodIndex) {
-                        case 0:
-                            view.setUsersList(getUsersBySelectedOrder("score"));
-                            break;
-                        case 1:
-                            view.setUsersList(getUsersBySelectedOrder("kill"));
-                            break;
-                        case 2:
-                            view.setUsersList(getUsersBySelectedOrder("maxTimeAlive"));
-                            break;
-                        case 3:
-                            view.setUsersList(getUsersBySelectedOrder("username"));
-                            break;
-                    }
+                    view.setUsersList(getUsersBySelectedOrder());
 
                     view.update();
 
@@ -69,29 +58,29 @@ public class ScoreBoardMenuController {
         }
     }
 
-    public List<User> getUsersBySelectedOrder(String order) {
+    public List<User> getUsersBySelectedOrder() {
         List<User> sortedUsers;
         List<User> users = App.getUsers();
 
-        switch (order) {
-            case "score":
+        switch (sortMethodIndex) {
+            case 0:
                 sortedUsers = users.stream()
                     .sorted(Comparator.comparingInt(user -> ((User) user).getGameProfile().getScore()).reversed())
                     .collect(Collectors.toCollection(ArrayList::new));
                 break;
-            case "username":
-                sortedUsers = users.stream()
-                    .sorted(Comparator.comparing(user -> ((User) user).getUsername()))
-                    .collect(Collectors.toCollection(ArrayList::new));
-                break;
-            case "kill":
+            case 1:
                 sortedUsers = users.stream()
                     .sorted(Comparator.comparingInt(user -> ((User) user).getGameProfile().getKillCount()).reversed())
                     .collect(Collectors.toCollection(ArrayList::new));
                 break;
-            case "maxTimeAlive":
+            case 2:
                 sortedUsers = users.stream()
                     .sorted(Comparator.comparingInt(user -> ((User) user).getGameProfile().getMaxTimeAlive()).reversed())
+                    .collect(Collectors.toCollection(ArrayList::new));
+                break;
+            case 3:
+                sortedUsers = users.stream()
+                    .sorted(Comparator.comparing(user -> ((User) user).getUsername()))
                     .collect(Collectors.toCollection(ArrayList::new));
                 break;
             default:

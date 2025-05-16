@@ -89,7 +89,7 @@ public class ScoreBoardMenuView implements Screen, AppMenu {
         this.backgroundTexture = new Texture("images/background-image-2.png");
         backgroundImage = new Image(backgroundTexture);
 
-        this.usersList = controller.getUsersBySelectedOrder("score");
+        this.usersList = controller.getUsersBySelectedOrder();
 
         controller.setView(this);
     }
@@ -108,11 +108,16 @@ public class ScoreBoardMenuView implements Screen, AppMenu {
         table.center();
         table.add(scoreBoardLabel);
 
+        Table header = getTableHeader(skin);
+        table.row().pad(40, 5, 40, 5);
+        table.add(header);
+
         int usersShowLimit = 10;
+        setUsersList(controller.getUsersBySelectedOrder());
 
         int counter = 1;
         for (User user : this.usersList.subList(0, Math.min(this.usersList.size(), usersShowLimit))) {
-            HorizontalGroup row = getHorizontalGroup(user, counter++, user == App.getCurrentUser(), skin);
+            Table row = getTableRow(user, counter++, user == App.getCurrentUser(), skin);
 
             table.row().pad(10, 5, 10, 5);
             table.add(row).width(1000).height(100).center();
@@ -120,7 +125,7 @@ public class ScoreBoardMenuView implements Screen, AppMenu {
 
         table.row().pad(40, 10, 5, 10);
         table.add(sortTypeButton).width(200).height(60);
-        table.row().pad(10, 10, 5, 10);
+        table.row().pad(40, 10, 5, 10);
         table.add(backButton).width(200).height(60);
 
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
@@ -129,45 +134,76 @@ public class ScoreBoardMenuView implements Screen, AppMenu {
         controller.handleScoreBoardMenuButtons();
     }
 
-    private HorizontalGroup getHorizontalGroup(User user, int counter, boolean isCurrentUser, Skin skin) {
-        HorizontalGroup row = new HorizontalGroup();
+    private Table getTableHeader(Skin skin) {
+        Table row = new Table();
 
-        row.space(150);
+        Label username = new Label("USERNAME", skin, "white");
+        Label score = new Label("SCORE", skin, "white");
+        Label killCount = new Label("KILL", skin, "white");
+        Label maxTimeAlive = new Label("LONGEST TIME ALIVE", skin, "white");
 
-        Label username = new Label(user.getUsername(), skin);
-        Label score = new Label(Integer.toString(user.getGameProfile().getScore()), skin);
-        Label killCount = new Label(Integer.toString(user.getGameProfile().getKillCount()), skin);
-        Label maxTimeAlive = new Label(Integer.toString(user.getGameProfile().getMaxTimeAlive()), skin);
-
-
-        if (isCurrentUser) {
-            username.setColor(Color.RED);
-            score.setColor(Color.RED);
-            killCount.setColor(Color.RED);
-            maxTimeAlive.setColor(Color.RED);
-        } else {
-            username.setColor(Color.WHITE);
-            score.setColor(Color.WHITE);
-            killCount.setColor(Color.WHITE);
-            maxTimeAlive.setColor(Color.WHITE);
-        }
-
-        row.addActor(username);
-        row.addActor(score);
-        row.addActor(killCount);
-        row.addActor(maxTimeAlive);
-
-        if (counter == 1) {
-            row.addActor(goldContainer);
-        } else if (counter == 2) {
-            row.addActor(silverContainer);
-        } else if (counter == 3) {
-            row.addActor(bronzeContainer);
-        }
+        row.add(username).width(200).padRight(70);
+        row.add(score).width(100).padRight(100);
+        row.add(killCount).width(100).padRight(150);
+        row.add(maxTimeAlive).width(100).padRight(70);
+        row.add().width(100).padRight(100);
 
         row.center();
 
-        row.invalidate();
+        return row;
+    }
+
+    private Table getTableRow(User user, int counter, boolean isCurrentUser, Skin skin) {
+        Table row = new Table();
+
+        Label.LabelStyle defaultStyle = skin.get("default", Label.LabelStyle.class);
+        Label.LabelStyle goldStyle = skin.get("gold", Label.LabelStyle.class);
+        Label.LabelStyle silverStyle = skin.get("silver", Label.LabelStyle.class);
+        Label.LabelStyle bronzeStyle = skin.get("bronze", Label.LabelStyle.class);
+
+        Label username = new Label(user.getUsername(), skin, "white");
+        Label score = new Label(Integer.toString(user.getGameProfile().getScore()), skin, "white");
+        Label killCount = new Label(Integer.toString(user.getGameProfile().getKillCount()), skin, "white");
+        Label maxTimeAlive = new Label(Integer.toString(user.getGameProfile().getMaxTimeAlive()), skin, "white");
+
+
+        row.add(username).width(200).padRight(70);
+        row.add(score).width(100).padRight(100);
+        row.add(killCount).width(100).padRight(150);
+        row.add(maxTimeAlive).width(100).padRight(70);
+
+
+
+        if (counter == 1) {
+            row.add(goldContainer).width(100).padRight(100);
+            username.setStyle(goldStyle);
+            score.setStyle(goldStyle);
+            killCount.setStyle(goldStyle);
+            maxTimeAlive.setStyle(goldStyle);
+        } else if (counter == 2) {
+            row.add(silverContainer).width(100).padRight(100);
+            username.setStyle(silverStyle);
+            score.setStyle(silverStyle);
+            killCount.setStyle(silverStyle);
+            maxTimeAlive.setStyle(silverStyle);
+        } else if (counter == 3) {
+            row.add(bronzeContainer).width(100).padRight(100);
+            username.setStyle(bronzeStyle);
+            score.setStyle(bronzeStyle);
+            killCount.setStyle(bronzeStyle);
+            maxTimeAlive.setStyle(bronzeStyle);
+        } else {
+            row.add().width(100).padRight(100);
+        }
+
+        if (isCurrentUser) {
+            username.setStyle(defaultStyle);
+            score.setStyle(defaultStyle);
+            killCount.setStyle(defaultStyle);
+            maxTimeAlive.setStyle(defaultStyle);
+        }
+
+        row.center();
 
         return row;
     }

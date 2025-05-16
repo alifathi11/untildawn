@@ -47,6 +47,24 @@ com.badlogic.gdx.graphics.Color: {
 		b: 1
 		a: 1
 	}
+    gold: {
+      r: 1.0
+      g: 0.84313725
+      b: 0.0
+      a: 1
+    }
+    silver: {
+      r: 0.7529412
+      g: 0.7529412
+      b: 0.7529412
+      a: 1
+    }
+    bronze: {
+      r: 0.8039216
+      g: 0.49803922
+      b: 0.19607843
+      a: 1
+    }
 }
 com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	button-c: {
@@ -328,6 +346,22 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		font: font
 		fontColor: color
 	}
+    white: {
+      font: font
+      fontColor: white
+    }
+    gold: {
+      font: font
+      fontColor: gold
+    }
+    silver: {
+      font: font
+      fontColor: silver
+    }
+    bronze: {
+      font: font
+      fontColor: bronze
+    }
 	title: {
 		font: title
 		fontColor: color
