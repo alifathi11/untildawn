@@ -10,51 +10,50 @@ import com.untildawn.Models.Player;
 
 public class PlayerController {
     private Player player;
+    private PlayerAnimations playerAnimations;
 
     public PlayerController(Player player) {
         this.player = player;
+        this.playerAnimations = new PlayerAnimations(player);
     }
 
     public void update() {
         player.getPlayerSprite().draw(Main.getBatch());
 
         if (player.isPlayerIdle()) {
-            idleAnimation();
+            playerAnimations.idleAnimation();
+        } else if (player.isPlayerWalking()) {
+            playerAnimations.walkAnimation();
         }
 
         handlePlayerInput();
     }
 
     public void handlePlayerInput() {
+
+        boolean isMoving = false;
+
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.getPosition().setY((int) (player.getPosition().getY() + player.getSpeed()));
+            isMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             player.getPosition().setY((int) (player.getPosition().getY() - player.getSpeed()));
+            isMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.getPosition().setX((int) (player.getPosition().getX() + player.getSpeed()));
+            isMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.getPosition().setX((int) (player.getPosition().getX() - player.getSpeed()));
-        }
-    }
-
-    public void idleAnimation() {
-        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getCharacter1_idle_animation();
-
-        player.getPlayerSprite().setRegion(animation.getKeyFrame(player.getTime()));
-
-        if (!animation.isAnimationFinished(player.getTime())) {
-            player.setTime(player.getTime() + Gdx.graphics.getDeltaTime());
-        } else {
-            player.setTime(0);
+            isMoving = true;
         }
 
-        animation.setPlayMode(Animation.PlayMode.LOOP);
+        player.setPlayerWalking(isMoving);
     }
 
     public Player getPlayer() {

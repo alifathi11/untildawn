@@ -4,33 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import java.io.File;
+
 
 public class GameAssetManager {
 
     private static GameAssetManager gameAssetManager;
+
+    // skin
     private Skin skin = new Skin(Gdx.files.internal("skin/tracer-ui.json"));
 
-    private final String character1_idle0 = "1/idle/idle_0.png";
-    private final String character1_idle1 = "1/idle/idle_1.png";
-    private final String character1_idle2 = "1/idle/idle_2.png";
-    private final String character1_idle3 = "1/idle/idle_3.png";
-    private final String character1_idle4 = "1/idle/idle_4.png";
-    private final String character1_idle5 = "1/idle/idle_5.png";
-    private final Texture character1_idle0_tex = new Texture(character1_idle0);
-    private final Texture character1_idle1_tex = new Texture(character1_idle1);
-    private final Texture character1_idle2_tex = new Texture(character1_idle2);
-    private final Texture character1_idle3_tex = new Texture(character1_idle3);
-    private final Texture character1_idle4_tex = new Texture(character1_idle4);
-    private final Texture character1_idle5_tex = new Texture(character1_idle5);
-    private final Animation<Texture> character1_idle_animation = new Animation<>(
-        0.1f,
-        character1_idle0_tex,
-        character1_idle1_tex,
-        character1_idle2_tex,
-        character1_idle3_tex,
-        character1_idle4_tex,
-        character1_idle5_tex
-    );
+    // first  frames of animations
+
+    // make animations
+    Animation<Texture> character1_idle_animation = buildAnimation(1, "idle");
+    Animation<Texture> character1_walk_animation = buildAnimation(1, "walk");
+
 
     private final String smg = "smg/SMGStill.png";
     private final Texture smgTexture = new Texture(smg);
@@ -51,8 +40,16 @@ public class GameAssetManager {
         return character1_idle_animation;
     }
 
+    public Animation<Texture> getCharacter1_walk_animation() {
+        return character1_walk_animation;
+    }
+
     public String getCharacter1_idle0() {
-        return character1_idle0;
+        return "1/idle/idle_0.png";
+    }
+
+    public String getCharacter1_walking0() {
+        return "1/walking/walking_0.png";
     }
 
     public String getSmg() {
@@ -61,5 +58,46 @@ public class GameAssetManager {
 
     public String getBullet() {
         return bullet;
+    }
+
+
+
+    private Animation<Texture> buildAnimation(int characterNumber, String type) {
+
+        String pathToFolder = String.format("assets/%d/%s", characterNumber, type);
+        int numberOfFrames = countFiles(pathToFolder);
+
+        Texture[] textureArray = new Texture[numberOfFrames];
+
+        for (int i = 0; i < numberOfFrames; i++) {
+            String rawPath = String.format("%d/%s/%s_%d.png", characterNumber, type, type, i);
+            Texture texture = new Texture(rawPath);
+            textureArray[i] = texture;
+        }
+
+        Animation<Texture> animation = new Animation<>(0.1f, textureArray);
+
+        return animation;
+    }
+
+
+    private int countFiles(String path) {
+
+        File folder = new File(path);
+
+
+        File[] listOfFiles = folder.listFiles();
+
+        if (listOfFiles != null) {
+            int fileCount = 0;
+            for (File file : listOfFiles) {
+                if (file.isFile()) {
+                    fileCount++;
+                }
+            }
+            return fileCount;
+        } else {
+            return 0;
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.untildawn.Models;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.untildawn.Enums.Heros;
 
 public class Player {
     private Texture playerTexture = new Texture(
@@ -17,21 +18,22 @@ public class Player {
     private float HP;
     private float speed;
     private Game game;
+    private Heros hero;
     private float time;
 
-    private boolean isPlayerIdle = true;
-    private boolean isPlayerRunning = false;
+    private boolean isPlayerIdle = false;
+    private boolean isPlayerWalking = false;
 
     public Player(User user,
                   int score,
-                  float HP,
-                  float speed,
+                  Heros hero,
                   Game game) {
         this.user = user;
+        this.hero = hero;
         this.score = score;
-        this.HP = HP;
+        this.HP = hero.getHP();
+        this.speed = hero.getSpeed();
         this.game = game;
-        this.speed = speed;
         this.position = new Position(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
         this.playerSprite.setPosition((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2);
@@ -130,7 +132,23 @@ public class Player {
         return isPlayerIdle;
     }
 
-    public boolean isPlayerRunning() {
-        return isPlayerRunning;
+    public boolean isPlayerWalking() {
+        return isPlayerWalking;
+    }
+
+    public void setPlayerIdle(boolean playerIdle) {
+        isPlayerIdle = playerIdle;
+    }
+
+    public void setPlayerWalking(boolean playerWalking) {
+        isPlayerWalking = playerWalking;
+    }
+
+    public Heros getHero() {
+        return hero;
+    }
+
+    public void setHero(Heros hero) {
+        this.hero = hero;
     }
 }
