@@ -10,6 +10,7 @@ public class App {
     private static Menus currentMenu = Menus.SIGNUP_MENU;
     private static List<User> users = new ArrayList<>();
     private static Game currentGame;
+    private static boolean isPlayingAsGuest;
 
     public static void setUsers(List<User> users) {
         App.users = new ArrayList<>(users);
@@ -64,5 +65,13 @@ public class App {
 
     public static void setCurrentGame(Game currentGame) {
         App.currentGame = currentGame;
+    }
+
+    public static void setPlayingAsGuest(boolean isPlayingAsGuest) {
+        App.isPlayingAsGuest = isPlayingAsGuest;
+    }
+
+    public static boolean isIsPlayingAsGuest() {
+        return isPlayingAsGuest;
     }
 }

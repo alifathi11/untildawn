@@ -1,14 +1,11 @@
-package com.untildawn.Controllers;
+package com.untildawn.Controllers.MenuControllers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.untildawn.Enums.MenuManager;
 import com.untildawn.Enums.Menus;
-import com.untildawn.Main;
 import com.untildawn.Models.App;
 import com.untildawn.Models.User;
-import com.untildawn.Models.UserDataHandler;
 import com.untildawn.Views.LoginMenuView;
 
 public class LoginMenuController {

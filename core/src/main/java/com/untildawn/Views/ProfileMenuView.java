@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.untildawn.Controllers.ProfileMenuController;
+import com.untildawn.Controllers.MenuControllers.ProfileMenuController;
 import com.untildawn.Main;
 import com.untildawn.Models.App;
 import com.untildawn.Models.GameAssetManager;

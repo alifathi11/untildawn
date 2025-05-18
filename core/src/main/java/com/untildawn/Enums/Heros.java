@@ -1,6 +1,6 @@
 package com.untildawn.Enums;
 
-public enum Hero {
+public enum Heros {
     SHANA(4, 4),
     DIAMOND(7, 1),
     SCARLET(3, 5),
@@ -11,7 +11,7 @@ public enum Hero {
     private final int HP;
     private final int speed;
 
-    Hero(int HP, int speed) {
+    Heros(int HP, int speed) {
         this.HP = HP;
         this.speed = speed;
     }

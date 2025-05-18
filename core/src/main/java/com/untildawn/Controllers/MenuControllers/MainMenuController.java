@@ -1,9 +1,10 @@
-package com.untildawn.Controllers;
+package com.untildawn.Controllers.MenuControllers;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.untildawn.Enums.MenuManager;
 import com.untildawn.Enums.Menus;
+import com.untildawn.Models.App;
 import com.untildawn.Views.MainMenuView;
 
 public class MainMenuController {
@@ -36,7 +37,9 @@ public class MainMenuController {
             this.view.getProfileMenuButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    MenuManager.setScreen(Menus.PROFILE_MENU);
+                    if (!App.isIsPlayingAsGuest()) {
+                        MenuManager.setScreen(Menus.PROFILE_MENU);
+                    }
                 }
             });
             this.view.getSettingMenuButton().addListener(new ClickListener() {
@@ -48,7 +51,9 @@ public class MainMenuController {
             this.view.getScoreBoardMenuButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    MenuManager.setScreen(Menus.SCOREBOARD_MENU);
+                    if (!App.isIsPlayingAsGuest()) {
+                        MenuManager.setScreen(Menus.SCOREBOARD_MENU);
+                    }
                 }
             });
             this.view.getLogoutButton().addListener(new ClickListener() {

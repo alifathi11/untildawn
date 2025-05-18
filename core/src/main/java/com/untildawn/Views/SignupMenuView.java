@@ -1,6 +1,5 @@
 package com.untildawn.Views;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -8,11 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.untildawn.Controllers.SignupMenuController;
+import com.untildawn.Controllers.MenuControllers.SignupMenuController;
 import com.untildawn.Main;
-import com.untildawn.Models.App;
 import com.untildawn.Models.GameAssetManager;
 
 import java.util.function.Consumer;

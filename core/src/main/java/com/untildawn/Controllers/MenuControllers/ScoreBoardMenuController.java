@@ -1,4 +1,4 @@
-package com.untildawn.Controllers;
+package com.untildawn.Controllers.MenuControllers;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;

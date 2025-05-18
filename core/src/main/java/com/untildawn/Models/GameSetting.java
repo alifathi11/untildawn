@@ -1,21 +1,21 @@
 package com.untildawn.Models;
 
-import com.untildawn.Enums.Hero;
+import com.untildawn.Enums.Heros;
 import com.untildawn.Enums.Time;
-import com.untildawn.Enums.Weapon;
+import com.untildawn.Enums.Weapons;
 
 public class GameSetting {
     private Time gameTime;
-    private Weapon weapon;
-    private Hero hero;
+    private Weapons weapon;
+    private Heros hero;
 
-    public GameSetting(Time gameTime, Weapon weapon, Hero hero) {
+    public GameSetting(Time gameTime, Weapons weapon, Heros hero) {
         this.gameTime = gameTime;
         this.weapon = weapon;
         this.hero = hero;
     }
 
-    public Hero getHero() {
+    public Heros getHero() {
         return hero;
     }
 
@@ -23,7 +23,7 @@ public class GameSetting {
         return gameTime;
     }
 
-    public Weapon getWeapon() {
+    public Weapons getWeapon() {
         return weapon;
     }
 
@@ -31,11 +31,11 @@ public class GameSetting {
         this.gameTime = gameTime;
     }
 
-    public void setWeapon(Weapon weapon) {
+    public void setWeapon(Weapons weapon) {
         this.weapon = weapon;
     }
 
-    public void setHero(Hero hero) {
+    public void setHero(Heros hero) {
         this.hero = hero;
     }
 }

@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.untildawn.Controllers.LoginMenuController;
+import com.untildawn.Controllers.MenuControllers.LoginMenuController;
 import com.untildawn.Main;
 import com.untildawn.Models.GameAssetManager;
 

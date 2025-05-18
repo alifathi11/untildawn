@@ -1,6 +1,5 @@
 package com.untildawn.Views;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -11,7 +10,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.untildawn.Controllers.MainMenuController;
+import com.untildawn.Controllers.MenuControllers.MainMenuController;
 import com.untildawn.Main;
 import com.untildawn.Models.App;
 import com.untildawn.Models.GameAssetManager;
@@ -100,9 +99,11 @@ public class MainMenuView implements Screen, AppMenu {
         table.center();
 
         table.add(mainMenuLabel).center();
-        table.row().pad(10, 5, 10, 5);
-        table.add(userInfoContainer).width(580).height(50).center();
-        table.row().pad(10, 5, 10, 5);
+        if (!App.isIsPlayingAsGuest()) {
+            table.row().pad(10, 5, 10, 5);
+            table.add(userInfoContainer).width(580).height(50).center();
+        }
+        table.row().pad(20, 5, 10, 5);
         table.add(resumeSavedGameButton).width(600).height(100);
         table.row().pad(10, 5, 10, 5);
         table.add(preGameMenuButton).width(600).height(100);

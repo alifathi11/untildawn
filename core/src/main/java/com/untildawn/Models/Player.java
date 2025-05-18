@@ -1,19 +1,54 @@
 package com.untildawn.Models;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 public class Player {
+    private Texture playerTexture = new Texture(
+        GameAssetManager.getGameAssetManager().getCharacter1.idle0()
+    );
+    private Sprite playerSprite = new Sprite(playerTexture);
+    private Position position;
+    private CollisionRect collisionRect;
+
     private User user;
     private int score;
-    private int HP;
+    private float HP;
+    private float speed;
     private Game game;
+    private float time;
+
+    private boolean isPlayerIdle = true;
+    private boolean isPlayerRunning = false;
 
     public Player(User user,
                   int score,
-                  int HP,
-                  Game game) {
+                  float HP,
+                  float speed,
+                  Game game,
+                  Position position) {
         this.user = user;
         this.score = score;
         this.HP = HP;
         this.game = game;
+        this.position = position;
+        this.speed = speed;
+
+        this.playerSprite.setPosition((float) Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        this.playerSprite.setSize(playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
+        this.collisionRect = new CollisionRect((float) Gdx.graphics.getWidth() / 2,
+                                               (float) Gdx.graphics.getHeight() / 2,
+                                               (float) playerTexture.getWidth(),
+                                               (float) playerTexture.getHeight());
+    }
+
+    public float getTime() {
+        return time;
+    }
+
+    public void setTime(float time) {
+        this.time = time;
     }
 
     public int getHP() {
@@ -46,5 +81,49 @@ public class Player {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public CollisionRect getCollisionRect() {
+        return collisionRect;
+    }
+
+    public void setCollisionRect(CollisionRect collisionRect) {
+        this.collisionRect = collisionRect;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public Sprite getPlayerSprite() {
+        return playerSprite;
+    }
+
+    public void setPlayerSprite(Sprite playerSprite) {
+        this.playerSprite = playerSprite;
+    }
+
+    public Texture getPlayerTexture() {
+        return playerTexture;
+    }
+
+    public void setHP(float HP) {
+        this.HP = HP;
+    }
+
+    public void setPlayerTexture(Texture playerTexture) {
+        this.playerTexture = playerTexture;
     }
 }

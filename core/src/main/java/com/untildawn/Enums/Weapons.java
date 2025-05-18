@@ -1,6 +1,6 @@
 package com.untildawn.Enums;
 
-public enum Weapon {
+public enum Weapons {
     REVOLVER(20, 1, 1, 6),
     SHOTGUN(10, 4, 1, 2),
     SMGsDUAL(8, 1, 2, 24),
@@ -11,10 +11,10 @@ public enum Weapon {
     private final int timeReload;
     private final int ammoMax;
 
-    Weapon(int damage,
-           int projectile,
-           int timeReload,
-           int ammoMax) {
+    Weapons(int damage,
+            int projectile,
+            int timeReload,
+            int ammoMax) {
         this.damage = damage;
         this.projectile = projectile;
         this.timeReload = timeReload;

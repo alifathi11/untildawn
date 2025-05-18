@@ -2,7 +2,7 @@ package com.untildawn.Views;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.untildawn.Controllers.LogoutMenuController;
+import com.untildawn.Controllers.MenuControllers.LogoutMenuController;
 
 public class LogoutMenuView implements Screen, AppMenu {
     public LogoutMenuView(LogoutMenuController controller, Skin skin) {

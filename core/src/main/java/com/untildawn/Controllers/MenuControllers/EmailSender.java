@@ -1,9 +1,8 @@
-package com.untildawn.Controllers;
+package com.untildawn.Controllers.MenuControllers;
 
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
-import java.net.PasswordAuthentication;
 import java.util.Properties;
 
 import jakarta.mail.*;

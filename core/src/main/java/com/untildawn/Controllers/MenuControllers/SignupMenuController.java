@@ -1,6 +1,5 @@
-package com.untildawn.Controllers;
+package com.untildawn.Controllers.MenuControllers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.untildawn.Enums.MenuManager;
@@ -8,11 +7,7 @@ import com.untildawn.Enums.Menus;
 import com.untildawn.Models.App;
 import com.untildawn.Models.SecurityQuestion;
 import com.untildawn.Models.User;
-import com.untildawn.Views.LoginMenuView;
 import com.untildawn.Views.SignupMenuView;
-
-import java.awt.*;
-import java.util.Map;
 
 public class SignupMenuController {
     private SignupMenuView view;
@@ -38,7 +33,8 @@ public class SignupMenuController {
             view.getPlayAsGuestButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    // handle play as guest
+                   MenuManager.setScreen(Menus.MAIN_MENU);
+                   App.setPlayingAsGuest(true);
                 }
             });
 

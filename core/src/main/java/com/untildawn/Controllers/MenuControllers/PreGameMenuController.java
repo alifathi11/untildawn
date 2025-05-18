@@ -1,10 +1,8 @@
-package com.untildawn.Controllers;
+package com.untildawn.Controllers.MenuControllers;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.untildawn.Enums.Hero;
-import com.untildawn.Enums.Time;
-import com.untildawn.Enums.Weapon;
+import com.untildawn.Enums.*;
 import com.untildawn.Models.*;
 import com.untildawn.Views.PreGameMenuView;
 
@@ -77,14 +75,21 @@ public class PreGameMenuController {
                 }
             });
 
+            view.getBackButton().addListener(new ClickListener() {
+               @Override
+               public void clicked(InputEvent event, float x, float y) {
+                   MenuManager.setScreen(Menus.MAIN_MENU);
+               }
+            });
+
             view.getStartGameButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
 
-                    view.showConfirmation("START NEW GAME WITH THIS PREFERENCES?", (result) -> {
+                    view.showConfirmation("START NEW GAME WITH\n    THESE PREFERENCES?", (result) -> {
                         if (result) {
-                            Weapon weapon = Weapon.values()[weaponIndex];
-                            Hero hero = Hero.values()[heroIndex];
+                            Weapons weapon = Weapons.values()[weaponIndex];
+                            Heros hero = Heros.values()[heroIndex];
                             Time time = Time.values()[timeIndex];
 
                             GameSetting gameSetting = new GameSetting(time, weapon, hero);
@@ -92,10 +97,10 @@ public class PreGameMenuController {
                             Game game = new Game(gameSetting, null);
 
                             User user = App.getCurrentUser();
-                            Player player = new Player(user, 0, hero.getHP(), game);
-                            game.setPlayer(player);
-
-                            App.setCurrentGame(game);
+//                            Player player = new Player(user, 0, hero.getHP(), game);
+//                            game.setPlayer(player);
+//
+//                            App.setCurrentGame(game);
                         }
                     });
                 }

@@ -1,9 +1,7 @@
-package com.untildawn.Controllers;
+package com.untildawn.Controllers.MenuControllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
 
 public class Validation {
     public boolean isUsernameValid(String username) {

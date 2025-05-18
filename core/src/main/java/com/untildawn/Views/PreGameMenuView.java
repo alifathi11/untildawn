@@ -8,11 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.untildawn.Controllers.PreGameMenuController;
+import com.untildawn.Controllers.MenuControllers.PreGameMenuController;
 import com.untildawn.Main;
 import com.untildawn.Models.GameAssetManager;
 
-import javax.swing.text.LabelView;
 import java.util.function.Consumer;
 
 public class PreGameMenuView implements Screen, AppMenu {
@@ -29,6 +28,7 @@ public class PreGameMenuView implements Screen, AppMenu {
     private TextButton heroChangeButton;
     private TextButton gameTimeChangeButton;
     private final TextButton startGameButton;
+    private final TextButton backButton;
 
     private Table table;
 
@@ -46,9 +46,11 @@ public class PreGameMenuView implements Screen, AppMenu {
         this.heroChangeButton = new TextButton("SHANA", skin);
         this.weaponChangeButton = new TextButton("REVOLVER", skin);
         this.startGameButton = new TextButton("START NEW GAME", skin);
+        this.backButton = new TextButton("BACK", skin);
+
         this.table = new Table();
 
-        this.backgroundTexture = new Texture("images/background-image-4.png");
+        this.backgroundTexture = new Texture("images/background-image-5.png");
         backgroundImage = new Image(backgroundTexture);
 
         controller.setView(this);
@@ -79,6 +81,8 @@ public class PreGameMenuView implements Screen, AppMenu {
         table.add(gameTimeChangeButton).width(800).height(80);
         table.row().pad(100, 5, 10, 5);
         table.add(startGameButton).width(400).height(60);
+        table.row().pad(20, 5, 10, 5);
+        table.add(backButton).width(400).height(60);
 
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);
@@ -230,5 +234,9 @@ public class PreGameMenuView implements Screen, AppMenu {
 
     public TextButton getWeaponChangeButton() {
         return weaponChangeButton;
+    }
+
+    public TextButton getBackButton() {
+        return backButton;
     }
 }
