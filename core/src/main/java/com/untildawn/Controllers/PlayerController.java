@@ -27,19 +27,19 @@ public class PlayerController {
 
     public void handlePlayerInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.getPosition().setY(player.getPosition().getY() - player.getSpeed());
+            player.getPosition().setY((int) (player.getPosition().getY() + player.getSpeed()));
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.getPosition().setY(player.getPosition().getY() + player.getSpeed());
+            player.getPosition().setY((int) (player.getPosition().getY() - player.getSpeed()));
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.getPosition().setX(player.getPosition().getX() + player.getSpeed());
+            player.getPosition().setX((int) (player.getPosition().getX() + player.getSpeed()));
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.getPosition().setX(player.getPosition().getX() - player.getSpeed());
+            player.getPosition().setX((int) (player.getPosition().getX() - player.getSpeed()));
         }
     }
 

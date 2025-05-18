@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.untildawn.Controllers.GameController;
@@ -14,7 +16,7 @@ public class GameView implements Screen, InputProcessor {
     private Stage stage;
     private GameController controller;
 
-    public GameView(GameController controller) {
+    public GameView(GameController controller, Skin sKin) {
         this.controller = controller;
         controller.setView(this);
     }
@@ -98,7 +100,7 @@ public class GameView implements Screen, InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        controller.getWeaponController().handleWeaponRotation();
+        controller.getWeaponController().handleWeaponRotation(screenX, screenY);
         return false;
     }
 

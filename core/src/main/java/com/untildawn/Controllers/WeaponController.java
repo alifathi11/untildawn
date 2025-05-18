@@ -22,7 +22,6 @@ public class WeaponController {
 
     public void update() {
         weapon.getSmgSprite().draw(Main.getBatch());
-        updateBullets();
     }
 
     public void handleWeaponRotation(int x, int y) {
@@ -37,20 +36,7 @@ public class WeaponController {
     }
 
     public void handleWeaponShoot(int x, int y) {
-        bullets.add(new Bullet(x, y));
+        bulletController.getBullets().add(new Bullet(x, y));
         weapon.setAmmo(weapon.getAmmo() - 1);
-    }
-
-    public void updateBullets() {
-        for (Bullet bullet : bullets) {
-            bullet.getSprite().draw(Main.getBatch());
-            Vector2 direction = new Vector2(
-                Gdx.graphics.getWidth() / 2f - bullet.getX(),
-                Gdx.graphics.getHeight() / 2f - bullet.getY()
-            ).nor();
-
-            bullet.getSprite().getPosition().setX(bullet.getSprite().getX() - direction.x * 5);
-            bullet.getSprite().getPosition().setY(bullet.getSprite().getY() - direction.y * 5);
-        }
     }
 }

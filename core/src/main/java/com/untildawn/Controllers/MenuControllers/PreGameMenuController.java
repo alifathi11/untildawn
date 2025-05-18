@@ -1,9 +1,13 @@
 package com.untildawn.Controllers.MenuControllers;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.untildawn.Controllers.GameController;
 import com.untildawn.Enums.*;
+import com.untildawn.Main;
 import com.untildawn.Models.*;
+import com.untildawn.Views.GameView;
 import com.untildawn.Views.PreGameMenuView;
 
 public class PreGameMenuController {
@@ -97,10 +101,13 @@ public class PreGameMenuController {
                             Game game = new Game(gameSetting, null);
 
                             User user = App.getCurrentUser();
-//                            Player player = new Player(user, 0, hero.getHP(), game);
-//                            game.setPlayer(player);
-//
-//                            App.setCurrentGame(game);
+                            Player player = new Player(user, 0, hero.getHP(), hero.getSpeed(), game);
+                            game.setPlayer(player);
+
+                            App.setCurrentGame(game);
+
+                            Main.getMain().getScreen().dispose();
+                            Main.getMain().setScreen(new GameView(new GameController(), GameAssetManager.getGameAssetManager().getSkin()));
                         }
                     });
                 }

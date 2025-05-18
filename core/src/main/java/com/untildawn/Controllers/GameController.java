@@ -1,15 +1,19 @@
 package com.untildawn.Controllers;
 
-import com.untildawn.Models.App;
-import com.untildawn.Models.Player;
-import com.untildawn.Models.Weapon;
+import com.untildawn.Models.*;
 import com.untildawn.Views.GameView;
 
 public class GameController {
+    private Game game;
     private GameView view;
     private PlayerController playerController;
     private WeaponController weaponController;
     private WorldController worldController;
+    private BulletController bulletController;
+
+    public GameController() {
+        setControllers();
+    }
 
     public void setView(GameView view) {
         this.view = view;
@@ -17,7 +21,8 @@ public class GameController {
 
     public void setControllers() {
         this.playerController = new PlayerController(App.getCurrentGame().getPlayer());
-        this.weaponController = new WeaponController(new Weapon());
+        this.bulletController = new BulletController();
+        this.weaponController = new WeaponController(bulletController, new Weapon());
         this.worldController = new WorldController(playerController);
     }
 
@@ -26,6 +31,7 @@ public class GameController {
             this.worldController.update();
             this.playerController.update();
             this.weaponController.update();
+            this.bulletController.update();
         }
     }
 
@@ -40,4 +46,9 @@ public class GameController {
     public WeaponController getWeaponController() {
         return weaponController;
     }
+
+    public BulletController getBulletController() {
+        return bulletController;
+    }
 }
+

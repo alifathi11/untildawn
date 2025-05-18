@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Player {
     private Texture playerTexture = new Texture(
-        GameAssetManager.getGameAssetManager().getCharacter1.idle0()
+        GameAssetManager.getGameAssetManager().getCharacter1_idle0()
     );
     private Sprite playerSprite = new Sprite(playerTexture);
     private Position position;
@@ -26,16 +26,15 @@ public class Player {
                   int score,
                   float HP,
                   float speed,
-                  Game game,
-                  Position position) {
+                  Game game) {
         this.user = user;
         this.score = score;
         this.HP = HP;
         this.game = game;
-        this.position = position;
         this.speed = speed;
+        this.position = new Position(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
-        this.playerSprite.setPosition((float) Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        this.playerSprite.setPosition((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2);
         this.playerSprite.setSize(playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
         this.collisionRect = new CollisionRect((float) Gdx.graphics.getWidth() / 2,
                                                (float) Gdx.graphics.getHeight() / 2,
@@ -51,7 +50,7 @@ public class Player {
         this.time = time;
     }
 
-    public int getHP() {
+    public float getHP() {
         return HP;
     }
 
@@ -125,5 +124,13 @@ public class Player {
 
     public void setPlayerTexture(Texture playerTexture) {
         this.playerTexture = playerTexture;
+    }
+
+    public boolean isPlayerIdle() {
+        return isPlayerIdle;
+    }
+
+    public boolean isPlayerRunning() {
+        return isPlayerRunning;
     }
 }
