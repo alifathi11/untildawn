@@ -15,6 +15,8 @@ public class Player {
 
     private User user;
     private int score;
+    private int kill;
+    // TODO: Longest time alive
     private float HP;
     private float speed;
     private float runSpeed;
@@ -173,4 +175,5 @@ public class Player {
     public void setPlayerRunning(boolean playerRunning) {
         isPlayerRunning = playerRunning;
     }
+
 }

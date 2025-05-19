@@ -1,6 +1,5 @@
 package com.untildawn.Controllers.MenuControllers;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.untildawn.Controllers.GameController;
@@ -92,11 +91,11 @@ public class PreGameMenuController {
 
                     view.showConfirmation("START NEW GAME WITH\n    THESE PREFERENCES?", (result) -> {
                         if (result) {
-                            Weapons weapon = Weapons.values()[weaponIndex];
+                            Weapons weaponType = Weapons.values()[weaponIndex];
                             Heros hero = Heros.values()[heroIndex];
                             Time time = Time.values()[timeIndex];
 
-                            GameSetting gameSetting = new GameSetting(time, weapon, hero);
+                            GamePreferences gameSetting = new GamePreferences(time, weaponType, hero);
 
                             Game game = new Game(gameSetting, null);
 

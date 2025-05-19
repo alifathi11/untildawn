@@ -4,12 +4,12 @@ import com.untildawn.Enums.Heros;
 import com.untildawn.Enums.Time;
 import com.untildawn.Enums.Weapons;
 
-public class GameSetting {
+public class GamePreferences {
     private Time gameTime;
     private Weapons weapon;
     private Heros hero;
 
-    public GameSetting(Time gameTime, Weapons weapon, Heros hero) {
+    public GamePreferences(Time gameTime, Weapons weapon, Heros hero) {
         this.gameTime = gameTime;
         this.weapon = weapon;
         this.hero = hero;

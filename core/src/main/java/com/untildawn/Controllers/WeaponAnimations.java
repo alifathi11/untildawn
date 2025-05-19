@@ -3,28 +3,31 @@ package com.untildawn.Controllers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.untildawn.Enums.Weapons;
 import com.untildawn.Models.GameAssetManager;
 import com.untildawn.Models.Weapon;
 
 public class WeaponAnimations {
     private Weapon weapon;
+    private Weapons weaponType;
 
     public WeaponAnimations(Weapon weapon) {
         this.weapon = weapon;
+        this.weaponType = weapon.getWeaponType();
     }
 
     public void reloadAnimation() {
         if (!weapon.isReloading()) return;
 
-        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getReloadAnimation();
-        weapon.getSmgSprite().setRegion(animation.getKeyFrame(weapon.getTime()));
+        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getReloadAnimation(weaponType);
+        weapon.getWeaponSprite().setRegion(animation.getKeyFrame(weapon.getTime()));
         weapon.setTime(weapon.getTime() + Gdx.graphics.getDeltaTime());
         weapon.setReloadTimeElapsed(weapon.getReloadTimeElapsed() + Gdx.graphics.getDeltaTime());
 
-        if (weapon.getReloadTimeElapsed() >= weapon.getRELOAD_DURATION()) {
+        if (weapon.getReloadTimeElapsed() >= weapon.getReloadDuration()) {
             weapon.setReloading(false);
             weapon.setTime(0f);
-            weapon.getSmgSprite().setRegion(animation.getKeyFrame(0f));
+            weapon.getWeaponSprite().setRegion(animation.getKeyFrame(0f));
         }
 
         animation.setPlayMode(Animation.PlayMode.LOOP);

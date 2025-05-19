@@ -1,24 +1,24 @@
 package com.untildawn.Models;
 
 public class Game {
-    private GameSetting gameSetting;
+    private GamePreferences gamePreferences;
     private Player player;
 
-    public Game(GameSetting gameSetting, Player player) {
-        this.gameSetting = gameSetting;
+    public Game(GamePreferences gameSetting, Player player) {
+        this.gamePreferences = gameSetting;
         this.player = player;
     }
 
-    public GameSetting getGameSetting() {
-        return gameSetting;
+    public GamePreferences getGamePreferences() {
+        return gamePreferences;
     }
 
     public Player getPlayer() {
         return player;
     }
 
-    public void setGameSetting(GameSetting gameSetting) {
-        this.gameSetting = gameSetting;
+    public void setGamePreferences(GamePreferences gamePreferences) {
+        this.gamePreferences = gamePreferences;
     }
 
     public void setPlayer(Player player) {

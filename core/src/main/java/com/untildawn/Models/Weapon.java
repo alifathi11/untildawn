@@ -6,23 +6,28 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.untildawn.Enums.Weapons;
 
 public class Weapon {
-//    private Weapons weaponType;
-    private final Texture smgTexture = new Texture(GameAssetManager.getGameAssetManager().getSmg());
-    private Sprite smgSprite = new Sprite(smgTexture);
+    private Weapons weaponType;
+    private final Texture weaponTexture;
+    private Sprite weaponSprite;
     private int ammo = 30;
     private float time;
     private boolean isReloading = false;
     private float reloadTimeElapsed = 0f;
-    private final float RELOAD_DURATION = 2f;
+    private final float reloadDuration = 2f;
+    private final float shootCoolDown = 0.5f;
+    private float timeSinceLastShot = 0f;
 
-    public Weapon() {
-        smgSprite.setX((float) Gdx.graphics.getWidth() / 2 + 20);
-        smgSprite.setY((float) Gdx.graphics.getHeight() / 2 + 40);
-        smgSprite.setSize(50, 50);
+    public Weapon(Weapons weaponType) {
+        this.weaponType = weaponType;
+        weaponTexture = GameAssetManager.getGameAssetManager().getWeaponTexture(weaponType);
+        weaponSprite = new Sprite(weaponTexture);
+        weaponSprite.setX((float) Gdx.graphics.getWidth() / 2 + 20);
+        weaponSprite.setY((float) Gdx.graphics.getHeight() / 2 + 40);
+        weaponSprite.setSize(50, 50);
     }
 
-    public Sprite getSmgSprite() {
-        return smgSprite;
+    public Sprite getWeaponSprite() {
+        return weaponSprite;
     }
 
     public int getAmmo() {
@@ -57,8 +62,8 @@ public class Weapon {
         }
     }
 
-    public float getRELOAD_DURATION() {
-        return RELOAD_DURATION;
+    public float getReloadDuration() {
+        return reloadDuration;
     }
 
     public float getReloadTimeElapsed() {
@@ -69,4 +74,19 @@ public class Weapon {
         this.reloadTimeElapsed = reloadTimeElapsed;
     }
 
+    public Weapons getWeaponType() {
+        return weaponType;
+    }
+
+    public float getShootCoolDown() {
+        return shootCoolDown;
+    }
+
+    public float getTimeSinceLastShot() {
+        return timeSinceLastShot;
+    }
+
+    public void setTimeSinceLastShot(float timeSinceLastShot) {
+        this.timeSinceLastShot = timeSinceLastShot;
+    }
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.untildawn.Enums.Heros;
+import com.untildawn.Enums.Weapons;
 
 import java.io.File;
 import java.util.HashMap;
@@ -19,8 +20,9 @@ public class GameAssetManager {
     private Skin skin = new Skin(Gdx.files.internal("skin/tracer-ui.json"));
 
     private Map<String, Animation<Texture>> characterAnimations = new HashMap<>();
+    private Map<String, Animation<Texture>> weaponAnimations = new HashMap<>();
 
-    // character animations
+    // character
     private Animation<Texture> diamond_idle_animation = buildCharacterAnimation("diamond", "idle");
     private Animation<Texture> diamond_walk_animation = buildCharacterAnimation("diamond", "walk");
     private Animation<Texture> diamond_run_animation = buildCharacterAnimation("diamond", "run");
@@ -42,12 +44,19 @@ public class GameAssetManager {
 //    private Animation<Texture> dasher_walk_animation = buildAnimation("dasher", "walk");
 
 
-    // reload animations
+    // weapon
     private Animation<Texture> smg_reload_animation = buildReloadAnimation("smg");
+    private Animation<Texture> shotgun_reload_animation = buildReloadAnimation("shotgun");
+    private Animation<Texture> revolver_reload_animation = buildReloadAnimation("revolver");
+
+
+    // bullet
+    private final String bullet = "bullet/bullet_1.png";
 
 
 
     public GameAssetManager() {
+        // character
         characterAnimations.put("diamond_walk_animation", diamond_walk_animation);
         characterAnimations.put("diamond_idle_animation", diamond_idle_animation);
         characterAnimations.put("diamond_run_animation", diamond_run_animation);
@@ -67,13 +76,16 @@ public class GameAssetManager {
 //        animations.put("dasher_idle_animation", dasher_idle_animation);
 //        animations.put("dasher_walk_animation", dasher_walk_animation);
 //        animations.put("dasher_walk_animation", dasher_run_animation);
+
+        // weapon
+        weaponAnimations.put("smg_reload_animation", smg_reload_animation);
+        weaponAnimations.put("shotgun_reload_animation", shotgun_reload_animation);
+        weaponAnimations.put("revolver_reload_animation", revolver_reload_animation);
+
+
+        // bullet
+
     }
-
-    private final String smg = "smg/SMGStill.png";
-    private final Texture smgTexture = new Texture(smg);
-
-    private final String bullet = "bullet/bullet.png";
-
     public static GameAssetManager getGameAssetManager() {
         if (gameAssetManager == null)
             gameAssetManager = new GameAssetManager();
@@ -84,6 +96,7 @@ public class GameAssetManager {
         return skin;
     }
 
+    // character
     public Animation<Texture> getCharacterIdleAnimation(Heros hero) {
         String heroName = hero.name().toLowerCase();
         String animationName = String.format("%s_idle_animation", heroName);
@@ -100,10 +113,6 @@ public class GameAssetManager {
         String heroName = hero.name().toLowerCase();
         String animationName = String.format("%s_run_animation", heroName);
         return characterAnimations.get(animationName);
-    }
-
-    public Animation<Texture> getReloadAnimation() {
-        return smg_reload_animation; // TODO: temporary
     }
 
     public Texture getCharacter_idle0(Heros hero) {
@@ -124,9 +133,22 @@ public class GameAssetManager {
         return characterAnimations.get(animationName).getKeyFrames()[0];
     }
 
-    public String getSmg() {
-        return smg;
+
+    // weapon
+    public Animation<Texture> getReloadAnimation(Weapons weapon) {
+        String weaponName = weapon.name().toLowerCase();
+        String animationName = String.format("%s_reload_animation", weaponName);
+        return weaponAnimations.get(animationName);
     }
+
+    public Texture getWeaponTexture(Weapons weapon) {
+        String weaponName = weapon.name().toLowerCase();
+        String animationName = String.format("%s_reload_animation", weaponName);
+        return weaponAnimations.get(animationName).getKeyFrames()[0];
+    }
+
+    // bullet
+
 
     public String getBullet() {
         return bullet;
