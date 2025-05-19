@@ -20,9 +20,9 @@ public class GameController {
     }
 
     public void setControllers() {
-        this.playerController = new PlayerController(App.getCurrentGame().getPlayer());
         this.bulletController = new BulletController();
         this.weaponController = new WeaponController(bulletController, new Weapon());
+        this.playerController = new PlayerController(App.getCurrentGame().getPlayer(), weaponController);
         this.worldController = new WorldController(playerController);
     }
 

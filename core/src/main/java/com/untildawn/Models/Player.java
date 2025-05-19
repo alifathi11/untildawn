@@ -6,12 +6,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.untildawn.Enums.Heros;
 
 public class Player {
-    private Texture playerTexture = new Texture(
-        GameAssetManager.getGameAssetManager().getCharacter1_idle0()
-    );
-    private Sprite playerSprite = new Sprite(playerTexture);
+    private Texture playerTexture;
+    private Sprite playerSprite;
     private Position position;
     private CollisionRect collisionRect;
+
+    private InputPreferences inputPreferences;
 
     private User user;
     private int score;
@@ -29,12 +29,18 @@ public class Player {
                   Heros hero,
                   Game game) {
         this.user = user;
+
         this.hero = hero;
+        this.playerTexture = GameAssetManager.getGameAssetManager().getCharacter_walk0(hero);
+        this.playerSprite = new Sprite(playerTexture);
+
         this.score = score;
         this.HP = hero.getHP();
         this.speed = hero.getSpeed();
         this.game = game;
         this.position = new Position(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+
+        inputPreferences = new InputPreferences();
 
         this.playerSprite.setPosition((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2);
         this.playerSprite.setSize(playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
@@ -150,5 +156,9 @@ public class Player {
 
     public void setHero(Heros hero) {
         this.hero = hero;
+    }
+
+    public InputPreferences getInputPreferences() {
+        return inputPreferences;
     }
 }

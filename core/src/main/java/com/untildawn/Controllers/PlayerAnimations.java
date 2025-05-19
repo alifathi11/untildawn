@@ -17,7 +17,7 @@ public class PlayerAnimations {
     }
 
     public void idleAnimation() {
-        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getCharacter1_idle_animation();
+        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getCharacterIdleAnimation(player.getHero());
 
         player.getPlayerSprite().setRegion(animation.getKeyFrame(player.getTime()));
 
@@ -31,7 +31,7 @@ public class PlayerAnimations {
     }
 
     public void walkAnimation() {
-        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getCharacter1_walk_animation();
+        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getCharacterWalkAnimation(player.getHero());
 
         player.getPlayerSprite().setRegion(animation.getKeyFrame(player.getTime()));
 

@@ -10,8 +10,8 @@ public class Weapon {
     private int ammo = 30;
 
     public Weapon() {
-        smgSprite.setX((float) Gdx.graphics.getWidth() / 2);
-        smgSprite.setY((float) Gdx.graphics.getHeight() / 2);
+        smgSprite.setX((float) Gdx.graphics.getWidth() / 2 + 20);
+        smgSprite.setY((float) Gdx.graphics.getHeight() / 2 + 40);
         smgSprite.setSize(50, 50);
     }
 

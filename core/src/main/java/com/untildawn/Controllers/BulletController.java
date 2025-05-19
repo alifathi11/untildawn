@@ -23,8 +23,8 @@ public class BulletController {
                 Gdx.graphics.getHeight() / 2f - bullet.getY()
             ).nor();
 
-            bullet.getSprite().setX(bullet.getSprite().getX() - direction.x * 5);
-            bullet.getSprite().setY(bullet.getSprite().getY() + direction.y * 5);
+            bullet.getSprite().setX(bullet.getSprite().getX() - direction.x * bullet.getSpeed());
+            bullet.getSprite().setY(bullet.getSprite().getY() + direction.y * bullet.getSpeed());
         }
     }
 

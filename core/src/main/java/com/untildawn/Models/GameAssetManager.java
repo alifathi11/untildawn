@@ -4,7 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.untildawn.Enums.Heros;
+
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class GameAssetManager {
@@ -14,12 +18,32 @@ public class GameAssetManager {
     // skin
     private Skin skin = new Skin(Gdx.files.internal("skin/tracer-ui.json"));
 
-    // first  frames of animations
+    private Map<String, Animation<Texture>> animations = new HashMap<>();
 
     // make animations
-    Animation<Texture> character1_idle_animation = buildAnimation(1, "idle");
-    Animation<Texture> character1_walk_animation = buildAnimation(1, "walk");
+    private Animation<Texture> diamond_idle_animation = buildAnimation("diamond", "idle");
+    private Animation<Texture> diamond_walk_animation = buildAnimation("diamond", "walk");
+//    private Animation<Texture> shana_idle_animation = buildAnimation("shana", "idle");
+//    private Animation<Texture> shana_walk_animation = buildAnimation("shana", "walk");
+    private Animation<Texture> scarlet_idle_animation = buildAnimation("scarlet", "idle");
+    private Animation<Texture> scarlet_walk_animation = buildAnimation("scarlet", "walk");
+//    private Animation<Texture> lilith_idle_animation = buildAnimation("lilith", "idle");
+//    private Animation<Texture> lilith_walk_animation = buildAnimation("lilith", "walk");
+//    private Animation<Texture> dasher_idle_animation = buildAnimation("dasher", "walk");
+//    private Animation<Texture> dasher_walk_animation = buildAnimation("dasher", "walk");
 
+    public GameAssetManager() {
+        animations.put("diamond_walk_animation", diamond_walk_animation);
+        animations.put("diamond_idle_animation", diamond_idle_animation);
+//        animations.put("shana_idle_animation", shana_idle_animation);
+//        animations.put("shana_walk_animation", shana_walk_animation);
+        animations.put("scarlet_idle_animation", scarlet_idle_animation);
+        animations.put("scarlet_walk_animation", scarlet_walk_animation);
+//        animations.put("lilith_idle_animation", shana_idle_animation);
+//        animations.put("lilith_walk_animation", shana_walk_animation);
+//        animations.put("dasher_idle_animation", shana_idle_animation);
+//        animations.put("dasher_walk_animation", shana_walk_animation);
+    }
 
     private final String smg = "smg/SMGStill.png";
     private final Texture smgTexture = new Texture(smg);
@@ -36,20 +60,28 @@ public class GameAssetManager {
         return skin;
     }
 
-    public Animation<Texture> getCharacter1_idle_animation() {
-        return character1_idle_animation;
+    public Animation<Texture> getCharacterIdleAnimation(Heros hero) {
+        String heroName = hero.name().toLowerCase();
+        String animationName = String.format("%s_idle_animation", heroName);
+        return animations.get(animationName);
     }
 
-    public Animation<Texture> getCharacter1_walk_animation() {
-        return character1_walk_animation;
+    public Animation<Texture> getCharacterWalkAnimation(Heros hero) {
+        String heroName = hero.name().toLowerCase();
+        String animationName = String.format("%s_walk_animation", heroName);
+        return animations.get(animationName);
     }
 
-    public String getCharacter1_idle0() {
-        return "1/idle/idle_0.png";
+    public Texture getCharacter_idle0(Heros hero) {
+        String heroName = hero.name().toLowerCase();
+        String animationName = String.format("%s_idle_animation", heroName);
+        return animations.get(animationName).getKeyFrames()[0];
     }
 
-    public String getCharacter1_walking0() {
-        return "1/walking/walking_0.png";
+    public Texture getCharacter_walk0(Heros hero) {
+        String heroName = hero.name().toLowerCase();
+        String animationName = String.format("%s_walk_animation", heroName);
+        return animations.get(animationName).getKeyFrames()[0];
     }
 
     public String getSmg() {
@@ -62,22 +94,20 @@ public class GameAssetManager {
 
 
 
-    private Animation<Texture> buildAnimation(int characterNumber, String type) {
+    private Animation<Texture> buildAnimation(String characterName, String type) {
 
-        String pathToFolder = String.format("assets/%d/%s", characterNumber, type);
+        String pathToFolder = String.format("assets/%s/%s", characterName, type);
         int numberOfFrames = countFiles(pathToFolder);
 
         Texture[] textureArray = new Texture[numberOfFrames];
 
         for (int i = 0; i < numberOfFrames; i++) {
-            String rawPath = String.format("%d/%s/%s_%d.png", characterNumber, type, type, i);
+            String rawPath = String.format("%s/%s/%s_%d.png", characterName, type, type, i);
             Texture texture = new Texture(rawPath);
             textureArray[i] = texture;
         }
 
-        Animation<Texture> animation = new Animation<>(0.1f, textureArray);
-
-        return animation;
+        return new Animation<>(0.1f, textureArray);
     }
 
 

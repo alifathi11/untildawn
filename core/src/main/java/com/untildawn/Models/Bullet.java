@@ -10,7 +10,7 @@ public class Bullet {
     private Sprite sprite = new Sprite(texture);
     private int x;
     private int y;
-    private float speed;
+    private float speed = 500f;
     private int damage = 5;
 
     public Bullet(int x, int y) {
@@ -35,6 +35,22 @@ public class Bullet {
 
     public int getX() {
         return x;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public int getDamage() {
+        return damage;
     }
 }
 
