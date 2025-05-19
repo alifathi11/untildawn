@@ -9,33 +9,62 @@ public class Weapon {
     private Weapons weaponType;
     private final Texture weaponTexture;
     private Sprite weaponSprite;
-    private int ammo = 30;
+
+    private int totalAmmo;
+    private int ammoPerMagazine;
+    private int ammo;
+    private int projectile;
+
     private float time;
     private boolean isReloading = false;
+    private final float reloadDuration;
     private float reloadTimeElapsed = 0f;
-    private final float reloadDuration = 2f;
-    private final float shootCoolDown = 0.5f;
+    private final float shootCoolDown;
     private float timeSinceLastShot = 0f;
+
+    private Position position;
 
     public Weapon(Weapons weaponType) {
         this.weaponType = weaponType;
         weaponTexture = GameAssetManager.getGameAssetManager().getWeaponTexture(weaponType);
         weaponSprite = new Sprite(weaponTexture);
-        weaponSprite.setX((float) Gdx.graphics.getWidth() / 2 + 20);
-        weaponSprite.setY((float) Gdx.graphics.getHeight() / 2 + 40);
         weaponSprite.setSize(50, 50);
+
+
+        this.shootCoolDown = weaponType.getShootCoolDown();
+        this.reloadDuration = weaponType.getTimeReload();
+        this.ammoPerMagazine = weaponType.getAmmoMax();
+        this.ammo = ammoPerMagazine;
+        this.totalAmmo = weaponType.getTotalAmmo();
+        this.projectile = weaponType.getProjectile();
     }
 
     public Sprite getWeaponSprite() {
         return weaponSprite;
     }
 
+    public int getTotalAmmo() {
+        return totalAmmo;
+    }
+
     public int getAmmo() {
         return ammo;
     }
 
+    public int getAmmoPerMagazine() {
+        return ammoPerMagazine;
+    }
+
     public void setAmmo(int ammo) {
         this.ammo = ammo;
+    }
+
+    public void setAmmoPerMagazine(int ammoPerMagazine) {
+        this.ammoPerMagazine = ammoPerMagazine;
+    }
+
+    public void setTotalAmmo(int totalAmmo) {
+        this.totalAmmo = totalAmmo;
     }
 
     public boolean isReloading() {
@@ -55,7 +84,14 @@ public class Weapon {
     }
 
     public void reload() {
-        if (!isReloading) {
+        if (!isReloading && totalAmmo > 0) {
+            int deltaAmmo = Math.min(
+                Math.max(totalAmmo - ammo, 0),
+                Math.max(ammoPerMagazine - ammo, 0)
+            );
+            this.ammo += deltaAmmo;
+            this.totalAmmo = Math.max(totalAmmo - deltaAmmo, 0);
+
             isReloading = true;
             reloadTimeElapsed = 0f;
             setTime(0f);
@@ -88,5 +124,17 @@ public class Weapon {
 
     public void setTimeSinceLastShot(float timeSinceLastShot) {
         this.timeSinceLastShot = timeSinceLastShot;
+    }
+
+    public int getProjectile() {
+        return projectile;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

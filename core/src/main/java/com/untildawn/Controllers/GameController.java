@@ -12,11 +12,11 @@ public class GameController {
     private BulletController bulletController;
 
     public GameController() {
-        setControllers();
     }
 
     public void setView(GameView view) {
         this.view = view;
+        setControllers();
     }
 
     public void setControllers() {
@@ -25,8 +25,8 @@ public class GameController {
 
         this.bulletController = new BulletController();
         this.weaponController = new WeaponController(bulletController, new Weapon(gamePreferences.getWeapon()));
-        this.playerController = new PlayerController(App.getCurrentGame().getPlayer(), weaponController);
-        this.worldController = new WorldController(playerController);
+        this.playerController = new PlayerController(App.getCurrentGame().getPlayer(), weaponController, this);
+        this.worldController = new WorldController(playerController, this);
     }
 
     public void updateGame() {
@@ -52,6 +52,10 @@ public class GameController {
 
     public BulletController getBulletController() {
         return bulletController;
+    }
+
+    public GameView getView() {
+        return view;
     }
 }
 

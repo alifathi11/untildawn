@@ -3,23 +3,32 @@ package com.untildawn.Controllers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.untildawn.Main;
-import com.untildawn.Models.Bullet;
-import com.untildawn.Models.Weapon;
+import com.untildawn.Models.*;
 
 public class WeaponController {
     private Weapon weapon;
     private WeaponAnimations weaponAnimations;
     private BulletController bulletController;
+    private Player player;
 
     public WeaponController(BulletController bulletController, Weapon weapon) {
         this.bulletController = bulletController;
         this.weapon = weapon;
         this.weaponAnimations = new WeaponAnimations(weapon);
+
+        this.player = App.getCurrentGame().getPlayer();
     }
 
     public void update() {
+        int playerX = player.getPosition().getX();
+        int playerY = player.getPosition().getY();
+
+        weapon.setPosition(new Position(playerY + 60, playerX + 40));
+        weapon.getWeaponSprite().setCenter(playerX + 20, playerY + 20);
         weapon.getWeaponSprite().draw(Main.getBatch());
+
         if (weapon.isReloading()) {
             weaponAnimations.reloadAnimation();
         }
@@ -37,9 +46,11 @@ public class WeaponController {
         weaponSprite.setRotation((float) (Math.PI - angle * MathUtils.radiansToDegrees));
     }
 
-    public void handleWeaponShoot(int x, int y) {
+    public void handleWeaponShoot(Vector2 playerPosition, Vector2 mouseWorldPosition) {
         if (weapon.getTimeSinceLastShot() >= weapon.getShootCoolDown() && weapon.getAmmo() > 0) {
-            bulletController.getBullets().add(new Bullet(x, y));
+            Bullet bullet = new Bullet(playerPosition, mouseWorldPosition, weapon.getWeaponType().getBullet());
+            bulletController.getBullets().add(bullet);
+
             weapon.setAmmo(weapon.getAmmo() - 1);
             weapon.setTimeSinceLastShot(0f);
         }

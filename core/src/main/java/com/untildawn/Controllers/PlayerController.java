@@ -1,6 +1,8 @@
 package com.untildawn.Controllers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.untildawn.Enums.Actions;
 import com.untildawn.Main;
 import com.untildawn.Models.InputBinding;
@@ -12,16 +14,25 @@ public class PlayerController {
     private InputPreferences playerInputPreferences;
     private PlayerAnimations playerAnimations;
     private WeaponController weaponController;
+    private GameController gameController;
 
-    public PlayerController(Player player, WeaponController weaponController) {
+    public PlayerController(Player player, WeaponController weaponController, GameController gameController) {
         this.player = player;
         this.playerInputPreferences = player.getInputPreferences();
         this.playerAnimations = new PlayerAnimations(player);
         this.weaponController = weaponController;
+        this.gameController = gameController;
     }
 
     public void update() {
+        player.getPlayerSprite().setCenter(
+            player.getPosition().getX(),
+            player.getPosition().getY()
+        );
+
         player.getPlayerSprite().draw(Main.getBatch());
+
+        player.getCollisionRect().move(player.getPosition().getX(), player.getPosition().getY());
 
         if (player.isPlayerIdle()) {
             playerAnimations.idleAnimation();
@@ -67,14 +78,18 @@ public class PlayerController {
 
         InputBinding shootBinding = playerInputPreferences.getInputBinding(Actions.SHOOT);
 
-        if ((shootBinding.getType() == InputBinding.InputType.MOUSE)
-            && !weaponController.getWeapon().isReloading()) {
-            if (Gdx.input.isButtonPressed(shootBinding.getCode())) {
-                weaponController.handleWeaponShoot(Gdx.input.getX(), Gdx.input.getY());
-            }
-        } else if (shootBinding.getType() == InputBinding.InputType.KEYBOARD) {
-            if (Gdx.input.isKeyPressed(shootBinding.getCode())) {
-                weaponController.handleWeaponShoot(Gdx.input.getX(), Gdx.input.getY());
+        if (!weaponController.getWeapon().isReloading()) {
+            Vector3 mouseScreenPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            Vector3 mouseWorldPos3D = gameController.getView().getCamera().unproject(mouseScreenPos);
+            Vector2 mouseWorldPos = new Vector2(mouseWorldPos3D.x, mouseWorldPos3D.y);
+            Vector2 playerWorldPos = new Vector2(player.getPosition().getX(), player.getPosition().getY());
+
+            if ((shootBinding.getType() == InputBinding.InputType.MOUSE)
+                && Gdx.input.isButtonPressed(shootBinding.getCode())) {
+                weaponController.handleWeaponShoot(playerWorldPos, mouseWorldPos);
+            } else if ((shootBinding.getType() == InputBinding.InputType.KEYBOARD)
+                && Gdx.input.isKeyPressed(shootBinding.getCode())) {
+                weaponController.handleWeaponShoot(playerWorldPos, mouseWorldPos);
             }
         }
 

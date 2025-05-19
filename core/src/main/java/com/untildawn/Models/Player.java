@@ -32,6 +32,7 @@ public class Player {
                   int score,
                   Heros hero,
                   Game game) {
+
         this.user = user;
 
         this.hero = hero;
@@ -49,10 +50,12 @@ public class Player {
 
         this.playerSprite.setPosition((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2);
         this.playerSprite.setSize(playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
-        this.collisionRect = new CollisionRect((float) Gdx.graphics.getWidth() / 2,
-                                               (float) Gdx.graphics.getHeight() / 2,
-                                               (float) playerTexture.getWidth(),
-                                               (float) playerTexture.getHeight());
+        this.collisionRect = new CollisionRect(
+            position.getX(),
+            position.getY(),
+            (float) playerTexture.getWidth(),
+            (float) playerTexture.getHeight()
+        );
     }
 
     public float getTime() {

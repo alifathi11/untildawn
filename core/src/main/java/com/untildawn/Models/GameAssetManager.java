@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.untildawn.Enums.Bullets;
 import com.untildawn.Enums.Heros;
 import com.untildawn.Enums.Weapons;
 
@@ -21,6 +22,7 @@ public class GameAssetManager {
 
     private Map<String, Animation<Texture>> characterAnimations = new HashMap<>();
     private Map<String, Animation<Texture>> weaponAnimations = new HashMap<>();
+    private Map<String, Texture> bulletTextures = new HashMap<>();
 
     // character
     private Animation<Texture> diamond_idle_animation = buildCharacterAnimation("diamond", "idle");
@@ -51,7 +53,12 @@ public class GameAssetManager {
 
 
     // bullet
-    private final String bullet = "bullet/bullet_1.png";
+    private final Texture shotgun_bullet = buildBulletTexture("shotgun");
+    private final Texture smg_bullet = buildBulletTexture("smg");
+    private final Texture revolver_bullet = buildBulletTexture("revolver");
+
+    // tree
+    private final Animation<Texture> tree_animation = buildTreeAnimation();
 
 
 
@@ -82,8 +89,10 @@ public class GameAssetManager {
         weaponAnimations.put("shotgun_reload_animation", shotgun_reload_animation);
         weaponAnimations.put("revolver_reload_animation", revolver_reload_animation);
 
-
         // bullet
+        bulletTextures.put("smg_bullet", smg_bullet);
+        bulletTextures.put("shotgun_bullet", shotgun_bullet);
+        bulletTextures.put("revolver_bullet", revolver_bullet);
 
     }
     public static GameAssetManager getGameAssetManager() {
@@ -148,14 +157,22 @@ public class GameAssetManager {
     }
 
     // bullet
+    public Texture getBulletTexture(Bullets bullet) {
+        String bulletName = bullet.name().toLowerCase();
+        return bulletTextures.get(bulletName);
+    }
 
+    // tree
+    public Animation<Texture> getTreeAnimation() {
+        return tree_animation;
+    }
 
-    public String getBullet() {
-        return bullet;
+    public Texture getTreeTexture() {
+        return tree_animation.getKeyFrames()[0];
     }
 
 
-
+    //character
     private Animation<Texture> buildCharacterAnimation(String characterName, String type) {
 
         String pathToFolder = String.format("assets/%s/%s", characterName, type);
@@ -172,6 +189,7 @@ public class GameAssetManager {
         return new Animation<>(0.1f, textureArray);
     }
 
+    // weapon
     private Animation<Texture> buildReloadAnimation(String weaponName) {
 
         String pathToFolder = String.format("assets/%s/reload", weaponName);
@@ -186,6 +204,29 @@ public class GameAssetManager {
         }
 
         return new Animation<>(0.1f, textureArray);
+    }
+
+    // bullet
+    private Texture buildBulletTexture(String bulletName) {
+        String path = String.format("assets/bullet/%s_bullet.png", bulletName);
+
+        return new Texture(path);
+    }
+
+    // tree
+    public Animation<Texture> buildTreeAnimation() {
+        String pathToFolder = "assets/map_elements/tree";
+        int numberOfFrames = countFiles(pathToFolder);
+
+        Texture[] textureArray = new Texture[numberOfFrames];
+
+        for (int i = 0; i < numberOfFrames; i++) {
+            String rawPath = String.format("map_elements/tree/tree_%d.png", i);
+            Texture texture = new Texture(rawPath);
+            textureArray[i] = texture;
+        }
+
+        return new Animation<>(0.3f, textureArray);
     }
 
 

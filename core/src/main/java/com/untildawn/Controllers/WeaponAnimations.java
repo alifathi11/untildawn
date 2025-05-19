@@ -4,14 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.untildawn.Enums.Weapons;
+import com.untildawn.Models.Bullet;
 import com.untildawn.Models.GameAssetManager;
 import com.untildawn.Models.Weapon;
 
 public class WeaponAnimations {
     private Weapon weapon;
     private Weapons weaponType;
-
-    public WeaponAnimations(Weapon weapon) {
+    WeaponAnimations(Weapon weapon) {
         this.weapon = weapon;
         this.weaponType = weapon.getWeaponType();
     }

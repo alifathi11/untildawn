@@ -1,6 +1,9 @@
 package com.untildawn;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.untildawn.Enums.MenuManager;
@@ -92,6 +95,16 @@ public class Main extends Game {
         MusicManager.changeTrack(0);
         MusicManager.setVolume(0.5f);
         MusicManager.play();
+
+        setCustomCursor("cursor.png", 0, 0);
+
         MenuManager.setScreen(Menus.SIGNUP_MENU);
+    }
+
+    public static void setCustomCursor(String imagePath, int hotspotX, int hotspotY) {
+        Pixmap pixmap = new Pixmap(Gdx.files.internal(imagePath));
+        Cursor cursor = Gdx.graphics.newCursor(pixmap, hotspotX, hotspotY);
+        Gdx.graphics.setCursor(cursor);
+        pixmap.dispose();
     }
 }

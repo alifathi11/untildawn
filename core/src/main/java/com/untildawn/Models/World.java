@@ -3,39 +3,29 @@ package com.untildawn.Models;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
+import java.util.ArrayList;
+
 public class World {
     private Texture backgroundTexture;
-    private float backgroundX;
-    private float backgroundY;
+    private ArrayList<Tree> trees;
 
-    public World(int x, int y) {
-        this.backgroundTexture = new Texture(Gdx.files.internal("map_elements/map.png"));
-        this.backgroundX = x;
-        this.backgroundY = y;
-
+    public World() {
+        this.trees = new ArrayList<>();
     }
 
     public void setBackgroundTexture(Texture backgroundTexture) {
         this.backgroundTexture = backgroundTexture;
     }
 
-    public void setBackgroundX(float backgroundX) {
-        this.backgroundX = backgroundX;
-    }
-
-    public void setBackgroundY(float backgroundY) {
-        this.backgroundY = backgroundY;
-    }
-
-    public float getBackgroundX() {
-        return backgroundX;
-    }
-
-    public float getBackgroundY() {
-        return backgroundY;
-    }
-
     public Texture getBackgroundTexture() {
         return backgroundTexture;
+    }
+
+    public void setTrees(ArrayList<Tree> trees) {
+        this.trees = trees;
+    }
+
+    public ArrayList<Tree> getTrees() {
+        return trees;
     }
 }
