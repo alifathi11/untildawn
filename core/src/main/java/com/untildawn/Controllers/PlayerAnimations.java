@@ -43,4 +43,18 @@ public class PlayerAnimations {
 
         animation.setPlayMode(Animation.PlayMode.LOOP);
     }
+
+    public void runAnimation() {
+        Animation<Texture> animation = GameAssetManager.getGameAssetManager().getCharacterRunAnimation(player.getHero());
+
+        player.getPlayerSprite().setRegion(animation.getKeyFrame(player.getTime()));
+
+        if (!animation.isAnimationFinished(player.getTime())) {
+            player.setTime(player.getTime() + Gdx.graphics.getDeltaTime());
+        } else {
+            player.setTime(0);
+        }
+
+        animation.setPlayMode(Animation.PlayMode.LOOP);
+    }
 }

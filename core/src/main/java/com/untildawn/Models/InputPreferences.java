@@ -17,6 +17,7 @@ public class InputPreferences {
         inputBindings.put(Actions.MOVE_DOWN,  new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.S));
         inputBindings.put(Actions.MOVE_LEFT,  new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.A));
         inputBindings.put(Actions.MOVE_RIGHT, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.D));
+        inputBindings.put(Actions.RUN, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.SHIFT_LEFT));
 
         inputBindings.put(Actions.SHOOT,   new InputBinding(InputBinding.InputType.MOUSE, Input.Buttons.LEFT));
         inputBindings.put(Actions.RELOAD,  new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.R));

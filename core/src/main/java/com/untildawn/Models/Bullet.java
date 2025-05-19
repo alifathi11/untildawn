@@ -10,7 +10,7 @@ public class Bullet {
     private Sprite sprite = new Sprite(texture);
     private int x;
     private int y;
-    private float speed = 500f;
+    private float speed = 10f;
     private int damage = 5;
 
     public Bullet(int x, int y) {

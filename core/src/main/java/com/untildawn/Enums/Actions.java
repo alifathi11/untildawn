@@ -8,5 +8,6 @@ public enum Actions {
     SHOOT,
     RELOAD,
     DANCE,
+    RUN,
     ;
 }

@@ -13,15 +13,20 @@ import java.util.ArrayList;
 
 public class WeaponController {
     private Weapon weapon;
+    private WeaponAnimations weaponAnimations;
     private BulletController bulletController;
 
     public WeaponController(BulletController bulletController, Weapon weapon) {
         this.bulletController = bulletController;
         this.weapon = weapon;
+        this.weaponAnimations = new WeaponAnimations(weapon);
     }
 
     public void update() {
         weapon.getSmgSprite().draw(Main.getBatch());
+        if (weapon.isReloading()) {
+            weaponAnimations.reloadAnimation();
+        }
     }
 
     public void handleWeaponRotation(int x, int y) {
@@ -38,5 +43,9 @@ public class WeaponController {
     public void handleWeaponShoot(int x, int y) {
         bulletController.getBullets().add(new Bullet(x, y));
         weapon.setAmmo(weapon.getAmmo() - 1);
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
     }
 }

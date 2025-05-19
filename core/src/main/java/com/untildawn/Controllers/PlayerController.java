@@ -1,12 +1,8 @@
 package com.untildawn.Controllers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.untildawn.Enums.Actions;
 import com.untildawn.Main;
-import com.untildawn.Models.GameAssetManager;
 import com.untildawn.Models.InputBinding;
 import com.untildawn.Models.InputPreferences;
 import com.untildawn.Models.Player;
@@ -29,6 +25,8 @@ public class PlayerController {
 
         if (player.isPlayerIdle()) {
             playerAnimations.idleAnimation();
+        } else if (player.isPlayerRunning()) {
+            playerAnimations.runAnimation();
         } else if (player.isPlayerWalking()) {
             playerAnimations.walkAnimation();
         }
@@ -38,27 +36,28 @@ public class PlayerController {
 
     public void handlePlayerInput() {
 
-        boolean isMoving = false;
+        boolean isPlayerMoving = false;
         boolean isPlayerIdle = false;
+        boolean isPlayerRunning = false;
 
         if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_UP).getCode())) {
             player.getPosition().setY((int) (player.getPosition().getY() + player.getSpeed()));
-            isMoving = true;
+            isPlayerMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_DOWN).getCode())) {
             player.getPosition().setY((int) (player.getPosition().getY() - player.getSpeed()));
-            isMoving = true;
+            isPlayerMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_RIGHT).getCode())) {
             player.getPosition().setX((int) (player.getPosition().getX() + player.getSpeed()));
-            isMoving = true;
+            isPlayerMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_LEFT).getCode())) {
             player.getPosition().setX((int) (player.getPosition().getX() - player.getSpeed()));
-            isMoving = true;
+            isPlayerMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.DANCE).getCode())) {
@@ -68,7 +67,8 @@ public class PlayerController {
 
         InputBinding shootBinding = playerInputPreferences.getInputBinding(Actions.SHOOT);
 
-        if (shootBinding.getType() == InputBinding.InputType.MOUSE) {
+        if ((shootBinding.getType() == InputBinding.InputType.MOUSE)
+            && !weaponController.getWeapon().isReloading()) {
             if (Gdx.input.isButtonPressed(shootBinding.getCode())) {
                 weaponController.handleWeaponShoot(Gdx.input.getX(), Gdx.input.getY());
             }
@@ -78,8 +78,17 @@ public class PlayerController {
             }
         }
 
-        player.setPlayerWalking(isMoving);
+        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.RUN).getCode())) {
+            isPlayerRunning = true;
+        }
+
+        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.RELOAD).getCode())) {
+            weaponController.getWeapon().reload();
+        }
+
+        player.setPlayerWalking(isPlayerMoving);
         player.setPlayerIdle(isPlayerIdle);
+        player.setPlayerRunning(isPlayerRunning);
     }
 
     public Player getPlayer() {

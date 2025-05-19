@@ -17,12 +17,14 @@ public class Player {
     private int score;
     private float HP;
     private float speed;
+    private float runSpeed;
     private Game game;
     private Heros hero;
     private float time;
 
     private boolean isPlayerIdle = false;
     private boolean isPlayerWalking = false;
+    private boolean isPlayerRunning = false;
 
     public Player(User user,
                   int score,
@@ -37,6 +39,7 @@ public class Player {
         this.score = score;
         this.HP = hero.getHP();
         this.speed = hero.getSpeed();
+        this.runSpeed = hero.getRunSpeed();
         this.game = game;
         this.position = new Position(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
@@ -107,7 +110,8 @@ public class Player {
     }
 
     public float getSpeed() {
-        return speed;
+        if (isPlayerRunning) return runSpeed;
+        else return speed;
     }
 
     public void setSpeed(float speed) {
@@ -160,5 +164,13 @@ public class Player {
 
     public InputPreferences getInputPreferences() {
         return inputPreferences;
+    }
+
+    public boolean isPlayerRunning() {
+        return isPlayerRunning;
+    }
+
+    public void setPlayerRunning(boolean playerRunning) {
+        isPlayerRunning = playerRunning;
     }
 }
