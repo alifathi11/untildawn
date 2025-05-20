@@ -100,7 +100,7 @@ public class PreGameMenuController {
                             Game game = new Game(gameSetting, null);
 
                             User user = App.getCurrentUser();
-                            Player player = new Player(user, 0, hero, game);
+                            Player player = new Player(user, hero, game);
                             game.setPlayer(player);
 
                             App.setCurrentGame(game);

@@ -2,9 +2,11 @@ package com.untildawn.Controllers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.untildawn.Main;
 import com.untildawn.Models.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 
@@ -49,53 +51,22 @@ public class WorldController {
         Main.getBatch().setProjectionMatrix(camera.combined);
 
         Main.getBatch().draw(
-            world.getBackgroundTexture(),
-            0, 0
+            world.getBackgroundSprite(),
+            0f,
+            0f,
+            world.getBackgroundTexture().getWidth(),
+            world.getBackgroundTexture().getHeight()
         );
 
-        for (Tree tree : world.getTrees()) {
-            Position pos = tree.getPosition();
-            Main.getBatch().draw(
-                tree.getTreeSprite(),
-                pos.getX(), pos.getY(),
-                tree.getTreeSprite().getWidth(),
-                tree.getTreeSprite().getHeight()
-            );
+        // spawn XP
+        for (XP xp : world.getXps()) {
+            xp.getXpSprite().draw(Main.getBatch());
         }
 
-        handleAnimations();
     }
 
 
-    private void handleAnimations() {
-        Player player = playerController.getPlayer();
-        ArrayList<Tree> trees = world.getTrees();
-
-        EnemyAnimations enemyAnimations = new EnemyAnimations();
-
-        float playerX = player.getPosition().getX();
-        float playerY = player.getPosition().getY();
-
-        float triggerDistance = 100f;
-
-        for (Tree tree : trees) {
-            float treeX = tree.getPosition().getX() + tree.getTreeSprite().getWidth() / 2f;
-            float treeY = tree.getPosition().getY() + tree.getTreeSprite().getHeight() / 2f;
-
-            float dx = playerX - treeX;
-            float dy = playerY - treeY;
-            float distance = (float) Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < triggerDistance) {
-                tree.setAnimating(true);
-            } else {
-                tree.setAnimating(false);
-                tree.setTime(0);
-            }
-        }
-
-        for (Tree tree : world.getTrees()) {
-            enemyAnimations.treeAnimations(tree);
-        }
+    public World getWorld() {
+        return world;
     }
 }

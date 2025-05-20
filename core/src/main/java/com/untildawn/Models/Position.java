@@ -1,27 +1,27 @@
 package com.untildawn.Models;
 
 public class Position {
-    private int X;
-    private int Y;
+    private float X;
+    private float Y;
 
-    public Position(int Y, int X) {
+    public Position(float X, float Y) {
         this.X = X;
         this.Y = Y;
     }
 
-    public void setX(int x) {
+    public void setX(float x) {
         X = x;
     }
 
-    public void setY(int y) {
+    public void setY(float y) {
         Y = y;
     }
 
-    public int getX() {
+    public float getX() {
         return X;
     }
 
-    public int getY() {
+    public float getY() {
         return Y;
     }
 }

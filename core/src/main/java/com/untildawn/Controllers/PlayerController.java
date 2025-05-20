@@ -5,9 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.untildawn.Enums.Actions;
 import com.untildawn.Main;
-import com.untildawn.Models.InputBinding;
-import com.untildawn.Models.InputPreferences;
-import com.untildawn.Models.Player;
+import com.untildawn.Models.*;
 
 public class PlayerController {
     private Player player;
@@ -51,22 +49,26 @@ public class PlayerController {
         boolean isPlayerIdle = false;
         boolean isPlayerRunning = false;
 
-        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_UP).getCode())) {
+        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_UP).getCode())
+            && canMoveTo(player.getPosition().getX(), player.getPosition().getY() + player.getSpeed())) {
             player.getPosition().setY((int) (player.getPosition().getY() + player.getSpeed()));
             isPlayerMoving = true;
         }
 
-        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_DOWN).getCode())) {
+        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_DOWN).getCode())
+            && canMoveTo(player.getPosition().getX(), player.getPosition().getY() - player.getSpeed())) {
             player.getPosition().setY((int) (player.getPosition().getY() - player.getSpeed()));
             isPlayerMoving = true;
         }
 
-        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_RIGHT).getCode())) {
+        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_RIGHT).getCode())
+        && canMoveTo(player.getPosition().getX() + player.getSpeed(), player.getPosition().getY())) {
             player.getPosition().setX((int) (player.getPosition().getX() + player.getSpeed()));
             isPlayerMoving = true;
         }
 
-        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_LEFT).getCode())) {
+        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_LEFT).getCode())
+        && canMoveTo(player.getPosition().getX() - player.getSpeed(), player.getPosition().getY())) {
             player.getPosition().setX((int) (player.getPosition().getX() - player.getSpeed()));
             isPlayerMoving = true;
         }
@@ -104,6 +106,27 @@ public class PlayerController {
         player.setPlayerWalking(isPlayerMoving);
         player.setPlayerIdle(isPlayerIdle);
         player.setPlayerRunning(isPlayerRunning);
+    }
+
+    public boolean canMoveTo(float newX, float newY) {
+        World world = gameController.getWorldController().getWorld();
+        CollisionRect playerRect = player.getCollisionRect();
+
+        playerRect.move(newX, newY);
+
+        for (Tree tree : world.getTrees()) {
+            if (playerRect.collidesWith(tree.getCollisionRect())) {
+                return false;
+            }
+        }
+
+        for (BrainMonster monster : world.getBrainMonsters()) {
+            if (playerRect.collidesWith(monster.getCollisionRect())) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public Player getPlayer() {

@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.untildawn.Controllers.GameController;
 import com.untildawn.Main;
-import com.untildawn.Models.App;
 import com.untildawn.Models.Player;
 import com.untildawn.Models.Weapon;
 
@@ -82,14 +80,15 @@ public class GameView implements Screen, InputProcessor {
         int screenHeight = Gdx.graphics.getHeight();
 
         // TODO: temporary
-        String topLeft = Float.toString(player.getHP());
-        String bottomLeft = Integer.toString(weapon.getAmmo());
+        String HP = Float.toString(player.getHP());
+        String Ammo = Integer.toString(weapon.getAmmo());
+        String XP = Integer.toString(player.getXp());
 
         Main.getBatch().setProjectionMatrix(hudCamera.combined);
         hudCamera.update();
 
-        font.draw(Main.getBatch(), topLeft, 10, screenHeight - 10);
-        font.draw(Main.getBatch(), bottomLeft, 10, 20);
+        font.draw(Main.getBatch(), HP + " " + XP, 10, screenHeight - 10);
+        font.draw(Main.getBatch(), Ammo, 10, 20);
     }
 
     @Override

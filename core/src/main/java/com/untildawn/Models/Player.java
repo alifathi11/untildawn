@@ -23,13 +23,13 @@ public class Player {
     private Game game;
     private Heros hero;
     private float time;
+    private int xp;
 
     private boolean isPlayerIdle = false;
     private boolean isPlayerWalking = false;
     private boolean isPlayerRunning = false;
 
     public Player(User user,
-                  int score,
                   Heros hero,
                   Game game) {
 
@@ -39,12 +39,14 @@ public class Player {
         this.playerTexture = GameAssetManager.getGameAssetManager().getCharacter_walk0(hero);
         this.playerSprite = new Sprite(playerTexture);
 
-        this.score = score;
+
+        this.score = 0;
+        this.xp = 0;
         this.HP = hero.getHP();
         this.speed = hero.getSpeed();
         this.runSpeed = hero.getRunSpeed();
         this.game = game;
-        this.position = new Position(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        this.position = new Position((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2);
 
         inputPreferences = new InputPreferences();
 
@@ -179,4 +181,15 @@ public class Player {
         isPlayerRunning = playerRunning;
     }
 
+    public void decreaseHP() {
+        this.HP--;
+    }
+
+    public void increaseXP(int deltaXP) {
+        this.xp += deltaXP;
+    }
+
+    public int getXp() {
+        return xp;
+    }
 }

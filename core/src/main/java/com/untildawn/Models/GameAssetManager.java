@@ -60,6 +60,12 @@ public class GameAssetManager {
     // tree
     private final Animation<Texture> tree_animation = buildTreeAnimation();
 
+    // monster
+    private final Animation<Texture> brainMonster_animation = buildBrainMonsterAnimation();
+
+    // XP
+    private final Texture xpTexture = new Texture(Gdx.files.internal("xp.png"));
+
 
 
     public GameAssetManager() {
@@ -171,6 +177,19 @@ public class GameAssetManager {
         return tree_animation.getKeyFrames()[0];
     }
 
+    // monster
+    public Animation<Texture> getBrainMonsterAnimation() {
+        return brainMonster_animation;
+    }
+
+    public Texture getBrainMonsterTexture() {
+        return brainMonster_animation.getKeyFrames()[0];
+    }
+
+    // XP
+    public Texture getXpTexture() {
+        return xpTexture;
+    }
 
     //character
     private Animation<Texture> buildCharacterAnimation(String characterName, String type) {
@@ -229,6 +248,21 @@ public class GameAssetManager {
         return new Animation<>(0.3f, textureArray);
     }
 
+    // monster
+    public Animation<Texture> buildBrainMonsterAnimation() {
+        String pathToFolder = "assets/brainMonster";
+        int numberOfFrames = countFiles(pathToFolder);
+
+        Texture[] textureArray = new Texture[numberOfFrames];
+
+        for (int i = 0; i < numberOfFrames; i++) {
+            String rawPath = String.format("brainMonster/BrainMonster_%d.png", i);
+            Texture texture = new Texture(rawPath);
+            textureArray[i] = texture;
+        }
+
+        return new Animation<>(0.1f, textureArray);
+    }
 
     private int countFiles(String path) {
 

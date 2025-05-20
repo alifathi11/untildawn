@@ -24,4 +24,7 @@ public class BulletController {
     public ArrayList<Bullet> getBullets() {
         return bullets;
     }
+    public void deleteBullet(Bullet bullet) {
+        this.bullets.remove(bullet);
+    }
 }

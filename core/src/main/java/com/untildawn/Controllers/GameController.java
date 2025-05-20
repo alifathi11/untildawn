@@ -1,5 +1,6 @@
 package com.untildawn.Controllers;
 
+import com.badlogic.gdx.Gdx;
 import com.untildawn.Models.*;
 import com.untildawn.Views.GameView;
 
@@ -10,6 +11,8 @@ public class GameController {
     private WeaponController weaponController;
     private WorldController worldController;
     private BulletController bulletController;
+    private MonsterController monsterController;
+    private CollisionController collisionController;
 
     public GameController() {
     }
@@ -27,6 +30,8 @@ public class GameController {
         this.weaponController = new WeaponController(bulletController, new Weapon(gamePreferences.getWeapon()));
         this.playerController = new PlayerController(App.getCurrentGame().getPlayer(), weaponController, this);
         this.worldController = new WorldController(playerController, this);
+        this.monsterController = new MonsterController(this);
+        this.collisionController = new CollisionController(worldController.getWorld(), playerController.getPlayer(), bulletController);
     }
 
     public void updateGame() {
@@ -35,6 +40,8 @@ public class GameController {
             this.playerController.update();
             this.weaponController.update();
             this.bulletController.update();
+            this.monsterController.update(Gdx.graphics.getDeltaTime());
+            this.collisionController.update();
         }
     }
 
@@ -52,6 +59,10 @@ public class GameController {
 
     public BulletController getBulletController() {
         return bulletController;
+    }
+
+    public MonsterController getMonsterController() {
+        return monsterController;
     }
 
     public GameView getView() {

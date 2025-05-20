@@ -13,6 +13,7 @@ import java.util.Random;
 public class WorldDesigner {
     public void designWorld(World world) {
         world.setBackgroundTexture(new Texture(Gdx.files.internal("map_elements/map_1.png")));
+        world.setSprite();
         spawnRandomTrees(world);
     }
 
@@ -23,10 +24,10 @@ public class WorldDesigner {
         int numberOfTrees = 60;
         int maxTriesPerTree = 100;
 
-        int bgWidth = world.getBackgroundTexture().getWidth();
-        int bgHeight = world.getBackgroundTexture().getHeight();
+        float bgWidth = world.getBackgroundSprite().getWidth();
+        float bgHeight = world.getBackgroundSprite().getHeight();
 
-        float minDistance = 50f; // Minimum distance between trees
+        float minDistance = 100f;
 
         for (int i = 0; i < numberOfTrees; i++) {
             Tree tree = new Tree();
@@ -53,7 +54,7 @@ public class WorldDesigner {
                 }
 
                 if (!tooClose) {
-                    Position position = new Position((int) x, (int) y);
+                    Position position = new Position(x, y);
                     tree.setPosition(position);
                     tree.getTreeSprite().setPosition(x, y);
                     tree.setCollisionRect(new CollisionRect(x, y, treeWidth, treeHeight));
@@ -69,6 +70,18 @@ public class WorldDesigner {
                 System.out.println("Failed to place tree #" + i + " without overlap.");
             }
         }
+
+        Tree edgeTree = new Tree();
+        float treeWidth = edgeTree.getTreeSprite().getWidth();
+        float treeHeight = edgeTree.getTreeSprite().getHeight();
+
+        float edgeX = bgWidth - treeWidth - 1;
+        float edgeY = bgHeight - treeHeight - 1;
+
+        edgeTree.setPosition(new Position(edgeX, edgeY));
+        edgeTree.getTreeSprite().setPosition(edgeX, edgeY);
+        edgeTree.setCollisionRect(new CollisionRect(edgeX, edgeY, treeWidth, treeHeight));
+        trees.add(edgeTree);
 
         world.setTrees(trees);
     }

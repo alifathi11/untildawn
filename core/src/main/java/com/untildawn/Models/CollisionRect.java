@@ -19,10 +19,26 @@ public class CollisionRect {
         this.y = y;
     }
 
-    public boolean collidesWith(CollisionRect anotherCollisionRect) {
-        return ((x <= anotherCollisionRect.x + anotherCollisionRect.width)
-            && (x + width >= anotherCollisionRect.x)
-            && (y >= anotherCollisionRect.y - anotherCollisionRect.height)
-            && (y - height <= anotherCollisionRect.y));
+    public boolean collidesWith(CollisionRect other) {
+        return x < other.x + other.width &&
+            x + width > other.x &&
+            y < other.y + other.height &&
+            y + height > other.y;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public float getWidth() {
+        return width;
     }
 }

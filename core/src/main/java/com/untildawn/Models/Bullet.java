@@ -14,6 +14,8 @@ public class Bullet {
     private float speed;
     private float damage;
 
+    private CollisionRect collisionRect;
+
     public Bullet(Vector2 startPosition, Vector2 targetPosition, Bullets bulletType) {
         this.texture = GameAssetManager.getGameAssetManager().getBulletTexture(bulletType);
         this.sprite = new Sprite(texture);
@@ -22,17 +24,18 @@ public class Bullet {
         this.speed = bulletType.getSpeed();
         this.damage = bulletType.getDamage();
 
-        // Initialize position
         this.position = new Vector2(startPosition);
         this.sprite.setPosition(position.x, position.y);
 
-        // Calculate direction from player to mouse
         this.velocity = new Vector2(targetPosition).sub(startPosition).nor().scl(speed);
+
+        this.collisionRect = new CollisionRect(position.x, position.y, sprite.getWidth(), sprite.getHeight());
     }
 
     public void update() {
-        position.add(velocity);  // Move
+        position.add(velocity);
         sprite.setPosition(position.x, position.y);
+        collisionRect.move(position.x, position.y);
     }
 
     public void draw() {
@@ -57,5 +60,9 @@ public class Bullet {
 
     public float getDamage() {
         return damage;
+    }
+
+    public CollisionRect getCollisionRect() {
+        return collisionRect;
     }
 }

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.untildawn.Enums.Heros;
 
-public class Tree extends Enemy {
+public class Tree {
     private Texture treeTexture;
     private Sprite treeSprite;
     private Position position;
@@ -18,6 +18,7 @@ public class Tree extends Enemy {
         this.treeTexture = GameAssetManager.getGameAssetManager().getTreeTexture();
         this.treeSprite = new Sprite(treeTexture);
         this.treeSprite.setSize(80, 100);
+        treeSprite.setOrigin(0, 0);
     }
 
     public float getTime() {
@@ -34,6 +35,18 @@ public class Tree extends Enemy {
 
     public void setPosition(Position position) {
         this.position = position;
+
+        float x = position.getX();
+        float y = position.getY();
+
+        treeSprite.setPosition(x, y);
+        treeSprite.setBounds(x, y, treeSprite.getWidth(), treeSprite.getHeight());
+
+        if (collisionRect == null) {
+            collisionRect = new CollisionRect(x, y, treeSprite.getWidth(), treeSprite.getHeight());
+        } else {
+            collisionRect.move(x, y);
+        }
     }
 
     public Sprite getTreeSprite() {

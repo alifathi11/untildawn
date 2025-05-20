@@ -22,10 +22,10 @@ public class WeaponController {
     }
 
     public void update() {
-        int playerX = player.getPosition().getX();
-        int playerY = player.getPosition().getY();
+        float playerX = player.getPosition().getX();
+        float playerY = player.getPosition().getY();
 
-        weapon.setPosition(new Position(playerY + 60, playerX + 40));
+        weapon.setPosition(new Position(playerX + 40, playerY + 60));
         weapon.getWeaponSprite().setCenter(playerX + 20, playerY + 20);
         weapon.getWeaponSprite().draw(Main.getBatch());
 
