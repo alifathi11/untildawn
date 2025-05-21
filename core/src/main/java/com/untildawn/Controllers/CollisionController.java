@@ -53,7 +53,16 @@ public class CollisionController {
             }
         }
 
-        for (Monster monster : monstersToDelete) world.deleteMonster(monster);
+        for (Monster monster : monstersToDelete) {
+            if (monster.getMonsterType() == Monsters.EYE_MONSTER) {
+                monsterController.decreaseEyeMonstersInWorld();
+            }
+            if (monster.getMonsterType() == Monsters.ELDER_MONSTER) {
+                monsterController.decreaseElderMonstersInWorld();
+                world.getProtectiveField().deactivate();
+            }
+            world.deleteMonster(monster);
+        }
     }
     public void playerCollidesWithTrees() {
         ArrayList<Tree> trees = world.getTrees();
@@ -68,6 +77,7 @@ public class CollisionController {
             }
         }
     }
+
     public void projectileCollidesWithMonsters() {
         ArrayList<Monster> monsters = world.getMonsters();
         ArrayList<Projectile> projectiles = projectileController.getProjectiles();
@@ -101,6 +111,7 @@ public class CollisionController {
             }
             if (monster.getMonsterType() == Monsters.ELDER_MONSTER) {
                 monsterController.decreaseElderMonstersInWorld();
+                world.getProtectiveField().deactivate();
             }
 
             Position monsterPosition = monster.getPosition();
@@ -199,5 +210,6 @@ public class CollisionController {
             world.deleteAmmo(ammo);
         }
     }
+
 
 }

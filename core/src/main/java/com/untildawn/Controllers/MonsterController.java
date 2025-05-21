@@ -19,14 +19,13 @@ public class MonsterController {
     /// elder monster state variables
     private float elderMonsterSpawnTimer = 0f;
     private float elderMoveTimer = 0f;
-    private final float elderMoveCooldown = 5f;
-
     private boolean elderShouldMove = false;
-
-    private Vector2 elderMoveDirection = new Vector2();
-    private float elderMoveSpeed = 100f; // pixels per second
-    private float elderMaxMoveDistance = 200f;
     private float elderMovedDistance = 0f;
+    private final float elderMoveCooldown = 5f;
+    private final float elderMoveSpeed = 100f;
+    private final float elderMaxMoveDistance = 200f;
+    private final Vector2 elderMoveDirection = new Vector2();
+    private boolean hasElderSpawned = false;
     ///
 
     private int eyeMonstersInWorld = 0;
@@ -107,9 +106,16 @@ public class MonsterController {
 
         if (i < t / 2f) return;
 
-        if (elderMonsterSpawnTimer >= t / 4
-            && elderMonsterInWorld < 1) {
+        if ((t >= 600
+            && elderMonsterSpawnTimer >= t / 4
+            && elderMonsterInWorld < 1)
+            || (t < 600
+            && !hasElderSpawned)) {
+
             spawnMonster(Monsters.ELDER_MONSTER);
+            hasElderSpawned = true;
+
+            world.getProtectiveField().activate();
 
             elderMoveTimer = 0f;
             elderShouldMove = false;
@@ -243,6 +249,12 @@ public class MonsterController {
                 monster.setPosition(new Position(base.x + xOffset, base.y + yOffset));
             }
 
+            // handle animation
+            monster.setTime(monster.getTime() + deltaTime);
+            Animation<Texture> animation = GameAssetManager.getGameAssetManager().getMonsterAnimation(Monsters.EYE_MONSTER);
+            monster.getSprite().setRegion(animation.getKeyFrame(monster.getTime(), true));
+
+            // handle shooting
             monster.addElapsedTime(deltaTime);
             monster.addTimeSinceLastShot(deltaTime);
 
@@ -268,10 +280,9 @@ public class MonsterController {
             elderMoveTimer += delta;
 
             if (!elderShouldMove && elderMoveTimer >= elderMoveCooldown) {
-
                 elderShouldMove = true;
                 elderMoveTimer = 0f;
-                elderMaxMoveDistance = 0f;
+                elderMovedDistance = 0f;
 
                 float dx = px - mx;
                 float dy = py - my;
@@ -287,8 +298,8 @@ public class MonsterController {
             if (elderShouldMove) {
                 float step = elderMoveSpeed * delta;
 
-                if (elderMaxMoveDistance + step >= elderMaxMoveDistance) {
-                    step = elderMaxMoveDistance - elderMaxMoveDistance;
+                if (elderMovedDistance + step >= elderMaxMoveDistance) {
+                    step = elderMaxMoveDistance - elderMovedDistance;
                     elderShouldMove = false;
                 }
 
@@ -301,15 +312,16 @@ public class MonsterController {
                 monster.setPosition(new Position(mx, my));
                 monster.getSprite().setPosition(mx, my);
 
-                elderMaxMoveDistance += step;
-
-//                // Animate
-//                monster.setTime(monster.getTime() + delta);
-//                Animation<Texture> animation = GameAssetManager.getGameAssetManager().getMonsterAnimation(Monsters.ELDER_MONSTER);
-//                monster.getSprite().setRegion(animation.getKeyFrame(monster.getTime(), true));
+                elderMovedDistance += step;
             }
+
+//            // Animate monster
+//            monster.setTime(monster.getTime() + delta);
+//            Animation<Texture> animation = GameAssetManager.getGameAssetManager().getMonsterAnimation(Monsters.ELDER_MONSTER);
+//            monster.getSprite().setRegion(animation.getKeyFrame(monster.getTime(), true));
         }
     }
+
 
 
     private void spawnTrees() {

@@ -70,6 +70,8 @@ public class GameView implements Screen, InputProcessor {
         drawCornerTexts();
         Main.getBatch().end();
 
+        controller.getWorldController().renderShapes(camera);
+
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }

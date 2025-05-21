@@ -22,6 +22,7 @@ public class Projectile {
         this.texture = GameAssetManager.getGameAssetManager().getProjectileTexture(projectileType);
         this.sprite = new Sprite(texture);
         sprite.setSize(20, 20);
+        if (projectileType == Projectiles.REVOLVER_BULLET) sprite.setSize(70, 70);
 
         this.projectileType = projectileType;
 

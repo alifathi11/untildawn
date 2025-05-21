@@ -33,6 +33,7 @@ public class Monster {
         this.texture = GameAssetManager.getGameAssetManager().getMonsterTexture(monsterType);
         this.sprite = new Sprite(texture);
         this.sprite.setSize(50, 50);
+        if (monsterType == Monsters.ELDER_MONSTER) this.sprite.setSize(75, 75);
         this.collisionRect = new CollisionRect(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 
         this.monsterType = monsterType;

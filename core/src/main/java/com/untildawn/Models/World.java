@@ -1,6 +1,7 @@
 package com.untildawn.Models;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -9,27 +10,45 @@ import java.util.ArrayList;
 public class World {
     private Texture backgroundTexture;
     private Sprite backgroundSprite;
+    private OrthographicCamera camera;
 
     private ArrayList<Tree> trees;
     private ArrayList<Monster> monsters;
     private ArrayList<XP> xps;
     private ArrayList<Ammo> ammo;
 
-    public World() {
-        this.trees = new ArrayList<>();
-    }
+    private ProtectiveField protectiveField;
 
-    public void setBackgroundTexture(Texture backgroundTexture) {
-        this.backgroundTexture = backgroundTexture;
-    }
-    public void setSprite() {
-        this.backgroundSprite = new Sprite(backgroundTexture);
-        this.backgroundSprite.setSize(3296, 2304);
+
+    public World(OrthographicCamera camera) {
+
+        this.camera = camera;
 
         this.trees = new ArrayList<>();
         this.monsters = new ArrayList<>();
         this.xps = new ArrayList<>();
         this.ammo = new ArrayList<>();
+    }
+
+    public void setBackgroundTexture(Texture backgroundTexture) {
+        this.backgroundTexture = backgroundTexture;
+    }
+
+    public void setSprite() {
+        this.backgroundSprite = new Sprite(backgroundTexture);
+        this.backgroundSprite.setSize(3296, 2304);
+
+        // protected field
+        float bgWidth = backgroundSprite.getWidth();
+        float bgHeight = backgroundSprite.getHeight();
+
+        protectiveField = new ProtectiveField(
+            bgWidth,
+            bgHeight,
+            30f,
+            bgWidth / 2f,
+            bgHeight / 2f
+        );
     }
 
     public Sprite getBackgroundSprite() {
@@ -81,5 +100,9 @@ public class World {
 
     public void deleteAmmo(Ammo ammo) {
         this.ammo.remove(ammo);
+    }
+
+    public ProtectiveField getProtectiveField() {
+        return protectiveField;
     }
 }

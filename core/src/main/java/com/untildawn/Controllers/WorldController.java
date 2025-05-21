@@ -1,6 +1,8 @@
 package com.untildawn.Controllers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.untildawn.Main;
@@ -15,14 +17,16 @@ public class WorldController {
     private GameController gameController;
     private World world;
     private OrthographicCamera camera;
+    private ShapeRenderer shapeRenderer;
 
     public WorldController(PlayerController playerController, GameController gameController) {
         this.playerController = playerController;
-        this.world = new World();
 
         this.gameController = gameController;
 
         this.camera = gameController.getView().getCamera();
+        this.shapeRenderer = new ShapeRenderer();
+        this.world = new World(camera);
 
         WorldDesigner worldDesigner = new WorldDesigner();
         worldDesigner.designWorld(world);
@@ -58,6 +62,9 @@ public class WorldController {
             world.getBackgroundTexture().getHeight()
         );
 
+        // update protected field
+        world.getProtectiveField().update(Gdx.graphics.getDeltaTime(), playerController.getPlayer());
+
         // spawn XP
         for (XP xp : world.getXps()) {
             xp.getXpSprite().draw(Main.getBatch());
@@ -67,7 +74,15 @@ public class WorldController {
         for (Ammo ammo : world.getAmmo()) {
             ammo.getAmmoSprite().draw(Main.getBatch());
         }
+    }
 
+    public void renderShapes(Camera camera) {
+        Gdx.gl.glLineWidth(4f);
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        world.getProtectiveField().render(shapeRenderer);
+        shapeRenderer.end();
+        Gdx.gl.glLineWidth(1f);
     }
 
 
