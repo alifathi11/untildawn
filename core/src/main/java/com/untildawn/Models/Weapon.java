@@ -36,7 +36,7 @@ public class Weapon {
         this.ammoPerMagazine = weaponType.getAmmoMax();
         this.ammo = ammoPerMagazine;
         this.totalAmmo = weaponType.getTotalAmmo();
-        this.projectile = weaponType.getProjectile();
+        this.projectile = weaponType.getProjectileCount();
     }
 
     public Sprite getWeaponSprite() {
@@ -84,6 +84,9 @@ public class Weapon {
     }
 
     public void reload() {
+
+        if (ammo == ammoPerMagazine) return;
+
         if (!isReloading && totalAmmo > 0) {
             int deltaAmmo = Math.min(
                 Math.max(totalAmmo - ammo, 0),
@@ -137,4 +140,9 @@ public class Weapon {
     public void setPosition(Position position) {
         this.position = position;
     }
+
+    public void increaseAmmo(int deltaAmmo) {
+        this.totalAmmo += deltaAmmo;
+    }
+
 }

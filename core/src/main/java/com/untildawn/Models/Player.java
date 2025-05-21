@@ -13,6 +13,8 @@ public class Player {
 
     private InputPreferences inputPreferences;
 
+    private Weapon currentWeapon;
+
     private User user;
     private int score;
     private int kill;
@@ -22,7 +24,12 @@ public class Player {
     private float runSpeed;
     private Game game;
     private Heros hero;
+
     private float time;
+    private boolean isInvincible = false;
+    private float invincibilityDuration = 1f;
+    private float invincibleTime = 0f;
+
     private int xp;
 
     private boolean isPlayerIdle = false;
@@ -191,5 +198,41 @@ public class Player {
 
     public int getXp() {
         return xp;
+    }
+
+    public void setCurrentWeapon(Weapon currentWeapon) {
+        this.currentWeapon = currentWeapon;
+    }
+
+    public Weapon getCurrentWeapon() {
+        return currentWeapon;
+    }
+
+    public float getInvincibilityDuration() {
+        return invincibilityDuration;
+    }
+
+    public void setInvincibilityDuration(float invincibilityDuration) {
+        this.invincibilityDuration = invincibilityDuration;
+    }
+
+    public void setInvincibleTime(float invincibleTime) {
+        this.invincibleTime = invincibleTime;
+    }
+
+    public void setInvincible(boolean invincible) {
+        isInvincible = invincible;
+    }
+
+    public float getInvincibleTime() {
+        return invincibleTime;
+    }
+
+    public boolean isInvincible() {
+        return isInvincible;
+    }
+
+    public void increaseInvincibleTime(float deltaTime) {
+        this.invincibleTime += deltaTime;
     }
 }

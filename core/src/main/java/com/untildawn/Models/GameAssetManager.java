@@ -4,8 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.untildawn.Enums.Bullets;
+import com.untildawn.Enums.Projectiles;
 import com.untildawn.Enums.Heros;
+import com.untildawn.Enums.Monsters;
 import com.untildawn.Enums.Weapons;
 
 import java.io.File;
@@ -52,20 +53,25 @@ public class GameAssetManager {
     private Animation<Texture> revolver_reload_animation = buildReloadAnimation("revolver");
 
 
-    // bullet
+    // projectile
     private final Texture shotgun_bullet = buildBulletTexture("shotgun");
     private final Texture smg_bullet = buildBulletTexture("smg");
     private final Texture revolver_bullet = buildBulletTexture("revolver");
 
     // tree
     private final Animation<Texture> tree_animation = buildTreeAnimation();
+    private final Texture eyeMonster_projectile = new Texture(Gdx.files.internal("eyeMonsterProjectile.png"));
 
     // monster
     private final Animation<Texture> brainMonster_animation = buildBrainMonsterAnimation();
+    private final Animation<Texture> eyeMonster_animation = buildEyeMonsterAnimation();
+    private final Texture elderMonster_texture  = new Texture(Gdx.files.internal("elderMonster/ElderBrain.png"));
 
     // XP
     private final Texture xpTexture = new Texture(Gdx.files.internal("xp.png"));
 
+    // ammo
+    private final Texture ammoTexture = new Texture(Gdx.files.internal("ammo.png"));
 
 
     public GameAssetManager() {
@@ -162,10 +168,20 @@ public class GameAssetManager {
         return weaponAnimations.get(animationName).getKeyFrames()[0];
     }
 
-    // bullet
-    public Texture getBulletTexture(Bullets bullet) {
-        String bulletName = bullet.name().toLowerCase();
-        return bulletTextures.get(bulletName);
+    // projectile
+    public Texture getProjectileTexture(Projectiles projectile) {
+        switch (projectile) {
+            case SHOTGUN_BULLET:
+                return shotgun_bullet;
+            case SMG_BULLET:
+                return smg_bullet;
+            case REVOLVER_BULLET:
+                return revolver_bullet;
+            case EYE_MONSTER_PROJECTILE:
+                return eyeMonster_projectile;
+            default:
+                return null;
+        }
     }
 
     // tree
@@ -178,17 +194,39 @@ public class GameAssetManager {
     }
 
     // monster
-    public Animation<Texture> getBrainMonsterAnimation() {
-        return brainMonster_animation;
+    public Animation<Texture> getMonsterAnimation(Monsters monsterType) {
+        switch (monsterType) {
+            case BRAIN_MONSTER:
+                return brainMonster_animation;
+            case EYE_MONSTER:
+                return eyeMonster_animation;
+            case ELDER_MONSTER:
+                //TODO
+            default: return null;
+        }
     }
 
-    public Texture getBrainMonsterTexture() {
-        return brainMonster_animation.getKeyFrames()[0];
+    public Texture getMonsterTexture(Monsters monsterType) {
+        switch (monsterType) {
+            case BRAIN_MONSTER:
+                return brainMonster_animation.getKeyFrames()[0];
+            case EYE_MONSTER:
+                return eyeMonster_animation.getKeyFrames()[0];
+            case ELDER_MONSTER:
+                return elderMonster_texture;
+                // TODO: must be an animation!
+            default: return null;
+        }
     }
 
     // XP
     public Texture getXpTexture() {
         return xpTexture;
+    }
+
+    // ammo
+    public Texture getAmmoTexture() {
+        return ammoTexture;
     }
 
     //character
@@ -225,7 +263,7 @@ public class GameAssetManager {
         return new Animation<>(0.1f, textureArray);
     }
 
-    // bullet
+    // projectile
     private Texture buildBulletTexture(String bulletName) {
         String path = String.format("assets/bullet/%s_bullet.png", bulletName);
 
@@ -257,6 +295,21 @@ public class GameAssetManager {
 
         for (int i = 0; i < numberOfFrames; i++) {
             String rawPath = String.format("brainMonster/BrainMonster_%d.png", i);
+            Texture texture = new Texture(rawPath);
+            textureArray[i] = texture;
+        }
+
+        return new Animation<>(0.1f, textureArray);
+    }
+
+    public Animation<Texture> buildEyeMonsterAnimation() {
+        String pathToFolder = "assets/eyeMonster";
+        int numberOfFrames = countFiles(pathToFolder);
+
+        Texture[] textureArray = new Texture[numberOfFrames];
+
+        for (int i = 0; i < numberOfFrames; i++) {
+            String rawPath = String.format("eyeMonster/EyeMonster_%d.png", i);
             Texture texture = new Texture(rawPath);
             textureArray[i] = texture;
         }

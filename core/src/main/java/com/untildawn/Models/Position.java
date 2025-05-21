@@ -1,5 +1,7 @@
 package com.untildawn.Models;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Position {
     private float X;
     private float Y;
@@ -23,5 +25,8 @@ public class Position {
 
     public float getY() {
         return Y;
+    }
+    public Vector2 toVector2() {
+        return new Vector2(X, Y);
     }
 }

@@ -10,7 +10,7 @@ public class GameController {
     private PlayerController playerController;
     private WeaponController weaponController;
     private WorldController worldController;
-    private BulletController bulletController;
+    private ProjectileController projectileController;
     private MonsterController monsterController;
     private CollisionController collisionController;
 
@@ -26,20 +26,20 @@ public class GameController {
         Game game = App.getCurrentGame();
         GamePreferences gamePreferences = game.getGamePreferences();
 
-        this.bulletController = new BulletController();
-        this.weaponController = new WeaponController(bulletController, new Weapon(gamePreferences.getWeapon()));
+        this.projectileController = new ProjectileController();
+        this.weaponController = new WeaponController(projectileController, gamePreferences.getWeapon());
         this.playerController = new PlayerController(App.getCurrentGame().getPlayer(), weaponController, this);
         this.worldController = new WorldController(playerController, this);
         this.monsterController = new MonsterController(this);
-        this.collisionController = new CollisionController(worldController.getWorld(), playerController.getPlayer(), bulletController);
+        this.collisionController = new CollisionController(worldController.getWorld(), playerController.getPlayer(), projectileController, weaponController, monsterController);
     }
 
     public void updateGame() {
         if (view != null) {
             this.worldController.update();
-            this.playerController.update();
+            this.playerController.update(Gdx.graphics.getDeltaTime());
             this.weaponController.update();
-            this.bulletController.update();
+            this.projectileController.update();
             this.monsterController.update(Gdx.graphics.getDeltaTime());
             this.collisionController.update();
         }
@@ -57,8 +57,8 @@ public class GameController {
         return weaponController;
     }
 
-    public BulletController getBulletController() {
-        return bulletController;
+    public ProjectileController getProjectileController() {
+        return projectileController;
     }
 
     public MonsterController getMonsterController() {

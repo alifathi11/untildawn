@@ -63,6 +63,11 @@ public class WorldController {
             xp.getXpSprite().draw(Main.getBatch());
         }
 
+        // spawn Ammo
+        for (Ammo ammo : world.getAmmo()) {
+            ammo.getAmmoSprite().draw(Main.getBatch());
+        }
+
     }
 
 

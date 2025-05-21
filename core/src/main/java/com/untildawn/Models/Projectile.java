@@ -3,9 +3,9 @@ package com.untildawn.Models;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.untildawn.Enums.Bullets;
+import com.untildawn.Enums.Projectiles;
 
-public class Bullet {
+public class Projectile {
     private Texture texture;
     private Sprite sprite;
 
@@ -16,18 +16,22 @@ public class Bullet {
 
     private CollisionRect collisionRect;
 
-    public Bullet(Vector2 startPosition, Vector2 targetPosition, Bullets bulletType) {
-        this.texture = GameAssetManager.getGameAssetManager().getBulletTexture(bulletType);
+    private Projectiles projectileType;
+
+    public Projectile(Vector2 startPosition, Vector2 direction, Projectiles projectileType) {
+        this.texture = GameAssetManager.getGameAssetManager().getProjectileTexture(projectileType);
         this.sprite = new Sprite(texture);
         sprite.setSize(20, 20);
 
-        this.speed = bulletType.getSpeed();
-        this.damage = bulletType.getDamage();
+        this.projectileType = projectileType;
+
+        this.speed = projectileType.getSpeed();
+        this.damage = projectileType.getDamage();
 
         this.position = new Vector2(startPosition);
         this.sprite.setPosition(position.x, position.y);
 
-        this.velocity = new Vector2(targetPosition).sub(startPosition).nor().scl(speed);
+        this.velocity = new Vector2(direction).nor().scl(speed);
 
         this.collisionRect = new CollisionRect(position.x, position.y, sprite.getWidth(), sprite.getHeight());
     }
@@ -64,5 +68,9 @@ public class Bullet {
 
     public CollisionRect getCollisionRect() {
         return collisionRect;
+    }
+
+    public Projectiles getProjectileType() {
+        return projectileType;
     }
 }

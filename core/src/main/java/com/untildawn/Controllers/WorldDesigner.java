@@ -69,7 +69,7 @@ public class WorldDesigner {
             if (!placed) {
                 System.out.println("Failed to place tree #" + i + " without overlap.");
             }
-        }
+        } // TODO: tree must not be spawned on the player
 
         Tree edgeTree = new Tree();
         float treeWidth = edgeTree.getTreeSprite().getWidth();

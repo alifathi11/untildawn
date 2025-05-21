@@ -1,10 +1,10 @@
 package com.untildawn.Enums;
 
 public enum Time {
-    TIME_2_MINUTES(2),
-    TIME_5_MINUTES(5),
-    TIME_10_MINUTES(10),
-    TIME_20_MINUTES(20),
+    TIME_2_MINUTES(120),
+    TIME_5_MINUTES(300),
+    TIME_10_MINUTES(600),
+    TIME_20_MINUTES(1200),
     ;
 
     private final int time;

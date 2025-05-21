@@ -4,17 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.untildawn.Enums.Weapons;
-import com.untildawn.Models.Bullet;
 import com.untildawn.Models.GameAssetManager;
 import com.untildawn.Models.Weapon;
 
 public class WeaponAnimations {
     private Weapon weapon;
     private Weapons weaponType;
-    WeaponAnimations(Weapon weapon) {
-        this.weapon = weapon;
-        this.weaponType = weapon.getWeaponType();
-    }
 
     public void reloadAnimation() {
         if (!weapon.isReloading()) return;
@@ -31,5 +26,10 @@ public class WeaponAnimations {
         }
 
         animation.setPlayMode(Animation.PlayMode.LOOP);
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
+        this.weaponType = weapon.getWeaponType();
     }
 }

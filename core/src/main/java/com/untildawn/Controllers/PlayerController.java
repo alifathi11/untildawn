@@ -22,11 +22,29 @@ public class PlayerController {
         this.gameController = gameController;
     }
 
-    public void update() {
+    public void update(float deltaTime) {
+        if (player.isInvincible()) {
+            if (((int)(player.getInvincibleTime() * 10)) % 2 == 0) {
+                player.getPlayerSprite().setAlpha(0.3f);
+            } else {
+                player.getPlayerSprite().setAlpha(1f);
+            }
+        } else {
+            player.getPlayerSprite().setAlpha(1f);
+        }
+
         player.getPlayerSprite().setCenter(
             player.getPosition().getX(),
             player.getPosition().getY()
         );
+
+        if (player.isInvincible()) {
+            player.increaseInvincibleTime(deltaTime);
+            if (player.getInvincibleTime() >= player.getInvincibilityDuration()) {
+                player.setInvincible(false);
+                player.setInvincibleTime(0f);
+            }
+        }
 
         player.getPlayerSprite().draw(Main.getBatch());
 
@@ -80,7 +98,7 @@ public class PlayerController {
 
         InputBinding shootBinding = playerInputPreferences.getInputBinding(Actions.SHOOT);
 
-        if (!weaponController.getWeapon().isReloading()) {
+        if (!weaponController.getCurrentWeapon().isReloading()) {
             Vector3 mouseScreenPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             Vector3 mouseWorldPos3D = gameController.getView().getCamera().unproject(mouseScreenPos);
             Vector2 mouseWorldPos = new Vector2(mouseWorldPos3D.x, mouseWorldPos3D.y);
@@ -100,7 +118,17 @@ public class PlayerController {
         }
 
         if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.RELOAD).getCode())) {
-            weaponController.getWeapon().reload();
+            player.getCurrentWeapon().reload();
+        }
+
+        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.WEAPON_1).getCode())) {
+            weaponController.changeWeapon(1);
+        }
+        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.WEAPON_2).getCode())) {
+            weaponController.changeWeapon(2);
+        }
+        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.WEAPON_3).getCode())) {
+            weaponController.changeWeapon(3);
         }
 
         player.setPlayerWalking(isPlayerMoving);
@@ -120,7 +148,7 @@ public class PlayerController {
             }
         }
 
-        for (BrainMonster monster : world.getBrainMonsters()) {
+        for (Monster monster : world.getMonsters()) {
             if (playerRect.collidesWith(monster.getCollisionRect())) {
                 return false;
             }

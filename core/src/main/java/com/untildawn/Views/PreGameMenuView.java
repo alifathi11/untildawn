@@ -20,15 +20,18 @@ public class PreGameMenuView implements Screen, AppMenu {
     private Image backgroundImage;
 
     private final Label preGameLabel;
-    private final Label heroLablel;
+    private final Label heroLabel;
     private final Label weaponLabel;
     private final Label timeLabel;
+    private final Label autoReloadLabel;
 
     private TextButton weaponChangeButton;
     private TextButton heroChangeButton;
     private TextButton gameTimeChangeButton;
+    private TextButton autoReloadButton;
     private final TextButton startGameButton;
     private final TextButton backButton;
+
 
     private Table table;
 
@@ -38,14 +41,16 @@ public class PreGameMenuView implements Screen, AppMenu {
         this.controller = controller;
 
         this.preGameLabel = new Label("PREGAME MENU", skin);
-        this.heroLablel = new Label("HERO:", skin);
+        this.heroLabel = new Label("HERO:", skin);
         this.weaponLabel = new Label("WEAPON:", skin);
         this.timeLabel = new Label("GAME TIME:", skin);
+        this.autoReloadLabel = new Label("AUTO RELOAD:", skin);
 
         this.gameTimeChangeButton = new TextButton("2 MINUTES", skin);
         this.heroChangeButton = new TextButton("SHANA", skin);
         this.weaponChangeButton = new TextButton("REVOLVER", skin);
         this.startGameButton = new TextButton("START NEW GAME", skin);
+        this.autoReloadButton = new TextButton("OFF", skin);
         this.backButton = new TextButton("BACK", skin);
 
         this.table = new Table();
@@ -68,7 +73,7 @@ public class PreGameMenuView implements Screen, AppMenu {
         table.center();
         table.add(preGameLabel);
         table.row().pad(100, 5, 10, 5);
-        table.add(heroLablel).width(800).height(80);
+        table.add(heroLabel).width(800).height(80);
         table.row().pad(20, 5, 10, 5);
         table.add(heroChangeButton).width(800).height(80);
         table.row().pad(40, 5, 10, 5);
@@ -79,6 +84,10 @@ public class PreGameMenuView implements Screen, AppMenu {
         table.add(timeLabel).width(800).height(80);
         table.row().pad(20, 5, 10, 5);
         table.add(gameTimeChangeButton).width(800).height(80);
+        table.row().pad(40, 5, 10, 5);
+        table.add(autoReloadLabel).width(800).height(80);
+        table.row().pad(20, 5, 10, 5);
+        table.add(autoReloadButton).width(800).height(80);
         table.row().pad(100, 5, 10, 5);
         table.add(startGameButton).width(400).height(60);
         table.row().pad(20, 5, 10, 5);
@@ -238,5 +247,9 @@ public class PreGameMenuView implements Screen, AppMenu {
 
     public TextButton getBackButton() {
         return backButton;
+    }
+
+    public TextButton getAutoReloadButton() {
+        return autoReloadButton;
     }
 }

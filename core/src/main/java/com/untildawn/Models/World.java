@@ -11,9 +11,9 @@ public class World {
     private Sprite backgroundSprite;
 
     private ArrayList<Tree> trees;
-    private ArrayList<BrainMonster> brainMonsters;
     private ArrayList<Monster> monsters;
     private ArrayList<XP> xps;
+    private ArrayList<Ammo> ammo;
 
     public World() {
         this.trees = new ArrayList<>();
@@ -27,9 +27,9 @@ public class World {
         this.backgroundSprite.setSize(3296, 2304);
 
         this.trees = new ArrayList<>();
-        this.brainMonsters = new ArrayList<>();
         this.monsters = new ArrayList<>();
         this.xps = new ArrayList<>();
+        this.ammo = new ArrayList<>();
     }
 
     public Sprite getBackgroundSprite() {
@@ -48,23 +48,12 @@ public class World {
         return trees;
     }
 
-    public void addBrainMonster(BrainMonster monster) {
-        this.brainMonsters.add(monster);
+    public void addMonster(Monster monster) {
         this.monsters.add(monster);
-    }
-    public void deleteBrainMonster(BrainMonster monster) {
-        this.brainMonsters.remove(monster);
-        this.monsters.remove(monster);
     }
 
     public void deleteMonster(Monster monster) {
         this.monsters.remove(monster);
-        if (monster instanceof BrainMonster) this.brainMonsters.remove(monster);
-        // TODO: add other types
-    }
-
-    public ArrayList<BrainMonster> getBrainMonsters() {
-        return brainMonsters;
     }
 
     public ArrayList<Monster> getMonsters() {
@@ -80,5 +69,17 @@ public class World {
 
     public ArrayList<XP> getXps() {
         return xps;
+    }
+
+    public ArrayList<Ammo> getAmmo() {
+        return ammo;
+    }
+
+    public void addAmmo(Ammo ammo) {
+        this.ammo.add(ammo);
+    }
+
+    public void deleteAmmo(Ammo ammo) {
+        this.ammo.remove(ammo);
     }
 }

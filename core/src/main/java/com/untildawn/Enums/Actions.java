@@ -9,5 +9,8 @@ public enum Actions {
     RELOAD,
     DANCE,
     RUN,
+    WEAPON_1,
+    WEAPON_2,
+    WEAPON_3,
     ;
 }

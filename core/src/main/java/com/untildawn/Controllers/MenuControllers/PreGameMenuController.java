@@ -14,9 +14,11 @@ public class PreGameMenuController {
     private final String[] timeOptions;
     private final String[] weaponOptions;
     private final String[] heroOptions;
+    private final String[] autoReloadOptions;
     private int timeIndex;
     private int weaponIndex;
     private int heroIndex;
+    private int autoReloadIndex;
 
     public PreGameMenuController() {
 
@@ -29,8 +31,8 @@ public class PreGameMenuController {
 
         weaponOptions = new String[]{
             "REVOLVER",
-            "SHOTGUN",
-            "SMGs DUAL"
+            "SMGs DUAL",
+            "SHOTGUN"
         };
 
         heroOptions = new String[]{
@@ -41,9 +43,15 @@ public class PreGameMenuController {
             "DASHER"
         };
 
+        autoReloadOptions = new String[] {
+            "OFF",
+            "ON"
+        };
+
         this.timeIndex = 0;
         this.heroIndex = 0;
         this.weaponIndex = 0;
+        this.autoReloadIndex = 0;
     }
 
 
@@ -78,6 +86,15 @@ public class PreGameMenuController {
                 }
             });
 
+            view.getAutoReloadButton().addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    autoReloadIndex = (autoReloadIndex + 1) % autoReloadOptions.length;
+                    view.getAutoReloadButton().setText(autoReloadOptions[autoReloadIndex]);
+                }
+            });
+
+
             view.getBackButton().addListener(new ClickListener() {
                @Override
                public void clicked(InputEvent event, float x, float y) {
@@ -89,13 +106,14 @@ public class PreGameMenuController {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
 
-                    view.showConfirmation("START NEW GAME WITH\n    THESE PREFERENCES?", (result) -> {
+                    view.showConfirmation("START NEW GAME WITH\n\n THESE PREFERENCES?", (result) -> {
                         if (result) {
                             Weapons weaponType = Weapons.values()[weaponIndex];
                             Heros hero = Heros.values()[heroIndex];
                             Time time = Time.values()[timeIndex];
+                            boolean autoReload = autoReloadIndex != 0;
 
-                            GamePreferences gameSetting = new GamePreferences(time, weaponType, hero);
+                            GamePreferences gameSetting = new GamePreferences(time, weaponType, hero, autoReload);
 
                             Game game = new Game(gameSetting, null);
 

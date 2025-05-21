@@ -22,6 +22,10 @@ public class InputPreferences {
         inputBindings.put(Actions.SHOOT,   new InputBinding(InputBinding.InputType.MOUSE, Input.Buttons.LEFT));
         inputBindings.put(Actions.RELOAD,  new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.R));
         inputBindings.put(Actions.DANCE,   new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.E));
+
+        inputBindings.put(Actions.WEAPON_1, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.NUM_1));
+        inputBindings.put(Actions.WEAPON_2, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.NUM_2));
+        inputBindings.put(Actions.WEAPON_3, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.NUM_3));
     }
 
     public void setInputBinding(Actions action, InputBinding.InputType type, int code) {
