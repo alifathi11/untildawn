@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
@@ -45,7 +47,12 @@ public class GameView implements Screen, InputProcessor {
     private Game game;
     private Player player;
 
+    private float xpProgress;
+    private Texture xpBarBackground;
+    private Texture xpBarFill;
+
     private ShaderProgram grayscaleShader;
+    private ShaderProgram lightShader;
 
     public GameView(GameController controller, Skin skin) {
         camera = new OrthographicCamera();
@@ -55,6 +62,9 @@ public class GameView implements Screen, InputProcessor {
         controller.setView(this);
         this.pauseMenuView = controller.getPauseMenuView();
         this.pauseMenuController = controller.getPauseMenuController();
+
+        xpBarBackground = new Texture("levelUp/xp_bar_bg.png");
+        xpBarFill = new Texture("levelUp/xp_bar_fill.png");
 
         cheatConsoleView = new CheatConsoleView();
         cheatConsoleController = new CheatConsoleController(cheatConsoleView);
@@ -94,14 +104,20 @@ public class GameView implements Screen, InputProcessor {
         if (game.getGamePreferences().isGrayScaleOn()) {
             Main.getBatch().setShader(grayscaleShader);
         } else {
-            Main.getBatch().setShader(null);
+            Main.getBatch().setShader(null); // TODO: ligth shader
+//            Vector3 playerWorldPos = new Vector3(player.getPosition().getX(), player.getPosition().getY(), 0);
+//            Vector3 playerScreenPos = camera.project(playerWorldPos);
+//
+//            lightShader.setUniformf("u_playerPos", playerScreenPos.x, playerScreenPos.y);
+//            lightShader.setUniformf("u_radius", 250f);
+//            lightShader.setUniformf("u_viewportHeight", Gdx.graphics.getHeight());
         }
         if (!cheatConsoleView.isVisible()) {
             Main.getBatch().begin();
 
             if (!pauseMenuController.isPaused()) {
                 Gdx.input.setInputProcessor(this);
-                controller.updateGame();
+                controller.updateGame(delta);
             } else {
                 Gdx.input.setInputProcessor(pauseMenuView.getStage());
                 pauseMenuView.show();
@@ -119,10 +135,65 @@ public class GameView implements Screen, InputProcessor {
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
+        drawHUDText();
+        drawXPBar();
     }
 
+    private void drawHUDText() {
+        Main.getBatch().setProjectionMatrix(hudCamera.combined);
+        Main.getBatch().begin();
+
+        String topLeftText = "HP: " + player.getHP();
+        String topRightText = "Ammo: " + player.getCurrentWeapon().getAmmo();
+        String bottomLeftText = "Level: " + player.getLevel();
+        String bottomRightText = "Score: " + player.getXp();
+
+        layout.setText(font, topLeftText);
+        font.draw(Main.getBatch(), topLeftText, 10, hudCamera.viewportHeight - 10);
+
+        layout.setText(font, topRightText);
+        font.draw(Main.getBatch(), topRightText, hudCamera.viewportWidth - layout.width - 10, hudCamera.viewportHeight - 10);
+
+        layout.setText(font, bottomLeftText);
+        font.draw(Main.getBatch(), bottomLeftText, 10, 20);
+
+        layout.setText(font, bottomRightText);
+        font.draw(Main.getBatch(), bottomRightText, hudCamera.viewportWidth - layout.width - 10, 20);
+
+        Main.getBatch().end();
+    }
+
+    private void drawXPBar() {
+
+        xpProgress = MathUtils.clamp((float) player.getXp() / player.getXpToLevelUp(), 0f, 1f);
 
 
+        float barX = 20;
+        float barY = 50;
+        float barWidth = 30;
+        float barHeight = 300;
+
+        Main.getBatch().setProjectionMatrix(hudCamera.combined);
+        Main.getBatch().begin();
+
+        Main.getBatch().draw(xpBarBackground, barX, barY, barWidth, barHeight);
+
+        float filledHeight = barHeight * xpProgress;
+
+        Main.getBatch().draw(
+            xpBarFill,
+            barX,
+            barY,
+            barWidth,
+            filledHeight,
+            0, 0,
+            xpBarFill.getWidth(),
+            (int)(xpBarFill.getHeight() * xpProgress),
+            false, false
+        );
+
+        Main.getBatch().end();
+    }
 
     public void create() {
         ShaderProgram.pedantic = false;
@@ -134,6 +205,15 @@ public class GameView implements Screen, InputProcessor {
 
         if (!grayscaleShader.isCompiled()) {
             Gdx.app.error("SHADER", "Error compiling shader: " + grayscaleShader.getLog());
+        }
+
+        lightShader = new ShaderProgram(
+            Gdx.files.internal("shaders/light.vert"),
+            Gdx.files.internal("shaders/light.frag")
+        );
+
+        if (!lightShader.isCompiled()) {
+            Gdx.app.error("Shader", "Light shader compile error:\n" + lightShader.getLog());
         }
     }
 

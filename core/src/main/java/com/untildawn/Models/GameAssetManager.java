@@ -373,4 +373,10 @@ public class GameAssetManager {
             return 0;
         }
     }
+
+    // effects
+    public Texture getHitFlashTexture() {
+        return new Texture(Gdx.files.internal("hitFlash.png"));
+    }
+
 }

@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.untildawn.Main;
 import com.untildawn.Models.*;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class WorldController {
@@ -18,6 +20,8 @@ public class WorldController {
     private World world;
     private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
+
+    private ArrayList<TimedEffect> effects;
 
     public WorldController(PlayerController playerController, GameController gameController) {
         this.playerController = playerController;
@@ -30,9 +34,11 @@ public class WorldController {
 
         WorldDesigner worldDesigner = new WorldDesigner();
         worldDesigner.designWorld(world);
+
+        this.effects = new ArrayList<>();
     }
 
-    public void update() {
+    public void update(float deltaTime) {
 
         float halfViewportWidth = camera.viewportWidth / 2;
         float halfViewportHeight = camera.viewportHeight / 2;
@@ -79,6 +85,20 @@ public class WorldController {
         for (Heart heart : world.getHearts()) {
             heart.getHeartSprite().draw(Main.getBatch());
         }
+
+
+        // show effects
+        Texture hitTexture = GameAssetManager.getGameAssetManager().getHitFlashTexture();
+
+        for (Iterator<TimedEffect> iterator = effects.iterator(); iterator.hasNext();) {
+            TimedEffect effect = iterator.next();
+            effect.update(deltaTime);
+            if (effect.isFinished()) {
+                iterator.remove();
+            } else {
+                effect.render(Main.getBatch(), hitTexture);
+            }
+        }
     }
 
     public void renderShapes(Camera camera) {
@@ -93,5 +113,13 @@ public class WorldController {
 
     public World getWorld() {
         return world;
+    }
+
+    public ArrayList<TimedEffect> getEffects() {
+        return effects;
+    }
+
+    public void addEffect(TimedEffect effect) {
+        this.effects.add(effect);
     }
 }

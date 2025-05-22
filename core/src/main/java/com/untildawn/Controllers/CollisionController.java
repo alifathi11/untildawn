@@ -15,17 +15,21 @@ public class CollisionController {
     private ProjectileController projectileController;
     private WeaponController weaponController;
     private MonsterController monsterController;
+    private WorldController worldController;
+
 
     public CollisionController(World world,
                                Player player,
                                ProjectileController projectileController,
                                WeaponController weaponController,
-                               MonsterController monsterController) {
+                               MonsterController monsterController,
+                               WorldController worldController) {
         this.world = world;
         this.player = player;
         this.projectileController = projectileController;
         this.weaponController = weaponController;
         this.monsterController = monsterController;
+        this.worldController = worldController;
     }
 
     public void update() {
@@ -50,7 +54,7 @@ public class CollisionController {
                 monstersToDelete.add(monster);
                 player.decreaseHP();
                 player.setInvincible(true);
-                // TODO: sfx
+                SFXManager.play("monster_damage");
             }
         }
 
@@ -74,7 +78,7 @@ public class CollisionController {
             && !player.isInvincible()) {
                 player.decreaseHP();
                 player.setInvincible(true);
-                // TODO: sfx
+                SFXManager.play("tree_damage");
             }
         }
     }
@@ -96,9 +100,11 @@ public class CollisionController {
                 if (projectileCollider.collidesWith(monsterCollider)) {
                     projectilesToDelete.add(projectile);
                     monster.decreaseHP((int) projectile.getDamage());
+                    float dx = monster.getPosition().getX() - projectile.getPosition().x;
+                    float dy = monster.getPosition().getY() - projectile.getPosition().y;
+                    monster.knockBack(dx, dy);
                     if (monster.getHP() <= 0) {
                         monstersToDelete.add(monster);
-                        // TODO: add XP
                         // TODO: add sfx
                     }
                 }
@@ -107,12 +113,19 @@ public class CollisionController {
 
         for (Monster monster : monstersToDelete) {
 
+            if (monster.getMonsterType() == Monsters.BRAIN_MONSTER) {
+                SFXManager.play("brain_death");
+            }
             if (monster.getMonsterType() == Monsters.EYE_MONSTER) {
+                SFXManager.play("eye_death");
                 monsterController.decreaseEyeMonstersInWorld();
             }
             if (monster.getMonsterType() == Monsters.ELDER_MONSTER) {
+                SFXManager.play("elder_death");
                 monsterController.decreaseElderMonstersInWorld();
                 world.getProtectiveField().deactivate();
+                MusicManager.play();
+                SFXManager.fadeOutAndStop("boss_fight", 3);
             }
 
             Position monsterPosition = monster.getPosition();
@@ -177,7 +190,8 @@ public class CollisionController {
                 player.decreaseHP();
                 player.setInvincible(true);
                 projectilesToDelete.add(projectile);
-                // TODO: add sfx
+                SFXManager.play("projectile_damage");
+                worldController.addEffect(new TimedEffect(player.getPosition().getX() + 5, player.getPosition().getY(), 0.2f));
             }
         }
 

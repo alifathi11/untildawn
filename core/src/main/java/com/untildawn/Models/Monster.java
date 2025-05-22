@@ -24,6 +24,9 @@ public class Monster {
     private float shootCoolDown = 3f;
     private float timeSinceLastShot = 0f;
 
+    private float knockbackVX = 0;
+    private float knockbackVY = 0;
+    private float knockbackTimeLeft = 0f;
 
     private CollisionRect collisionRect;
 
@@ -176,4 +179,45 @@ public class Monster {
         this.timeSinceLastShot = 0f;
     }
 
+    public void knockBack(float dx, float dy) {
+        float totalKnockbackTime = 0.5f;
+        float knockbackDistance = 100f;
+
+        float length = (float) Math.sqrt(dx * dx + dy * dy);
+        if (length == 0) return;
+
+        float nx = dx / length;
+        float ny = dy / length;
+
+        this.knockbackVX = (knockbackDistance * nx) / totalKnockbackTime;
+        this.knockbackVY = (knockbackDistance * ny) / totalKnockbackTime;
+        this.knockbackTimeLeft = totalKnockbackTime;
+    }
+
+    public float getKnockbackTimeLeft() {
+        return knockbackTimeLeft;
+    }
+
+    public float getKnockbackVX() {
+        return knockbackVX;
+    }
+
+    public float getKnockbackVY() {
+        return knockbackVY;
+    }
+
+    public void setKnockbackVY(float knockbackVY) {
+        this.knockbackVY = knockbackVY;
+    }
+
+    public void setKnockbackVX(float knockbackVX) {
+        this.knockbackVX = knockbackVX;
+    }
+
+    public void setKnockbackTimeLeft(float knockbackTimeLeft) {
+        this.knockbackTimeLeft = knockbackTimeLeft;
+    }
+    public void decreaseKnockbackTimeLeft(float deltaTime) {
+        this.knockbackTimeLeft -= deltaTime;
+    }
 }

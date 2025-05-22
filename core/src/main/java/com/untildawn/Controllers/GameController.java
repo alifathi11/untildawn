@@ -39,19 +39,19 @@ public class GameController {
         this.playerController = new PlayerController(App.getCurrentGame().getPlayer(), weaponController, this, pauseMenuController);
         this.worldController = new WorldController(playerController, this);
         this.monsterController = new MonsterController(this);
-        this.collisionController = new CollisionController(worldController.getWorld(), playerController.getPlayer(), projectileController, weaponController, monsterController);
+        this.collisionController = new CollisionController(worldController.getWorld(), playerController.getPlayer(), projectileController, weaponController, monsterController, worldController);
     }
 
-    public void updateGame() {
+    public void updateGame(float deltaTime) {
         if (view != null) {
 
             game.increaseElapsedTime(Gdx.graphics.getDeltaTime());
 
-            this.worldController.update();
-            this.playerController.update(Gdx.graphics.getDeltaTime());
+            this.worldController.update(deltaTime);
+            this.playerController.update(deltaTime);
             this.weaponController.update();
             this.projectileController.update();
-            this.monsterController.update(Gdx.graphics.getDeltaTime());
+            this.monsterController.update(deltaTime);
             this.collisionController.update();
         }
     }

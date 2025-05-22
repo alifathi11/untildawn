@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.untildawn.Enums.Heros;
-import com.untildawn.Main;
 
 public class Player {
     private Texture playerTexture;
@@ -189,10 +188,13 @@ public class Player {
         this.HP--;
     }
 
+    public int getXpToLevelUp() {
+        return level * 20;
+    }
+
     public void increaseXP(int deltaXP) {
 
-        int currentLevel = getLevel();
-        int xpToLevelUp = currentLevel * 20;
+        int xpToLevelUp = getXpToLevelUp();
 
         this.xp += deltaXP;
         if (this.xp >= xpToLevelUp) {

@@ -52,6 +52,7 @@ public class MonsterController {
 
     public void update(float deltaTime) {
         spawnTrees();
+        updateKnockBack(deltaTime);
         updateMonster(deltaTime);
 
 
@@ -112,6 +113,8 @@ public class MonsterController {
             hasElderSpawned = true;
 
             world.getProtectiveField().activate();
+            MusicManager.pause();
+            SFXManager.play("boss_fight");
 
             elderMoveTimer = 0f;
             elderShouldMove = false;
@@ -173,6 +176,22 @@ public class MonsterController {
         world.addMonster(monster);
     }
 
+    private void updateKnockBack(float deltaTime) {
+        for (Monster monster : world.getMonsters()) {
+            if (monster.getKnockbackTimeLeft() > 0) {
+                monster.getPosition().setX(monster.getPosition().getX() + monster.getKnockbackVX() * deltaTime);
+                monster.getPosition().setY(monster.getPosition().getY() + monster.getKnockbackVY() * deltaTime);
+                monster.decreaseKnockbackTimeLeft(deltaTime);
+
+                if (monster.getKnockbackTimeLeft() <= 0) {
+                    monster.setKnockbackVX(0);
+                    monster.setKnockbackVY(0);
+                }
+            }
+        }
+    }
+
+
     private void updateBrainMonsters(float delta) {
         Player player = App.getCurrentGame().getPlayer();
 
@@ -191,7 +210,7 @@ public class MonsterController {
             float length = (float) Math.sqrt(dx * dx + dy * dy);
             if (length == 0) continue;
 
-            float speed = 100f; // TODO: monster.getSpeed()
+            float speed = monster.getSpeed();
             float vx = (dx / length) * speed * delta;
             float vy = (dy / length) * speed * delta;
 
@@ -225,7 +244,7 @@ public class MonsterController {
                 Vector2 toHover = monster.getHoverOffsetTarget().cpy().sub(currentPos);
                 float distance = toHover.len();
 
-                float moveSpeed = 100f; // TODO: monster.getSpeed()
+                float moveSpeed = monster.getSpeed();
                 if (distance < moveSpeed * deltaTime) {
 
                     monster.setReachedHover(true);
@@ -261,7 +280,7 @@ public class MonsterController {
         }
     }
 
-    private void updateElderMonster(float delta) {
+    private void updateElderMonster(float deltaTime) {
         Player player = App.getCurrentGame().getPlayer();
 
         float px = player.getPosition().getX();
@@ -273,7 +292,26 @@ public class MonsterController {
             float mx = monster.getPosition().getX();
             float my = monster.getPosition().getY();
 
-            elderMoveTimer += delta;
+            elderMoveTimer += deltaTime;
+
+            if (monster.getKnockbackTimeLeft() > 0f) {
+                float stepX = monster.getKnockbackVX() * deltaTime;
+                float stepY = monster.getKnockbackVY() * deltaTime;
+
+                mx += stepX;
+                my += stepY;
+
+                monster.setPosition(new Position(mx, my));
+                monster.getSprite().setPosition(mx, my);
+
+                monster.decreaseKnockbackTimeLeft(deltaTime);
+                if (monster.getKnockbackTimeLeft() <= 0) {
+                    monster.setKnockbackVX(0);
+                    monster.setKnockbackVY(0);
+                }
+
+                continue;
+            }
 
             if (!elderShouldMove && elderMoveTimer >= elderMoveCooldown) {
                 elderShouldMove = true;
@@ -292,7 +330,7 @@ public class MonsterController {
             }
 
             if (elderShouldMove) {
-                float step = elderMoveSpeed * delta;
+                float step = elderMoveSpeed * deltaTime;
 
                 if (elderMovedDistance + step >= elderMaxMoveDistance) {
                     step = elderMaxMoveDistance - elderMovedDistance;
