@@ -34,8 +34,6 @@ public class MonsterController {
     private Player player;
     private ProjectileController projectileController;
 
-
-    private float elapsedTime = 0f;
     private OrthographicCamera camera;
 
     Game game;
@@ -53,8 +51,6 @@ public class MonsterController {
 
 
     public void update(float deltaTime) {
-        elapsedTime += deltaTime;
-
         spawnTrees();
         updateMonster(deltaTime);
 
@@ -68,7 +64,7 @@ public class MonsterController {
         // Brain Monsters
         brainMonsterSpawnTimer += deltaTime;
 
-        float i = elapsedTime;
+        float i = game.getElapsedTime();
         float brainMonsterSpawnRate = i / 30f;
 
         if (brainMonsterSpawnTimer >= 3f / brainMonsterSpawnRate) {

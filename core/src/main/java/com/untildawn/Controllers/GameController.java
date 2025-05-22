@@ -3,6 +3,7 @@ package com.untildawn.Controllers;
 import com.badlogic.gdx.Gdx;
 import com.untildawn.Models.*;
 import com.untildawn.Views.GameView;
+import com.untildawn.Views.PauseMenuView;
 
 public class GameController {
     private Game game;
@@ -13,8 +14,11 @@ public class GameController {
     private ProjectileController projectileController;
     private MonsterController monsterController;
     private CollisionController collisionController;
+    private PauseMenuController pauseMenuController;
+    private PauseMenuView pauseMenuView;
 
     public GameController() {
+        game = App.getCurrentGame();
     }
 
     public void setView(GameView view) {
@@ -28,7 +32,11 @@ public class GameController {
 
         this.projectileController = new ProjectileController();
         this.weaponController = new WeaponController(projectileController, gamePreferences.getWeapon());
-        this.playerController = new PlayerController(App.getCurrentGame().getPlayer(), weaponController, this);
+
+        this.pauseMenuController = new PauseMenuController();
+        this.pauseMenuView = new PauseMenuView(pauseMenuController);
+
+        this.playerController = new PlayerController(App.getCurrentGame().getPlayer(), weaponController, this, pauseMenuController);
         this.worldController = new WorldController(playerController, this);
         this.monsterController = new MonsterController(this);
         this.collisionController = new CollisionController(worldController.getWorld(), playerController.getPlayer(), projectileController, weaponController, monsterController);
@@ -36,6 +44,9 @@ public class GameController {
 
     public void updateGame() {
         if (view != null) {
+
+            game.increaseElapsedTime(Gdx.graphics.getDeltaTime());
+
             this.worldController.update();
             this.playerController.update(Gdx.graphics.getDeltaTime());
             this.weaponController.update();
@@ -67,6 +78,14 @@ public class GameController {
 
     public GameView getView() {
         return view;
+    }
+
+    public PauseMenuController getPauseMenuController() {
+        return pauseMenuController;
+    }
+
+    public PauseMenuView getPauseMenuView() {
+        return pauseMenuView;
     }
 }
 

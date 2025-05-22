@@ -73,6 +73,10 @@ public class GameAssetManager {
     // ammo
     private final Texture ammoTexture = new Texture(Gdx.files.internal("ammo.png"));
 
+    // heart
+    private Animation<Texture> heart_animation = buildHeartAnimation();
+    private Texture inactiveHeart = new Texture(Gdx.files.internal("Heart/inactiveHeart.png"));
+    private Texture heartPickUp = new Texture(Gdx.files.internal("Heart/heartPickUp.png"));
 
     public GameAssetManager() {
         // character
@@ -229,6 +233,23 @@ public class GameAssetManager {
         return ammoTexture;
     }
 
+    // heart
+    public Animation<Texture> getHeartAnimation() {
+        return heart_animation;
+    }
+
+    public Texture getActiveHeartTexture() {
+        return heart_animation.getKeyFrames()[0];
+    }
+
+    public Texture getHeartPickUpTexture() {
+        return heartPickUp;
+    }
+
+    public Texture getInactiveHeartTexture() {
+        return inactiveHeart;
+    }
+
     //character
     private Animation<Texture> buildCharacterAnimation(String characterName, String type) {
 
@@ -310,6 +331,22 @@ public class GameAssetManager {
 
         for (int i = 0; i < numberOfFrames; i++) {
             String rawPath = String.format("eyeMonster/EyeMonster_%d.png", i);
+            Texture texture = new Texture(rawPath);
+            textureArray[i] = texture;
+        }
+
+        return new Animation<>(0.1f, textureArray);
+    }
+
+    // heart
+    public Animation<Texture> buildHeartAnimation() {
+        String pathToFolder = "assets/Heart/heartAnimation";
+        int numberOfFrames = countFiles(pathToFolder);
+
+        Texture[] textureArray = new Texture[numberOfFrames];
+
+        for (int i = 0; i < numberOfFrames; i++) {
+            String rawPath = String.format("Heart/heartAnimation/HeartAnimation_%d.png", i);
             Texture texture = new Texture(rawPath);
             textureArray[i] = texture;
         }

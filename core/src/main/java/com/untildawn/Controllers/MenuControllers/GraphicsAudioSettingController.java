@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.untildawn.Enums.MenuManager;
+import com.untildawn.Models.MenuManager;
 import com.untildawn.Enums.Menus;
 import com.untildawn.Models.MusicManager;
 import com.untildawn.Views.GraphicsAudioSettingView;

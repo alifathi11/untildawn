@@ -77,6 +77,7 @@ public class WeaponController {
         Weapon weapon = player.getCurrentWeapon();
         if (weapon.getTimeSinceLastShot() >= weapon.getShootCoolDown()
             && weapon.getAmmo() > 0) {
+
             Vector2 direction = new Vector2(mouseWorldPosition).sub(playerPosition).nor();
             Projectile projectile = new Projectile(
                 playerPosition,
@@ -84,6 +85,9 @@ public class WeaponController {
                 weapon.getWeaponType().getProjectile()
             );
             projectileController.addProjectile(projectile);
+
+            String sfxName = player.getCurrentWeapon().getWeaponType().name().toLowerCase() + "_shot";
+            SFXManager.play(sfxName);
 
             weapon.setAmmo(weapon.getAmmo() - 1);
             player.getCurrentWeapon().setTimeSinceLastShot(0f);

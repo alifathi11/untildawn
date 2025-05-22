@@ -9,12 +9,18 @@ public class GamePreferences {
     private Weapons weapon;
     private boolean autoReload;
     private Heros hero;
+    private boolean isGrayScaleOn;
 
-    public GamePreferences(Time gameTime, Weapons weapon, Heros hero, boolean autoReload) {
+    public GamePreferences(Time gameTime,
+                           Weapons weapon,
+                           Heros hero,
+                           boolean autoReload,
+                           boolean grayScale) {
         this.gameTime = gameTime;
         this.weapon = weapon;
         this.hero = hero;
         this.autoReload = autoReload;
+        this.isGrayScaleOn = grayScale;
     }
 
     public Heros getHero() {
@@ -47,5 +53,17 @@ public class GamePreferences {
 
     public boolean isAutoReload() {
         return autoReload;
+    }
+
+    public boolean isGrayScaleOn() {
+        return isGrayScaleOn;
+    }
+
+    public void setGrayScaleOn(boolean grayScaleOn) {
+        isGrayScaleOn = grayScaleOn;
+    }
+
+    public void toggleGrayScale() {
+        this.isGrayScaleOn = !this.isGrayScaleOn;
     }
 }

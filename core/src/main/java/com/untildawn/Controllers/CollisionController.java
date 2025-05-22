@@ -34,6 +34,7 @@ public class CollisionController {
         projectileCollidesWithMonsters();
         playerCollidesWithXP();
         playerCollidesWithAmmo();
+        playerCollidesWithHeart();
         eyeMonsterProjectileCollidesWithPlayer();
     }
 
@@ -144,8 +145,16 @@ public class CollisionController {
                 }
 
                 Ammo ammo = new Ammo(ammoAmount, weaponType);
-                ammo.setPosition(new Position(monster.getPosition().getX() - 1, monster.getPosition().getY()));
+                ammo.setPosition(new Position(monster.getPosition().getX() - 5, monster.getPosition().getY()));
                 world.addAmmo(ammo);
+            }
+
+            if ((random.nextInt() % 3 == 1
+                && monster.getMonsterType() == Monsters.EYE_MONSTER)
+                || monster.getMonsterType() == Monsters.ELDER_MONSTER) {
+                Heart heart = new Heart();
+                heart.setPosition(new Position(monster.getPosition().getX(), monster.getPosition().getY() - 5));
+                world.addHeart(heart);
             }
         }
 
@@ -184,11 +193,30 @@ public class CollisionController {
             if (playerCollider.collidesWith(xpCollider)) {
                 player.increaseXP(xp.getXp());
                 xpsToDelete.add(xp);
+                SFXManager.play("xp_collect");
             }
         }
 
         for (XP xp : xpsToDelete) {
             world.deleteXP(xp);
+        }
+    }
+
+    public void playerCollidesWithHeart() {
+        ArrayList<Heart> heartsToDelete = new ArrayList<>();
+        for (Heart heart : world.getHearts()) {
+            CollisionRect heartCollider = heart.getCollisionRect();
+            CollisionRect playerCollider = player.getCollisionRect();
+
+            if (playerCollider.collidesWith(heartCollider)) {
+                player.increaseHP();
+                heartsToDelete.add(heart);
+                SFXManager.play("heart_collect");
+            }
+        }
+
+        for (Heart heart : heartsToDelete) {
+            world.deleteHeart(heart);
         }
     }
 
@@ -202,7 +230,7 @@ public class CollisionController {
                 Weapon weapon = weaponController.getWeaponByType(ammo.getWeaponType());
                 weapon.increaseAmmo(ammo.getAmmoAmount());
                 ammoToDelete.add(ammo);
-                // TODO: add sfx
+                SFXManager.play("ammo_collect");
             }
         }
 

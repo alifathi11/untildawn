@@ -54,10 +54,14 @@ public class ProtectiveField {
         float px = player.getPosition().getX();
         float py = player.getPosition().getY();
 
-        boolean outside = px < minX || px > maxX || py < minY || py > maxY;
+        boolean outside = px <= minX || px >= maxX || py <= minY || py >= maxY;
 
         if (outside) {
-            player.decreaseHP();
+            if (!player.isInvincible()) {
+                player.decreaseHP();
+                player.setInvincible(true);
+                // TODO: sfx
+            }
         }
 
         px = MathUtils.clamp(px, minX, maxX);

@@ -12,5 +12,7 @@ public enum Actions {
     WEAPON_1,
     WEAPON_2,
     WEAPON_3,
+    PAUSE,
+    OPEN_CHEAT_CONSOLE,
     ;
 }

@@ -14,8 +14,12 @@ public class MusicManager {
     static {
         musicPaths = new ArrayList<>();
 
-        musicPaths.add("music/track-1.mp3");
-        musicPaths.add("music/track-2.mp3");
+        musicPaths.add("music/compromise.mp3");
+        musicPaths.add("music/baller.mp3");
+        musicPaths.add("music/complex.mp3");
+        musicPaths.add("music/government.mp3");
+        musicPaths.add("music/score.mp3");
+        musicPaths.add("music/wrath.mp3");
 
 
         loadMusic(currentTrackIndex);

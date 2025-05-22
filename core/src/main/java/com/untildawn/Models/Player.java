@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.untildawn.Enums.Heros;
+import com.untildawn.Main;
 
 public class Player {
     private Texture playerTexture;
@@ -16,9 +17,11 @@ public class Player {
     private Weapon currentWeapon;
 
     private User user;
-    private int score;
     private int kill;
+    private int level;
     // TODO: Longest time alive
+
+    private float maxHP;
     private float HP;
     private float speed;
     private float runSpeed;
@@ -47,9 +50,11 @@ public class Player {
         this.playerSprite = new Sprite(playerTexture);
 
 
-        this.score = 0;
+        this.level = 1;
         this.xp = 0;
-        this.HP = hero.getHP();
+        this.maxHP = hero.getHP();
+        this.HP = maxHP;
+        this.kill = 0;
         this.speed = hero.getSpeed();
         this.runSpeed = hero.getRunSpeed();
         this.game = game;
@@ -79,20 +84,12 @@ public class Player {
         return HP;
     }
 
-    public int getScore() {
-        return score;
-    }
-
     public Game getGame() {
         return game;
     }
 
     public User getUser() {
         return user;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public void setGame(Game game) {
@@ -193,7 +190,23 @@ public class Player {
     }
 
     public void increaseXP(int deltaXP) {
+
+        int currentLevel = getLevel();
+        int xpToLevelUp = currentLevel * 20;
+
         this.xp += deltaXP;
+        if (this.xp >= xpToLevelUp) {
+            levelUP();
+        }
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void levelUP() {
+        this.level++;
+        // TODO: show abilities
     }
 
     public int getXp() {
@@ -234,5 +247,25 @@ public class Player {
 
     public void increaseInvincibleTime(float deltaTime) {
         this.invincibleTime += deltaTime;
+    }
+
+    public void increaseHP() {
+        this.HP = Math.min(this.HP + 1, this.maxHP);
+    }
+
+    public void increaseMaxHP() {
+        this.maxHP++;
+    }
+
+    public float getMaxHP() {
+        return maxHP;
+    }
+
+    public void increaseKill() {
+        this.kill++;
+    }
+
+    public int getKill() {
+        return kill;
     }
 }

@@ -74,6 +74,11 @@ public class WorldController {
         for (Ammo ammo : world.getAmmo()) {
             ammo.getAmmoSprite().draw(Main.getBatch());
         }
+
+        // spawn hearts
+        for (Heart heart : world.getHearts()) {
+            heart.getHeartSprite().draw(Main.getBatch());
+        }
     }
 
     public void renderShapes(Camera camera) {

@@ -26,6 +26,9 @@ public class InputPreferences {
         inputBindings.put(Actions.WEAPON_1, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.NUM_1));
         inputBindings.put(Actions.WEAPON_2, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.NUM_2));
         inputBindings.put(Actions.WEAPON_3, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.NUM_3));
+
+        inputBindings.put(Actions.PAUSE, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.ESCAPE));
+        inputBindings.put(Actions.OPEN_CHEAT_CONSOLE, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.J));
     }
 
     public void setInputBinding(Actions action, InputBinding.InputType type, int code) {

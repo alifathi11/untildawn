@@ -15,10 +15,12 @@ public class PreGameMenuController {
     private final String[] weaponOptions;
     private final String[] heroOptions;
     private final String[] autoReloadOptions;
+    private final String[] grayScaleOptions;
     private int timeIndex;
     private int weaponIndex;
     private int heroIndex;
     private int autoReloadIndex;
+    private int grayScaleIndex;
 
     public PreGameMenuController() {
 
@@ -48,10 +50,16 @@ public class PreGameMenuController {
             "ON"
         };
 
+        grayScaleOptions = new String[] {
+            "OFF",
+            "ON"
+        };
+
         this.timeIndex = 0;
         this.heroIndex = 0;
         this.weaponIndex = 0;
         this.autoReloadIndex = 0;
+        this.grayScaleIndex = 0;
     }
 
 
@@ -102,6 +110,14 @@ public class PreGameMenuController {
                }
             });
 
+            view.getGrayScaleButton().addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    grayScaleIndex = (grayScaleIndex + 1) % grayScaleOptions.length;
+                    view.getGrayScaleButton().setText(grayScaleOptions[grayScaleIndex]);
+                }
+            });
+
             view.getStartGameButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -112,8 +128,15 @@ public class PreGameMenuController {
                             Heros hero = Heros.values()[heroIndex];
                             Time time = Time.values()[timeIndex];
                             boolean autoReload = autoReloadIndex != 0;
+                            boolean grayScale = grayScaleIndex != 0;
 
-                            GamePreferences gameSetting = new GamePreferences(time, weaponType, hero, autoReload);
+                            GamePreferences gameSetting = new GamePreferences(
+                                time,
+                                weaponType,
+                                hero,
+                                autoReload,
+                                grayScale
+                            );
 
                             Game game = new Game(gameSetting, null);
 
@@ -124,7 +147,11 @@ public class PreGameMenuController {
                             App.setCurrentGame(game);
 
                             Main.getMain().getScreen().dispose();
-                            Main.getMain().setScreen(new GameView(new GameController(), GameAssetManager.getGameAssetManager().getSkin()));
+                            Main.getMain().setScreen(
+                                new GameView(
+                                    new GameController(), GameAssetManager.getGameAssetManager().getSkin()
+                                )
+                            );
                         }
                     });
                 }

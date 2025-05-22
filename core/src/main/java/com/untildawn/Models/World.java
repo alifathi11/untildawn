@@ -16,6 +16,7 @@ public class World {
     private ArrayList<Monster> monsters;
     private ArrayList<XP> xps;
     private ArrayList<Ammo> ammo;
+    private ArrayList<Heart> hearts;
 
     private ProtectiveField protectiveField;
 
@@ -27,6 +28,7 @@ public class World {
         this.trees = new ArrayList<>();
         this.monsters = new ArrayList<>();
         this.xps = new ArrayList<>();
+        this.hearts = new ArrayList<>();
         this.ammo = new ArrayList<>();
     }
 
@@ -104,5 +106,17 @@ public class World {
 
     public ProtectiveField getProtectiveField() {
         return protectiveField;
+    }
+
+    public void addHeart(Heart heart) {
+        this.hearts.add(heart);
+    }
+
+    public void deleteHeart(Heart heart) {
+        this.hearts.remove(heart);
+    }
+
+    public ArrayList<Heart> getHearts() {
+        return hearts;
     }
 }

@@ -1,22 +1,31 @@
 package com.untildawn.Views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.untildawn.Controllers.CheatConsoleController;
 import com.untildawn.Controllers.GameController;
-import com.untildawn.Controllers.WeaponController;
+import com.untildawn.Controllers.PauseMenuController;
+import com.untildawn.Enums.Monsters;
 import com.untildawn.Main;
-import com.untildawn.Models.Player;
-import com.untildawn.Models.Weapon;
+import com.untildawn.Models.*;
 
 public class GameView implements Screen, InputProcessor {
     private Stage stage;
@@ -25,10 +34,18 @@ public class GameView implements Screen, InputProcessor {
     OrthographicCamera hudCamera;
 
     private GameController controller;
+    private PauseMenuView pauseMenuView;
+    private PauseMenuController pauseMenuController;
     private BitmapFont font;
     private GlyphLayout layout;
 
+    private CheatConsoleView cheatConsoleView;
+    private CheatConsoleController cheatConsoleController;
+
+    private Game game;
     private Player player;
+
+    private ShaderProgram grayscaleShader;
 
     public GameView(GameController controller, Skin skin) {
         camera = new OrthographicCamera();
@@ -36,12 +53,21 @@ public class GameView implements Screen, InputProcessor {
 
         this.controller = controller;
         controller.setView(this);
+        this.pauseMenuView = controller.getPauseMenuView();
+        this.pauseMenuController = controller.getPauseMenuController();
 
-        this.player = controller.getPlayerController().getPlayer();
+        cheatConsoleView = new CheatConsoleView();
+        cheatConsoleController = new CheatConsoleController(cheatConsoleView);
+
+        this.game = App.getCurrentGame();
+        this.player = game.getPlayer();
     }
 
     @Override
     public void show() {
+        create();
+        SFXManager.load();
+
         viewport = new ScreenViewport(camera);
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
@@ -58,17 +84,36 @@ public class GameView implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
+
         camera.position.set(player.getPosition().getX(), player.getPosition().getY(), 0);
         camera.update();
-
         Main.getBatch().setProjectionMatrix(camera.combined);
 
         ScreenUtils.clear(Color.BLACK, true);
 
-        Main.getBatch().begin();
-        controller.updateGame();
-        drawCornerTexts();
-        Main.getBatch().end();
+        if (game.getGamePreferences().isGrayScaleOn()) {
+            Main.getBatch().setShader(grayscaleShader);
+        } else {
+            Main.getBatch().setShader(null);
+        }
+        if (!cheatConsoleView.isVisible()) {
+            Main.getBatch().begin();
+
+            if (!pauseMenuController.isPaused()) {
+                Gdx.input.setInputProcessor(this);
+                controller.updateGame();
+            } else {
+                Gdx.input.setInputProcessor(pauseMenuView.getStage());
+                pauseMenuView.show();
+            }
+
+            pauseMenuView.render(Main.getBatch());
+            Main.getBatch().end();
+        } else {
+            Gdx.input.setInputProcessor(cheatConsoleView.getStage());
+        }
+
+        cheatConsoleController.updateAndRender();
 
         controller.getWorldController().renderShapes(camera);
 
@@ -76,22 +121,20 @@ public class GameView implements Screen, InputProcessor {
         stage.draw();
     }
 
-    private void drawCornerTexts() {
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
 
-        Weapon weapon = player.getCurrentWeapon();
-        // TODO: temporary
-        String HP = Float.toString(player.getHP());
-        String ammo = Integer.toString(weapon.getAmmo());
-        String XP = Integer.toString(player.getXp());
-        String totalAmmo = Integer.toString(weapon.getTotalAmmo());
 
-        Main.getBatch().setProjectionMatrix(hudCamera.combined);
-        hudCamera.update();
 
-        font.draw(Main.getBatch(), HP + " " + XP, 10, screenHeight - 10);
-        font.draw(Main.getBatch(), ammo + " " + totalAmmo, 10, 20);
+    public void create() {
+        ShaderProgram.pedantic = false;
+
+        grayscaleShader = new ShaderProgram(
+            Gdx.files.internal("shaders/grayscale.vert"),
+            Gdx.files.internal("shaders/grayscale.frag")
+        );
+
+        if (!grayscaleShader.isCompiled()) {
+            Gdx.app.error("SHADER", "Error compiling shader: " + grayscaleShader.getLog());
+        }
     }
 
     @Override
@@ -167,5 +210,9 @@ public class GameView implements Screen, InputProcessor {
 
     public OrthographicCamera getCamera() {
         return camera;
+    }
+
+    public CheatConsoleController getCheatConsoleController() {
+        return cheatConsoleController;
     }
 }

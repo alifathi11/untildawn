@@ -98,6 +98,10 @@ public class Weapon {
             isReloading = true;
             reloadTimeElapsed = 0f;
             setTime(0f);
+
+            String sfxName = weaponType.name().toLowerCase() + "_reload";
+            SFXManager.play(sfxName);
+
         }
     }
 

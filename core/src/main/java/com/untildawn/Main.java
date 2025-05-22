@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.untildawn.Enums.MenuManager;
+import com.untildawn.Models.MenuManager;
 import com.untildawn.Enums.Menus;
 import com.untildawn.Models.*;
 
