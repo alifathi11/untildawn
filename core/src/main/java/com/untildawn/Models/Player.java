@@ -29,6 +29,7 @@ public class Player {
 
     private float time;
     private boolean isInvincible = false;
+    private boolean isGhost = false;
     private float invincibilityDuration = 1f;
     private float invincibleTime = 0f;
 
@@ -269,5 +270,27 @@ public class Player {
 
     public int getKill() {
         return kill;
+    }
+
+    public void setOnGodMode() {
+        this.maxHP = Integer.MAX_VALUE;
+        this.HP = Integer.MAX_VALUE;
+        this.currentWeapon.setTotalAmmo(Integer.MAX_VALUE);
+    }
+
+    public void setGhostMode(boolean ghostMode) {
+        this.getCollisionRect().setGhostMode(ghostMode);
+        this.isGhost = ghostMode;
+        if (ghostMode) {
+            this.speed = 20f;
+            this.runSpeed = 20f;
+        } else {
+            this.speed = hero.getSpeed();
+            this.runSpeed = hero.getRunSpeed();
+        }
+    }
+
+    public boolean isOnGhostMode() {
+        return isGhost;
     }
 }

@@ -31,15 +31,22 @@ public class GameController {
         GamePreferences gamePreferences = game.getGamePreferences();
 
         this.projectileController = new ProjectileController();
-        this.weaponController = new WeaponController(projectileController, gamePreferences.getWeapon());
 
-        this.pauseMenuController = new PauseMenuController();
+        this.pauseMenuController = new PauseMenuController(view);
         this.pauseMenuView = new PauseMenuView(pauseMenuController);
 
-        this.playerController = new PlayerController(App.getCurrentGame().getPlayer(), weaponController, this, pauseMenuController);
-        this.worldController = new WorldController(playerController, this);
+        this.weaponController = new WeaponController(gamePreferences.getWeapon());
+        this.playerController = new PlayerController(App.getCurrentGame().getPlayer());
+        this.worldController = new WorldController(this);
         this.monsterController = new MonsterController(this);
-        this.collisionController = new CollisionController(worldController.getWorld(), playerController.getPlayer(), projectileController, weaponController, monsterController, worldController);
+
+        this.collisionController = new CollisionController(this);
+
+
+        this.weaponController.setControllers(this);
+        this.playerController.setControllers(this);
+        this.worldController.setControllers(this);
+        this.monsterController.setControllers(this);
     }
 
     public void updateGame(float deltaTime) {

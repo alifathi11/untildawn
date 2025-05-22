@@ -22,21 +22,27 @@ public class CheatConsoleController {
                 String code = view.getCheatCode().trim().toLowerCase();
 
                 switch (code) {
-                    case "decrease time":
+                    case "increase time":
                         game.increaseElapsedTime(60);
                         break;
-//                    case "level up":
-//                        player.levelUp();
-//                        break;
-//                    case "add hp":
-//                        player.AddHP();
-//                        break;
-//                    case "boss fight":
-//                        game.goToBossFight();
-//                        break;
-//                    case "god mode":
-//                        player.godModeOn();
-//                        break;
+                    case "level up":
+                        player.levelUP();
+                        break;
+                    case "add hp":
+                        player.increaseHP();
+                        break;
+                    case "boss fight":
+                        game.increaseElapsedTime((float) (game.getGamePreferences().getGameTime().getTime()) / 2);
+                        break;
+                    case "god mode on":
+                        player.setOnGodMode();
+                        break;
+                    case "ghost mode on":
+                        player.setGhostMode(true);
+                        break;
+                    case "ghost mode off":
+                        player.setGhostMode(false);
+                        break;
                 }
 
                 view.clear();

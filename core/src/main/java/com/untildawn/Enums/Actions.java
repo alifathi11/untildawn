@@ -14,5 +14,6 @@ public enum Actions {
     WEAPON_3,
     PAUSE,
     OPEN_CHEAT_CONSOLE,
+    AUTO_SHOOTING,
     ;
 }

@@ -1,10 +1,13 @@
 package com.untildawn.Controllers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.untildawn.Enums.Abilities;
 import com.untildawn.Models.App;
 import com.untildawn.Models.Game;
+import com.untildawn.Models.MenuManager;
+import com.untildawn.Views.CheatCodesScreen;
 import com.untildawn.Views.GameView;
 import com.untildawn.Views.PauseMenuView;
 
@@ -18,7 +21,9 @@ public class PauseMenuController {
     private boolean isPaused = false;
     private PauseMenuView view;
 
-    public PauseMenuController() {
+    private GameView gameView;
+
+    public PauseMenuController(GameView gameView) {
 
         game = App.getCurrentGame();
 
@@ -28,6 +33,8 @@ public class PauseMenuController {
         };
 
         grayScaleIndex = game.getGamePreferences().isGrayScaleOn() ? 1 : 0;
+
+        this.gameView = gameView;
     }
 
     public void setView(PauseMenuView view) {
@@ -61,12 +68,14 @@ public class PauseMenuController {
                     // TODO: dead screen, give up logic
                 }
             });
+
             view.getCheatCodesButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    // TODO: cheat code screen
+                    gameView.showCheatMenu();
                 }
             });
+
             view.getShowAbilitiesButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {

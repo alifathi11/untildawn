@@ -44,6 +44,8 @@ public class GameView implements Screen, InputProcessor {
     private CheatConsoleView cheatConsoleView;
     private CheatConsoleController cheatConsoleController;
 
+    private CheatCodesScreen cheatCodesScreen;
+
     private Game game;
     private Player player;
 
@@ -112,6 +114,13 @@ public class GameView implements Screen, InputProcessor {
 //            lightShader.setUniformf("u_radius", 250f);
 //            lightShader.setUniformf("u_viewportHeight", Gdx.graphics.getHeight());
         }
+
+        if (cheatCodesScreen != null && cheatCodesScreen.isVisible()) {
+            Gdx.input.setInputProcessor(cheatCodesScreen.getStage());
+            cheatCodesScreen.render(delta);
+            return;
+        }
+
         if (!cheatConsoleView.isVisible()) {
             Main.getBatch().begin();
 
@@ -138,6 +147,8 @@ public class GameView implements Screen, InputProcessor {
         drawHUDText();
         drawXPBar();
     }
+
+
 
     private void drawHUDText() {
         Main.getBatch().setProjectionMatrix(hudCamera.combined);
@@ -215,6 +226,17 @@ public class GameView implements Screen, InputProcessor {
         if (!lightShader.isCompiled()) {
             Gdx.app.error("Shader", "Light shader compile error:\n" + lightShader.getLog());
         }
+    }
+
+    public void showCheatMenu() {
+        cheatCodesScreen = new CheatCodesScreen(() -> {
+            pauseMenuView.show();
+            Gdx.input.setInputProcessor(pauseMenuView.getStage());
+            cheatCodesScreen = null;
+        });
+
+        cheatCodesScreen.show();
+        Gdx.input.setInputProcessor(cheatCodesScreen.getStage());
     }
 
     @Override

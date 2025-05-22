@@ -20,6 +20,7 @@ public class InputPreferences {
         inputBindings.put(Actions.RUN, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.SHIFT_LEFT));
 
         inputBindings.put(Actions.SHOOT,   new InputBinding(InputBinding.InputType.MOUSE, Input.Buttons.LEFT));
+        inputBindings.put(Actions.AUTO_SHOOTING, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.SPACE));
         inputBindings.put(Actions.RELOAD,  new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.R));
         inputBindings.put(Actions.DANCE,   new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.E));
 
@@ -29,6 +30,7 @@ public class InputPreferences {
 
         inputBindings.put(Actions.PAUSE, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.ESCAPE));
         inputBindings.put(Actions.OPEN_CHEAT_CONSOLE, new InputBinding(InputBinding.InputType.KEYBOARD, Input.Keys.J));
+
     }
 
     public void setInputBinding(Actions action, InputBinding.InputType type, int code) {

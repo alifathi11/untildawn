@@ -17,16 +17,14 @@ import java.util.Iterator;
 public class WorldController {
     private PlayerController playerController;
     private GameController gameController;
+
     private World world;
     private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
 
     private ArrayList<TimedEffect> effects;
 
-    public WorldController(PlayerController playerController, GameController gameController) {
-        this.playerController = playerController;
-
-        this.gameController = gameController;
+    public WorldController(GameController gameController) {
 
         this.camera = gameController.getView().getCamera();
         this.shapeRenderer = new ShapeRenderer();
@@ -36,6 +34,11 @@ public class WorldController {
         worldDesigner.designWorld(world);
 
         this.effects = new ArrayList<>();
+    }
+
+    public void setControllers(GameController gameController) {
+        this.playerController = gameController.getPlayerController();
+        this.gameController = gameController;
     }
 
     public void update(float deltaTime) {

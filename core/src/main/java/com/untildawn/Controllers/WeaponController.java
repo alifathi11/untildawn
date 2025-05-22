@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.untildawn.Enums.Weapons;
 import com.untildawn.Main;
 import com.untildawn.Models.*;
@@ -13,17 +14,21 @@ import java.util.Map;
 
 public class WeaponController {
     private WeaponAnimations weaponAnimations;
-    private final ProjectileController projectileController;
+
+    private ProjectileController projectileController;
+    private WorldController worldController;
+    private GameController gameController;
     private Player player;
 
     private final Map<Integer, Weapon> weapons;
 
-    public WeaponController(ProjectileController projectileController, Weapons weaponType) {
-        this.projectileController = projectileController;
+    public WeaponController(Weapons weaponType) {
+
         weapons = new HashMap<>();
         weapons.put(1, new Weapon(Weapons.REVOLVER));
         weapons.put(2, new Weapon(Weapons.SMG));
         weapons.put(3, new Weapon(Weapons.SHOTGUN));
+
 
         this.player = App.getCurrentGame().getPlayer();
 
@@ -44,7 +49,12 @@ public class WeaponController {
         }
 
         this.weaponAnimations = new WeaponAnimations();
+    }
 
+    public void setControllers(GameController gameController) {
+        this.projectileController = gameController.getProjectileController();
+        this.worldController = gameController.getWorldController();
+        this.gameController = gameController;
     }
 
     public void update() {
@@ -94,6 +104,44 @@ public class WeaponController {
 
             GamePreferences gamePreferences = App.getCurrentGame().getGamePreferences();
             if (gamePreferences.isAutoReload() && weapon.getAmmo() == 0) weapon.reload();
+        }
+    }
+
+    public void autoShooting() {
+        Game game = App.getCurrentGame();
+        Player player = game.getPlayer();
+        Vector2 playerPos = new Vector2(player.getPosition().getX(), player.getPosition().getY());
+
+        Monster nearest = null;
+        float minDist2 = Float.MAX_VALUE;
+
+        for (Monster monster : worldController.getWorld().getMonsters()) {
+
+            Vector2 monsterPos = new Vector2(monster.getPosition().getX(), monster.getPosition().getY());
+            float dist2 = playerPos.dst2(monsterPos);
+            if (dist2 < minDist2) {
+                minDist2 = dist2;
+                nearest = monster;
+            }
+        }
+
+        if (nearest != null) {
+
+            Vector2 monsterPos = new Vector2(nearest.getPosition().getX(), nearest.getPosition().getY());
+
+            handleWeaponShoot(playerPos, monsterPos);
+
+            Vector3 monsterPos3D = new Vector3(monsterPos.x, monsterPos.y, 0);
+            Vector3 screenMonster = gameController.getView().getCamera().project(monsterPos3D);
+
+            try { // TODO: revise this part
+                java.awt.Robot robot = new java.awt.Robot();
+                robot.mouseMove((int) screenMonster.x, (int) (Gdx.graphics.getHeight() - screenMonster.y));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            handleWeaponRotation((int) screenMonster.x, (int) screenMonster.y);
         }
     }
 

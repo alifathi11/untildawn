@@ -12,20 +12,21 @@ public class PlayerController {
     private Player player;
     private InputPreferences playerInputPreferences;
     private PlayerAnimations playerAnimations;
+
     private WeaponController weaponController;
     private GameController gameController;
     private PauseMenuController pauseController;
 
-    public PlayerController(Player player,
-                            WeaponController weaponController,
-                            GameController gameController,
-                            PauseMenuController pauseController) {
+    public PlayerController(Player player) {
         this.player = player;
         this.playerInputPreferences = player.getInputPreferences();
         this.playerAnimations = new PlayerAnimations(player);
-        this.weaponController = weaponController;
+    }
+
+    public void setControllers(GameController gameController) {
+        this.weaponController = gameController.getWeaponController();
         this.gameController = gameController;
-        this.pauseController = pauseController;
+        this.pauseController = gameController.getPauseMenuController();
     }
 
     public void update(float deltaTime) {
@@ -55,13 +56,14 @@ public class PlayerController {
         player.getPlayerSprite().draw(Main.getBatch());
 
         player.getCollisionRect().move(player.getPosition().getX(), player.getPosition().getY());
-
-        if (player.isPlayerIdle()) {
-            playerAnimations.idleAnimation();
-        } else if (player.isPlayerRunning()) {
-            playerAnimations.runAnimation();
-        } else if (player.isPlayerWalking()) {
-            playerAnimations.walkAnimation();
+        if (!player.isOnGhostMode()) {
+            if (player.isPlayerIdle()) {
+                playerAnimations.idleAnimation();
+            } else if (player.isPlayerRunning()) {
+                playerAnimations.runAnimation();
+            } else if (player.isPlayerWalking()) {
+                playerAnimations.walkAnimation();
+            }
         }
 
         handlePlayerInput();
@@ -89,6 +91,13 @@ public class PlayerController {
                 weaponController.handleWeaponShoot(playerWorldPos, mouseWorldPos);
             }
         }
+
+        if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.AUTO_SHOOTING).getCode())) {
+            if (!weaponController.getCurrentWeapon().isReloading()) {
+                weaponController.autoShooting();
+            }
+        }
+
 
         if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_UP).getCode())
             && canMoveTo(player.getPosition().getX(), player.getPosition().getY() + player.getSpeed())) {

@@ -45,10 +45,11 @@ public class MonsterController {
 
         this.game = App.getCurrentGame();
         this.player = game.getPlayer();
-
-        this.projectileController = gameController.getProjectileController();
     }
 
+    public void setControllers(GameController gameController) {
+        this.projectileController = gameController.getProjectileController();
+    }
 
     public void update(float deltaTime) {
         spawnTrees();

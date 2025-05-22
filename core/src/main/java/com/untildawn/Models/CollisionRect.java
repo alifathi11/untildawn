@@ -3,6 +3,7 @@ package com.untildawn.Models;
 public class CollisionRect {
     private float y, x;
     private float width, height;
+    private boolean isGhost;
 
     public CollisionRect(float x,
                          float y,
@@ -12,6 +13,7 @@ public class CollisionRect {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.isGhost = false;
     }
 
     public void move(float x, float y) {
@@ -20,6 +22,9 @@ public class CollisionRect {
     }
 
     public boolean collidesWith(CollisionRect other) {
+
+        if (isGhost) return false;
+
         return x < other.x + other.width &&
             x + width > other.x &&
             y < other.y + other.height &&
@@ -40,5 +45,8 @@ public class CollisionRect {
 
     public float getWidth() {
         return width;
+    }
+    public void setGhostMode(boolean ghostMode) {
+        this.isGhost = ghostMode;
     }
 }

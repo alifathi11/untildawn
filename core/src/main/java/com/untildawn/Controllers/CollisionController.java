@@ -18,18 +18,13 @@ public class CollisionController {
     private WorldController worldController;
 
 
-    public CollisionController(World world,
-                               Player player,
-                               ProjectileController projectileController,
-                               WeaponController weaponController,
-                               MonsterController monsterController,
-                               WorldController worldController) {
-        this.world = world;
-        this.player = player;
-        this.projectileController = projectileController;
-        this.weaponController = weaponController;
-        this.monsterController = monsterController;
-        this.worldController = worldController;
+    public CollisionController(GameController gameController) {
+        this.world = gameController.getWorldController().getWorld();
+        this.player = App.getCurrentGame().getPlayer();
+        this.projectileController = gameController.getProjectileController();
+        this.weaponController = gameController.getWeaponController();
+        this.monsterController = gameController.getMonsterController();
+        this.worldController = gameController.getWorldController();
     }
 
     public void update() {
@@ -43,6 +38,7 @@ public class CollisionController {
     }
 
     public void playerCollidesWithMonsters() {
+
         ArrayList<Monster> monsters = world.getMonsters();
         ArrayList<Monster> monstersToDelete = new ArrayList<>();
 
