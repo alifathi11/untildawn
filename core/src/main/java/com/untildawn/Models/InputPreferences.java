@@ -40,4 +40,15 @@ public class InputPreferences {
     public InputBinding getInputBinding(Actions action) {
         return inputBindings.get(action);
     }
+
+    public boolean isInputInUse(InputBinding.InputType type, int code, Actions excludeAction) {
+        for (Map.Entry<Actions, InputBinding> entry : inputBindings.entrySet()) {
+            if (entry.getKey() == excludeAction) continue;
+            InputBinding binding = entry.getValue();
+            if (binding.getType() == type && binding.getCode() == code) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

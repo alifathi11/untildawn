@@ -9,6 +9,7 @@ import com.untildawn.Enums.Weapons;
 import com.untildawn.Main;
 import com.untildawn.Models.*;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -107,7 +108,7 @@ public class WeaponController {
         }
     }
 
-    public void autoShooting() {
+    public void autoShooting() { // TODO: place cursor on the monster while auto-shooting
         Game game = App.getCurrentGame();
         Player player = game.getPlayer();
         Vector2 playerPos = new Vector2(player.getPosition().getX(), player.getPosition().getY());
@@ -116,7 +117,6 @@ public class WeaponController {
         float minDist2 = Float.MAX_VALUE;
 
         for (Monster monster : worldController.getWorld().getMonsters()) {
-
             Vector2 monsterPos = new Vector2(monster.getPosition().getX(), monster.getPosition().getY());
             float dist2 = playerPos.dst2(monsterPos);
             if (dist2 < minDist2) {
@@ -126,24 +126,16 @@ public class WeaponController {
         }
 
         if (nearest != null) {
+            Position pos = nearest.getPosition();
+            float centerX = pos.getX() + nearest.getSprite().getWidth() / 2f;
+            float centerY = pos.getY() + nearest.getSprite().getHeight() / 2f;
+            Vector2 monsterCenter = new Vector2(centerX, centerY);
 
-            Vector2 monsterPos = new Vector2(nearest.getPosition().getX(), nearest.getPosition().getY());
-
-            handleWeaponShoot(playerPos, monsterPos);
-
-            Vector3 monsterPos3D = new Vector3(monsterPos.x, monsterPos.y, 0);
-            Vector3 screenMonster = gameController.getView().getCamera().project(monsterPos3D);
-
-            try { // TODO: revise this part
-                java.awt.Robot robot = new java.awt.Robot();
-                robot.mouseMove((int) screenMonster.x, (int) (Gdx.graphics.getHeight() - screenMonster.y));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            handleWeaponRotation((int) screenMonster.x, (int) screenMonster.y);
+            handleWeaponShoot(playerPos, monsterCenter);
         }
     }
+
+
 
     public void changeWeapon(int weaponNumber) {
         switch (weaponNumber) {

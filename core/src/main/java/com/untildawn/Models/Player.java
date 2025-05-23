@@ -11,8 +11,6 @@ public class Player {
     private Position position;
     private CollisionRect collisionRect;
 
-    private InputPreferences inputPreferences;
-
     private Weapon currentWeapon;
 
     private User user;
@@ -59,8 +57,6 @@ public class Player {
         this.runSpeed = hero.getRunSpeed();
         this.game = game;
         this.position = new Position((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2);
-
-        inputPreferences = new InputPreferences();
 
         this.playerSprite.setPosition((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2);
         this.playerSprite.setSize(playerTexture.getWidth() * 3, playerTexture.getHeight() * 3);
@@ -171,10 +167,6 @@ public class Player {
 
     public void setHero(Heros hero) {
         this.hero = hero;
-    }
-
-    public InputPreferences getInputPreferences() {
-        return inputPreferences;
     }
 
     public boolean isPlayerRunning() {

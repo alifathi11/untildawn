@@ -9,14 +9,14 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.untildawn.Models.GameAssetManager;
 
-public class CheatCodesScreen {
+public class AbilityStatsScreen {
     private Stage stage;
     private Table table;
     private Skin skin;
     private final Runnable onBack;
     private boolean visible = false;
 
-    public CheatCodesScreen(Runnable onBackCallback) {
+    public AbilityStatsScreen(Runnable onBackCallback) {
         this.onBack = onBackCallback;
         this.stage = new Stage(new ScreenViewport());
         this.skin = GameAssetManager.getGameAssetManager().getSkin();
@@ -30,17 +30,15 @@ public class CheatCodesScreen {
         table.top().pad(30);
         stage.addActor(table);
 
-        Label title = new Label("Cheat Codes", skin, "title");
+        Label title = new Label("ABILITY STATS", skin, "title");
         table.add(title).colspan(2).padBottom(30);
         table.row();
 
-        addRow("INCREASE TIME", "Increase game time by 1 minute.");
-        addRow("LEVEL UP", "Level up by 1.");
-        addRow("ADD HP", "Restore 1 unit of HP.");
-        addRow("BOSS FIGHT", "Trigger boss by setting time to half.");
-        addRow("GOD MODE ON", "Enable infinite health and ammo.");
-        addRow("GHOST MODE ON", "Disable collision & boost speed.");
-        addRow("GHOST MODE OFF", "Disable Ghost Mode.");
+        addRow("VITALITY", "Permanently increase your maximum HP by 1.");
+        addRow("DAMAGE", "Boost weapon damage by 25% for the next 10 seconds.");
+        addRow("PROCREASE", "Add an extra projectile to your weapon's attack pattern.");
+        addRow("AMOCREASE", "Increase your weapon's maximum ammo capacity by 5");
+        addRow("SPEEDY", "Double your movement speed for 10 seconds");
 
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ChangeListener() {

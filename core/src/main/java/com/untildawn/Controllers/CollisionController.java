@@ -55,6 +55,9 @@ public class CollisionController {
         }
 
         for (Monster monster : monstersToDelete) {
+
+            monster.setDead(true);
+
             if (monster.getMonsterType() == Monsters.EYE_MONSTER) {
                 monsterController.decreaseEyeMonstersInWorld();
             }
@@ -108,6 +111,8 @@ public class CollisionController {
         }
 
         for (Monster monster : monstersToDelete) {
+
+            monster.setDead(true);
 
             if (monster.getMonsterType() == Monsters.BRAIN_MONSTER) {
                 SFXManager.play("brain_death");

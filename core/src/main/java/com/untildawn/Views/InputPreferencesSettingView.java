@@ -1,6 +1,7 @@
 package com.untildawn.Views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,14 +10,17 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.untildawn.Controllers.MenuControllers.KeyboardPreferencesSettingController;
+import com.untildawn.Controllers.MenuControllers.InputPreferencesSettingController;
+import com.untildawn.Enums.Actions;
 import com.untildawn.Main;
-import com.untildawn.Models.GameAssetManager;
-import com.untildawn.Models.MusicManager;
+import com.untildawn.Models.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
-public class KeyboardPreferencesSettingView implements Screen, AppMenu {
+public class InputPreferencesSettingView implements Screen, AppMenu {
     private Stage stage;
 
     private Texture backgroundTexture;
@@ -33,16 +37,22 @@ public class KeyboardPreferencesSettingView implements Screen, AppMenu {
     private ImageButton graphicAndAudioSettingButton;
     private ImageButton keyboardSettingButton;
 
-    // TODO: change and save keyboard preferences
+    private InputPreferences inputPreferences;
+    private ArrayList<TextButton> changeButtons;
+    private Map<TextButton, Actions> buttonActionMap;
+
+    private TextButton submitButton;
 
 
-
+    private Skin skin;
     private Table table;
 
-    private KeyboardPreferencesSettingController controller;
+    private InputPreferencesSettingController controller;
 
-    public KeyboardPreferencesSettingView(KeyboardPreferencesSettingController controller, Skin skin) {
+    public InputPreferencesSettingView(InputPreferencesSettingController controller, Skin skin) {
         this.controller = controller;
+
+        this.skin = skin;
 
         this.settingLabel = new Label("SETTING", skin);
 
@@ -55,10 +65,16 @@ public class KeyboardPreferencesSettingView implements Screen, AppMenu {
         graphicAndAudioSettingButton = new ImageButton(graphicsAndAudioDrawable);
         keyboardSettingButton = new ImageButton(keyboardDrawable);
 
+        this.submitButton = new TextButton("SUBMIT", skin);
+
         this.table = new Table();
 
         this.backgroundTexture = new Texture("images/background-image-2.png");
         backgroundImage = new Image(backgroundTexture);
+
+        this.inputPreferences = App.getCurrentUser().getInputPreferences();
+        this.changeButtons = new ArrayList<>();
+        this.buttonActionMap = new HashMap<>();
 
         controller.setView(this);
     }
@@ -70,9 +86,6 @@ public class KeyboardPreferencesSettingView implements Screen, AppMenu {
         }
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-
-        String currentMusic = "track: " + MusicManager.getCurrentTrackIndex();
-        String musicState = MusicManager.isMusicPlaying() ? "ON" : "OFF";
 
         Container<ImageButton> graphicAudioSettingContainer = new Container<>(graphicAndAudioSettingButton);
         graphicAudioSettingContainer.size(60, 60);
@@ -90,10 +103,55 @@ public class KeyboardPreferencesSettingView implements Screen, AppMenu {
         table.row().pad(40, 5, 10, 5);
         table.add(settingIcons).center().width(800).height(80);
 
+        addRow(Actions.MOVE_UP, getReadableInputName(inputPreferences.getInputBinding(Actions.MOVE_UP)));
+        addRow(Actions.MOVE_DOWN, getReadableInputName(inputPreferences.getInputBinding(Actions.MOVE_DOWN)));
+        addRow(Actions.MOVE_LEFT, getReadableInputName(inputPreferences.getInputBinding(Actions.MOVE_LEFT)));
+        addRow(Actions.MOVE_RIGHT, getReadableInputName(inputPreferences.getInputBinding(Actions.MOVE_RIGHT)));
+        addRow(Actions.SHOOT, getReadableInputName(inputPreferences.getInputBinding(Actions.SHOOT)));
+        addRow(Actions.AUTO_SHOOTING, getReadableInputName(inputPreferences.getInputBinding(Actions.AUTO_SHOOTING)));
+        addRow(Actions.RELOAD, getReadableInputName(inputPreferences.getInputBinding(Actions.RELOAD)));
+        addRow(Actions.DANCE, getReadableInputName(inputPreferences.getInputBinding(Actions.DANCE)));
+        addRow(Actions.RUN, getReadableInputName(inputPreferences.getInputBinding(Actions.RUN)));
+        addRow(Actions.WEAPON_1, getReadableInputName(inputPreferences.getInputBinding(Actions.WEAPON_1)));
+        addRow(Actions.WEAPON_2, getReadableInputName(inputPreferences.getInputBinding(Actions.WEAPON_2)));
+        addRow(Actions.WEAPON_3, getReadableInputName(inputPreferences.getInputBinding(Actions.WEAPON_3)));
+        addRow(Actions.PAUSE, getReadableInputName(inputPreferences.getInputBinding(Actions.PAUSE)));
+        addRow(Actions.OPEN_CHEAT_CONSOLE, getReadableInputName(inputPreferences.getInputBinding(Actions.OPEN_CHEAT_CONSOLE)));
+
+        table.row().pad(40, 10, 10, 10);
+        table.add(submitButton).width(200).height(60);
+
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);
         stage.addActor(table);
-        controller.handleKeyBoardPreferencesSettingButton();
+        controller.handleInputPreferencesSettingButton();
+    }
+
+    public void addRow(Actions action, String input) {
+
+        Label actionLabel = new Label(action.name(), skin);
+        TextButton changeButton = new TextButton(input, skin, "textButtonNoBg");
+
+        changeButtons.add(changeButton);
+        buttonActionMap.put(changeButton, action);
+
+        table.row().pad(20, 10, 20, 10);
+        table.add(actionLabel).left();
+        table.add(changeButton).width(100).height(50).right();
+    }
+
+    private String getReadableInputName(InputBinding binding) {
+        if (binding.getType() == InputBinding.InputType.KEYBOARD) {
+            return Input.Keys.toString(binding.getCode());
+        } else if (binding.getType() == InputBinding.InputType.MOUSE) {
+            switch (binding.getCode()) {
+                case Input.Buttons.LEFT: return "Left Mouse Button";
+                case Input.Buttons.RIGHT: return "Right Mouse Button";
+                case Input.Buttons.MIDDLE: return "Middle Mouse Button";
+                default: return "Mouse Button " + binding.getCode();
+            }
+        }
+        return "Unknown";
     }
 
     @Override
@@ -231,5 +289,17 @@ public class KeyboardPreferencesSettingView implements Screen, AppMenu {
 
     public ImageButton getKeyboardSettingButton() {
         return keyboardSettingButton;
+    }
+
+    public ArrayList<TextButton> getChangeButtons() {
+        return changeButtons;
+    }
+
+    public Map<TextButton, Actions> getButtonActionMap() {
+        return buttonActionMap;
+    }
+
+    public TextButton getSubmitButton() {
+        return submitButton;
     }
 }

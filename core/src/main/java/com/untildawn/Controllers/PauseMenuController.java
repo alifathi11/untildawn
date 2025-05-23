@@ -1,13 +1,9 @@
 package com.untildawn.Controllers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.untildawn.Enums.Abilities;
 import com.untildawn.Models.App;
 import com.untildawn.Models.Game;
-import com.untildawn.Models.MenuManager;
-import com.untildawn.Views.CheatCodesScreen;
 import com.untildawn.Views.GameView;
 import com.untildawn.Views.PauseMenuView;
 
@@ -72,7 +68,7 @@ public class PauseMenuController {
             view.getCheatCodesButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    gameView.showCheatMenu();
+                    gameView.showCheatScreen();
                 }
             });
 

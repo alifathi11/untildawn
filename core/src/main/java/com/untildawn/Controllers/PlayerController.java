@@ -19,7 +19,7 @@ public class PlayerController {
 
     public PlayerController(Player player) {
         this.player = player;
-        this.playerInputPreferences = player.getInputPreferences();
+        this.playerInputPreferences = player.getUser().getInputPreferences();
         this.playerAnimations = new PlayerAnimations(player);
     }
 

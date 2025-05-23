@@ -1,23 +1,16 @@
 package com.untildawn.Views;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -25,7 +18,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.untildawn.Controllers.CheatConsoleController;
 import com.untildawn.Controllers.GameController;
 import com.untildawn.Controllers.PauseMenuController;
-import com.untildawn.Enums.Monsters;
 import com.untildawn.Main;
 import com.untildawn.Models.*;
 
@@ -106,7 +98,7 @@ public class GameView implements Screen, InputProcessor {
         if (game.getGamePreferences().isGrayScaleOn()) {
             Main.getBatch().setShader(grayscaleShader);
         } else {
-            Main.getBatch().setShader(null); // TODO: ligth shader
+            Main.getBatch().setShader(null); // TODO: light shader
 //            Vector3 playerWorldPos = new Vector3(player.getPosition().getX(), player.getPosition().getY(), 0);
 //            Vector3 playerScreenPos = camera.project(playerWorldPos);
 //
@@ -228,7 +220,7 @@ public class GameView implements Screen, InputProcessor {
         }
     }
 
-    public void showCheatMenu() {
+    public void showCheatScreen() {
         cheatCodesScreen = new CheatCodesScreen(() -> {
             pauseMenuView.show();
             Gdx.input.setInputProcessor(pauseMenuView.getStage());

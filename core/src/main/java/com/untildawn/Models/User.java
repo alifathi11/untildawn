@@ -9,6 +9,7 @@ public class User {
     private String password;
     private SecurityQuestion securityQuestion;
     private GameProfile gameProfile;
+    private InputPreferences inputPreferences;
 
     public User() {}
 
@@ -21,6 +22,7 @@ public class User {
         this.email = email;
         this.securityQuestion = securityQuestion;
         this.gameProfile = new GameProfile(0, 0, 0);
+        this.inputPreferences = new InputPreferences();
     }
 
     public String getEmail() {
@@ -53,5 +55,9 @@ public class User {
 
     public GameProfile getGameProfile() {
         return gameProfile;
+    }
+
+    public InputPreferences getInputPreferences() {
+        return inputPreferences;
     }
 }

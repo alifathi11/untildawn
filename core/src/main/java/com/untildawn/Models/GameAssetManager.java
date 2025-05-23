@@ -1,6 +1,8 @@
 package com.untildawn.Models;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -77,6 +79,9 @@ public class GameAssetManager {
     private Animation<Texture> heart_animation = buildHeartAnimation();
     private Texture inactiveHeart = new Texture(Gdx.files.internal("Heart/inactiveHeart.png"));
     private Texture heartPickUp = new Texture(Gdx.files.internal("Heart/heartPickUp.png"));
+
+
+    private Texture whitePixel;
 
     public GameAssetManager() {
         // character
@@ -377,6 +382,18 @@ public class GameAssetManager {
     // effects
     public Texture getHitFlashTexture() {
         return new Texture(Gdx.files.internal("hitFlash.png"));
+    }
+
+
+    public Texture getWhitePixelTexture() {
+        if (whitePixel == null) {
+            Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+            pixmap.setColor(Color.WHITE);
+            pixmap.fill();
+            whitePixel = new Texture(pixmap);
+            pixmap.dispose();
+        }
+        return whitePixel;
     }
 
 }

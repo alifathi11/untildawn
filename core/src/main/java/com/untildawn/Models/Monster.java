@@ -28,6 +28,8 @@ public class Monster {
     private float knockbackVY = 0;
     private float knockbackTimeLeft = 0f;
 
+    private boolean isDead = false;
+
     private CollisionRect collisionRect;
 
     private Monsters monsterType;
@@ -219,5 +221,13 @@ public class Monster {
     }
     public void decreaseKnockbackTimeLeft(float deltaTime) {
         this.knockbackTimeLeft -= deltaTime;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 }
