@@ -8,18 +8,34 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sun.mail.util.logging.MailHandler;
 import com.untildawn.Controllers.CheatConsoleController;
 import com.untildawn.Controllers.GameController;
 import com.untildawn.Controllers.PauseMenuController;
 import com.untildawn.Main;
 import com.untildawn.Models.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
+import java.awt.*;
 
 public class GameView implements Screen, InputProcessor {
     private Stage stage;
@@ -38,6 +54,20 @@ public class GameView implements Screen, InputProcessor {
 
     private CheatCodesScreen cheatCodesScreen;
 
+    private Texture activeHeartTexture;
+    private Texture inactiveHeartTexture;
+    private float heartAnimTime = 0f;
+
+    private Texture coinTexture;
+    private Texture skeletonTexture;
+
+    private float remainingTime;
+    private BitmapFont timerFont;
+    private Label timeLabel;
+
+    private Texture fullBulletTexture;
+    private Texture emptyBulletTexture;
+
     private Game game;
     private Player player;
 
@@ -46,7 +76,7 @@ public class GameView implements Screen, InputProcessor {
     private Texture xpBarFill;
 
     private ShaderProgram grayscaleShader;
-    private ShaderProgram lightShader;
+
 
     public GameView(GameController controller, Skin skin) {
         camera = new OrthographicCamera();
@@ -65,6 +95,7 @@ public class GameView implements Screen, InputProcessor {
 
         this.game = App.getCurrentGame();
         this.player = game.getPlayer();
+        this.remainingTime = game.getGamePreferences().getGameTime().getTime();
     }
 
     @Override
@@ -76,6 +107,8 @@ public class GameView implements Screen, InputProcessor {
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         hudCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        viewport = new ScreenViewport(hudCamera);
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(this);
@@ -84,6 +117,25 @@ public class GameView implements Screen, InputProcessor {
         font.setColor(Color.WHITE);
         font.getData().setScale(1.5f);
         layout = new GlyphLayout();
+
+        activeHeartTexture = new Texture("Heart/activeHeart.png");
+        inactiveHeartTexture = new Texture("Heart/inactiveHeart.png");
+        coinTexture = new Texture("images/coin.png");
+        skeletonTexture = new Texture("images/skeleton.png");
+        fullBulletTexture = new Texture("images/fullBullet.png");
+        emptyBulletTexture = new Texture("images/emptyBullet.png");
+
+        timerFont = new BitmapFont();
+        Label.LabelStyle timeStyle = new Label.LabelStyle(timerFont, Color.WHITE);
+        timeLabel = new Label("", timeStyle);
+        timeLabel.setFontScale(2f);
+
+        Table topTable = new Table();
+        topTable.top();
+        topTable.setFillParent(true);
+        topTable.add(timeLabel).expandX().padTop(10);
+
+        stage.addActor(topTable);
     }
 
     @Override
@@ -91,6 +143,7 @@ public class GameView implements Screen, InputProcessor {
 
         camera.position.set(player.getPosition().getX(), player.getPosition().getY(), 0);
         camera.update();
+        stage.getViewport().apply();
         Main.getBatch().setProjectionMatrix(camera.combined);
 
         ScreenUtils.clear(Color.BLACK, true);
@@ -98,13 +151,7 @@ public class GameView implements Screen, InputProcessor {
         if (game.getGamePreferences().isGrayScaleOn()) {
             Main.getBatch().setShader(grayscaleShader);
         } else {
-            Main.getBatch().setShader(null); // TODO: light shader
-//            Vector3 playerWorldPos = new Vector3(player.getPosition().getX(), player.getPosition().getY(), 0);
-//            Vector3 playerScreenPos = camera.project(playerWorldPos);
-//
-//            lightShader.setUniformf("u_playerPos", playerScreenPos.x, playerScreenPos.y);
-//            lightShader.setUniformf("u_radius", 250f);
-//            lightShader.setUniformf("u_viewportHeight", Gdx.graphics.getHeight());
+            Main.getBatch().setShader(null);
         }
 
         if (cheatCodesScreen != null && cheatCodesScreen.isVisible()) {
@@ -117,8 +164,10 @@ public class GameView implements Screen, InputProcessor {
             Main.getBatch().begin();
 
             if (!pauseMenuController.isPaused()) {
+
                 Gdx.input.setInputProcessor(this);
                 controller.updateGame(delta);
+
             } else {
                 Gdx.input.setInputProcessor(pauseMenuView.getStage());
                 pauseMenuView.show();
@@ -137,6 +186,9 @@ public class GameView implements Screen, InputProcessor {
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
         drawHUDText();
+        drawAmmo();
+        drawHearts(delta);
+        drawTime(delta);
         drawXPBar();
     }
 
@@ -146,25 +198,39 @@ public class GameView implements Screen, InputProcessor {
         Main.getBatch().setProjectionMatrix(hudCamera.combined);
         Main.getBatch().begin();
 
-        String topLeftText = "HP: " + player.getHP();
-        String topRightText = "Ammo: " + player.getCurrentWeapon().getAmmo();
         String bottomLeftText = "Level: " + player.getLevel();
-        String bottomRightText = "Score: " + player.getXp();
 
-        layout.setText(font, topLeftText);
-        font.draw(Main.getBatch(), topLeftText, 10, hudCamera.viewportHeight - 10);
+        float padding = 10f;
 
-        layout.setText(font, topRightText);
-        font.draw(Main.getBatch(), topRightText, hudCamera.viewportWidth - layout.width - 10, hudCamera.viewportHeight - 10);
-
+        // === BOTTOM LEFT ===
         layout.setText(font, bottomLeftText);
-        font.draw(Main.getBatch(), bottomLeftText, 10, 20);
+        font.draw(Main.getBatch(), bottomLeftText, padding, 20);
 
-        layout.setText(font, bottomRightText);
-        font.draw(Main.getBatch(), bottomRightText, hudCamera.viewportWidth - layout.width - 10, 20);
+        // === TOP RIGHT: Coin + Score ===
+        float coinSize = 50;
+        float coinX = hudCamera.viewportWidth - coinSize - padding;
+        float coinY = hudCamera.viewportHeight - coinSize - padding;
+
+        Main.getBatch().draw(coinTexture, coinX, coinY, coinSize, coinSize);
+
+        String scoreText = String.valueOf(player.getScore());
+        layout.setText(font, scoreText);
+        font.draw(Main.getBatch(), scoreText, coinX - layout.width - 5, coinY + coinSize / 2 + layout.height / 2);
+
+        // === BELOW COIN: Skeleton + Kill Count ===
+        float skeletonSize = 50;
+        float skeletonX = coinX;
+        float skeletonY = coinY - skeletonSize - 5;
+
+        Main.getBatch().draw(skeletonTexture, skeletonX, skeletonY, skeletonSize, skeletonSize);
+
+        String killText = String.valueOf(player.getKill());
+        layout.setText(font, killText);
+        font.draw(Main.getBatch(), killText, skeletonX - layout.width - 5, skeletonY + skeletonSize / 2 + layout.height / 2);
 
         Main.getBatch().end();
     }
+
 
     private void drawXPBar() {
 
@@ -198,6 +264,79 @@ public class GameView implements Screen, InputProcessor {
         Main.getBatch().end();
     }
 
+    private void drawAmmo() {
+
+        int magazineAmmo = player.getCurrentWeapon().getAmmoPerMagazine();
+        int currentAmmo = player.getCurrentWeapon().getAmmo();
+
+        int ammoWidth = 60;
+        int ammoHeight= 100;
+        float spacing = 20;
+
+        float startX = camera.position.x + camera.viewportWidth / 2 - (Math.min(magazineAmmo, 60) * spacing) - 40;
+        float startY = camera.position.y - camera.viewportHeight / 2 + 20;
+
+        Main.getBatch().setProjectionMatrix(camera.combined);
+        Main.getBatch().begin();
+
+        for (int i = 0; i < Math.min(currentAmmo, 40); i++) {
+            float x = startX + i * spacing;
+            Main.getBatch().draw(fullBulletTexture, x, startY, ammoWidth, ammoHeight);
+        }
+        for (int i = 0; i < Math.min((magazineAmmo - currentAmmo), 40); i++) {
+            float x = startX + (Math.min(currentAmmo, 40) + i) * spacing;
+            Main.getBatch().draw(emptyBulletTexture, x, startY, ammoWidth, ammoHeight);
+        }
+
+        Main.getBatch().end();
+    }
+
+    private void drawTime(float deltaTime) {
+        remainingTime -= deltaTime;
+
+        int minutes = (int)(remainingTime / 60);
+        int seconds = (int)(remainingTime % 60);
+
+        String timeStr = String.format("%02d:%02d", minutes, seconds);
+        timeLabel.setText(timeStr);
+
+        if (remainingTime < 60) {
+            timeLabel.setColor(Color.RED);
+        } else {
+            timeLabel.setColor(Color.WHITE);
+        }
+    }
+
+    private void drawHearts(float delta) {
+        heartAnimTime += delta;
+
+        int hp = (int) player.getHP();
+        int maxHp = (int) player.getMaxHP();
+        float scale = 1.0f + 0.1f * MathUtils.sin(heartAnimTime * 4);
+        float baseSize = 50f;
+        float heartSize = baseSize * scale;
+        float spacing = baseSize + 10;
+
+        float startX = camera.position.x - camera.viewportWidth / 2 + 20;
+        float startY = camera.position.y + camera.viewportHeight / 2 - 20 - heartSize;
+        float startYStatic = camera.position.y + camera.viewportHeight / 2 - 20 - baseSize;
+
+        Main.getBatch().setProjectionMatrix(camera.combined);
+        Main.getBatch().begin();
+
+        for (int i = 0; i < Math.min(hp, 12); i++) {
+            float x = startX + i * spacing;
+            Main.getBatch().draw(activeHeartTexture, x, startY, heartSize, heartSize);
+        }
+        for (int i = 0; i < Math.min((maxHp - hp), 12); i++) {
+            float x = startX + (Math.min(hp, 12) + i) * spacing;
+            Main.getBatch().draw(inactiveHeartTexture, x, startYStatic, baseSize, baseSize);
+        }
+
+        Main.getBatch().end();
+    }
+
+
     public void create() {
         ShaderProgram.pedantic = false;
 
@@ -208,15 +347,6 @@ public class GameView implements Screen, InputProcessor {
 
         if (!grayscaleShader.isCompiled()) {
             Gdx.app.error("SHADER", "Error compiling shader: " + grayscaleShader.getLog());
-        }
-
-        lightShader = new ShaderProgram(
-            Gdx.files.internal("shaders/light.vert"),
-            Gdx.files.internal("shaders/light.frag")
-        );
-
-        if (!lightShader.isCompiled()) {
-            Gdx.app.error("Shader", "Light shader compile error:\n" + lightShader.getLog());
         }
     }
 
@@ -229,6 +359,13 @@ public class GameView implements Screen, InputProcessor {
 
         cheatCodesScreen.show();
         Gdx.input.setInputProcessor(cheatCodesScreen.getStage());
+    }
+
+    public void showDeadScreen() {
+
+    }
+    public void showWinScreen() {
+
     }
 
     @Override

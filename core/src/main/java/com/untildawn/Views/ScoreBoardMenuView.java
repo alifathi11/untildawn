@@ -157,7 +157,7 @@ public class ScoreBoardMenuView implements Screen, AppMenu {
         Label username = new Label(user.getUsername(), skin, "white");
         Label score = new Label(Integer.toString(user.getGameProfile().getScore()), skin, "white");
         Label killCount = new Label(Integer.toString(user.getGameProfile().getKillCount()), skin, "white");
-        Label maxTimeAlive = new Label(Integer.toString(user.getGameProfile().getMaxTimeAlive()), skin, "white");
+        Label maxTimeAlive = new Label(Integer.toString((int) user.getGameProfile().getMaxTimeAlive()), skin, "white");
 
 
         row.add(username).width(200).padRight(70);

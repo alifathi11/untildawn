@@ -3,11 +3,11 @@ package com.untildawn.Models;
 public class GameProfile {
     private int score;
     private int killCount;
-    private int maxTimeAlive;
+    private float maxTimeAlive;
 
     public GameProfile(int score,
                        int killCount,
-                       int maxTimeAlive) {
+                       float maxTimeAlive) {
         this.score = score;
         this.killCount = killCount;
         this.maxTimeAlive = maxTimeAlive;
@@ -21,7 +21,7 @@ public class GameProfile {
         return killCount;
     }
 
-    public int getMaxTimeAlive() {
+    public float getMaxTimeAlive() {
         return maxTimeAlive;
     }
 
@@ -33,7 +33,7 @@ public class GameProfile {
         this.killCount += deltaKillCount;
     }
 
-    public void increaseMaxTimeAlive(int deltaMaxTimeAlive) {
-        this.maxTimeAlive += deltaMaxTimeAlive;
+    public void setMaxTimeAlive(float maxTimeAlive) {
+        this.maxTimeAlive = maxTimeAlive;
     }
 }

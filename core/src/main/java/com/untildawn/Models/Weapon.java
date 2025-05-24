@@ -13,7 +13,7 @@ public class Weapon {
     private int totalAmmo;
     private int ammoPerMagazine;
     private int ammo;
-    private int projectile;
+    private int projectileCount;
 
     private float time;
     private boolean isReloading = false;
@@ -23,6 +23,11 @@ public class Weapon {
     private float timeSinceLastShot = 0f;
 
     private Position position;
+
+    private float damagerAbilityTimer = 0f;
+    private float damagerAbilityTime = 10f;
+
+    private boolean isOnDamager = false;
 
     public Weapon(Weapons weaponType) {
         this.weaponType = weaponType;
@@ -36,7 +41,7 @@ public class Weapon {
         this.ammoPerMagazine = weaponType.getAmmoMax();
         this.ammo = ammoPerMagazine;
         this.totalAmmo = weaponType.getTotalAmmo();
-        this.projectile = weaponType.getProjectileCount();
+        this.projectileCount = weaponType.getProjectileCount();
     }
 
     public Sprite getWeaponSprite() {
@@ -134,7 +139,7 @@ public class Weapon {
     }
 
     public int getProjectile() {
-        return projectile;
+        return projectileCount;
     }
 
     public Position getPosition() {
@@ -149,4 +154,38 @@ public class Weapon {
         this.totalAmmo += deltaAmmo;
     }
 
+    public void setDamagerAbilityTime(float damagerAbilityTime) {
+        this.damagerAbilityTime = damagerAbilityTime;
+    }
+
+    public void setDamagerAbilityTimer(float damagerAbilityTimer) {
+        this.damagerAbilityTimer = damagerAbilityTimer;
+    }
+
+    public float getDamagerAbilityTime() {
+        return damagerAbilityTime;
+    }
+
+    public float getDamagerAbilityTimer() {
+        return damagerAbilityTimer;
+    }
+
+    public boolean isOnDamager() {
+        return isOnDamager;
+    }
+
+    public void setDamager(boolean damager) {
+        this.isOnDamager = damager;
+    }
+    public void increaseDamagerAbilityTimer(float deltaTime) {
+        this.damagerAbilityTimer += deltaTime;
+    }
+
+    public int getProjectileCount() {
+        return projectileCount;
+    }
+
+    public void setProjectileCount(int projectileCount) {
+        this.projectileCount = Math.min(projectileCount, 4);
+    }
 }

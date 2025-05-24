@@ -2,6 +2,7 @@ package com.untildawn.Controllers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.untildawn.Enums.Actions;
@@ -17,10 +18,13 @@ public class PlayerController {
     private GameController gameController;
     private PauseMenuController pauseController;
 
+    private Texture glowTexture;
+
     public PlayerController(Player player) {
         this.player = player;
         this.playerInputPreferences = player.getUser().getInputPreferences();
         this.playerAnimations = new PlayerAnimations(player);
+        this.glowTexture = new Texture("images/glow_circle.png");
     }
 
     public void setControllers(GameController gameController) {
@@ -30,6 +34,9 @@ public class PlayerController {
     }
 
     public void update(float deltaTime) {
+
+        drawGlow();
+
         if (player.isInvincible()) {
             if (((int)(player.getInvincibleTime() * 10)) % 2 == 0) {
                 player.getPlayerSprite().setAlpha(0.3f);
@@ -180,6 +187,19 @@ public class PlayerController {
 
         return true;
     }
+
+    private void drawGlow() {
+        float playerX = player.getPosition().getX();
+        float playerY = player.getPosition().getY();
+
+        float glowSize = 250f;
+        Main.getBatch().draw(glowTexture,
+            playerX - glowSize / 2,
+            playerY - glowSize / 2,
+            glowSize,
+            glowSize);
+    }
+
 
     public Player getPlayer() {
         return player;

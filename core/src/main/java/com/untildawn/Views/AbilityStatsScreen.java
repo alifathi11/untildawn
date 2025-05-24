@@ -37,7 +37,7 @@ public class AbilityStatsScreen {
         addRow("VITALITY", "Permanently increase your maximum HP by 1.");
         addRow("DAMAGE", "Boost weapon damage by 25% for the next 10 seconds.");
         addRow("PROCREASE", "Add an extra projectile to your weapon's attack pattern.");
-        addRow("AMOCREASE", "Increase your weapon's maximum ammo capacity by 5");
+        addRow("AMMOCREASE", "Increase your weapon's maximum ammo capacity by 5");
         addRow("SPEEDY", "Double your movement speed for 10 seconds");
 
         TextButton backButton = new TextButton("Back", skin);

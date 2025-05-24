@@ -89,18 +89,26 @@ public class WeaponController {
         if (weapon.getTimeSinceLastShot() >= weapon.getShootCoolDown()
             && weapon.getAmmo() > 0) {
 
-            Vector2 direction = new Vector2(mouseWorldPosition).sub(playerPosition).nor();
-            Projectile projectile = new Projectile(
-                playerPosition,
-                direction,
-                weapon.getWeaponType().getProjectile()
-            );
-            projectileController.addProjectile(projectile);
+            int projectileCount = Math.min(weapon.getProjectileCount(), weapon.getAmmo());
 
-            String sfxName = player.getCurrentWeapon().getWeaponType().name().toLowerCase() + "_shot";
-            SFXManager.play(sfxName);
+            for (int i = 0; i < projectileCount; i++) {
 
-            weapon.setAmmo(weapon.getAmmo() - 1);
+                Vector2 direction = new Vector2(mouseWorldPosition).sub(playerPosition).nor();
+                direction.add(direction.x + i, direction.y + i);
+
+                Projectile projectile = new Projectile(
+                    playerPosition,
+                    direction,
+                    weapon.getWeaponType().getProjectile()
+                );
+                projectileController.addProjectile(projectile);
+
+                String sfxName = player.getCurrentWeapon().getWeaponType().name().toLowerCase() + "_shot";
+                SFXManager.play(sfxName);
+            }
+
+
+            weapon.setAmmo(weapon.getAmmo() - projectileCount);
             player.getCurrentWeapon().setTimeSinceLastShot(0f);
 
             GamePreferences gamePreferences = App.getCurrentGame().getGamePreferences();

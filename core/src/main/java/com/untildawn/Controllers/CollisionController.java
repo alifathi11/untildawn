@@ -1,5 +1,8 @@
 package com.untildawn.Controllers;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.math.Vector2;
 import com.untildawn.Enums.Monsters;
 import com.untildawn.Enums.Projectiles;
 import com.untildawn.Enums.Weapons;
@@ -98,7 +101,11 @@ public class CollisionController {
                 CollisionRect projectileCollider = projectile.getCollisionRect();
                 if (projectileCollider.collidesWith(monsterCollider)) {
                     projectilesToDelete.add(projectile);
-                    monster.decreaseHP((int) projectile.getDamage());
+                    int damage = (int) projectile.getDamage();
+                    if (weaponController.getCurrentWeapon().isOnDamager()) {
+                        damage *= 2;
+                    }
+                    monster.decreaseHP(damage);
                     float dx = monster.getPosition().getX() - projectile.getPosition().x;
                     float dy = monster.getPosition().getY() - projectile.getPosition().y;
                     monster.knockBack(dx, dy);
@@ -113,6 +120,7 @@ public class CollisionController {
         for (Monster monster : monstersToDelete) {
 
             monster.setDead(true);
+            player.increaseKill();
 
             if (monster.getMonsterType() == Monsters.BRAIN_MONSTER) {
                 SFXManager.play("brain_death");
@@ -130,9 +138,14 @@ public class CollisionController {
             }
 
             Position monsterPosition = monster.getPosition();
-            XP xp = new XP(monster.getKillXP());
+
+            Animation<Texture> deathAnim = GameAssetManager.getGameAssetManager().getMonsterDeathAnimation(monster.getMonsterType());
+            DeathAnimation anim = new DeathAnimation(deathAnim, new Vector2(monsterPosition.getX(), monsterPosition.getY()));
+            world.addDeathAnimation(anim);
+
             world.deleteMonster(monster);
 
+            XP xp = new XP(monster.getKillXP());
             xp.setPosition(monsterPosition);
             world.addXP(xp);
 
@@ -140,7 +153,7 @@ public class CollisionController {
 
             if (random.nextInt() % 5 == 1) {
 
-                Weapons weaponType = player.getCurrentWeapon().getWeaponType();
+                Weapons weaponType = Weapons.values()[random.nextInt(Weapons.values().length)];
                 int ammoAmount;
 
                 switch (weaponType) {

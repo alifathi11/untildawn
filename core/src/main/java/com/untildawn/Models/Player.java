@@ -16,6 +16,7 @@ public class Player {
     private User user;
     private int kill;
     private int level;
+    private int score;
     // TODO: Longest time alive
 
     private float maxHP;
@@ -37,6 +38,10 @@ public class Player {
     private boolean isPlayerWalking = false;
     private boolean isPlayerRunning = false;
 
+    private boolean isOnSpeedy = false;
+    private float speedyAbilityTimer = 0f;
+    private float speedyAbilityTime = 10f;
+
     public Player(User user,
                   Heros hero,
                   Game game) {
@@ -48,6 +53,7 @@ public class Player {
         this.playerSprite = new Sprite(playerTexture);
 
 
+        this.score = 0;
         this.level = 1;
         this.xp = 0;
         this.maxHP = hero.getHP();
@@ -201,7 +207,7 @@ public class Player {
 
     public void levelUP() {
         this.level++;
-        // TODO: show abilities
+        game.getGameController().getAbilityController().addAbility();
     }
 
     public int getXp() {
@@ -284,5 +290,41 @@ public class Player {
 
     public boolean isOnGhostMode() {
         return isGhost;
+    }
+
+    public void setSpeedy(boolean speedy) {
+        this.isOnSpeedy = speedy;
+    }
+
+    public boolean isOnSpeedy() {
+        return isOnSpeedy;
+    }
+
+    public void increaseSpeedyAbilityTimer(float deltaTime) {
+        this.speedyAbilityTimer += deltaTime;
+    }
+
+    public float getSpeedyAbilityTime() {
+        return speedyAbilityTime;
+    }
+
+    public float getSpeedyAbilityTimer() {
+        return speedyAbilityTimer;
+    }
+
+    public void setSpeedyAbilityTimer(float speedyAbilityTime) {
+        this.speedyAbilityTime = speedyAbilityTime;
+    }
+
+    public void setRunSpeed(float runSpeed) {
+        this.runSpeed = runSpeed;
+    }
+
+    public float getRunSpeed() {
+        return runSpeed;
+    }
+
+    public int getScore() {
+        return (int) game.getElapsedTime() * kill;
     }
 }

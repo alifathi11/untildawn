@@ -40,8 +40,8 @@ public class ProtectiveField {
         width -= shrink;
         height -= shrink;
 
-        if (width < 200) width = 200;
-        if (height < 200) height = 200;
+        if (width < 800) width = 800;
+        if (height < 800) height = 800;
 
         float halfW = width / 2f;
         float halfH = height / 2f;

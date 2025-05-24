@@ -3,6 +3,7 @@ package com.untildawn.Models;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class World {
     private ArrayList<XP> xps;
     private ArrayList<Ammo> ammo;
     private ArrayList<Heart> hearts;
+    private ArrayList<DeathAnimation> deathAnimations = new ArrayList<>();
 
     private ProtectiveField protectiveField;
 
@@ -118,5 +120,17 @@ public class World {
 
     public ArrayList<Heart> getHearts() {
         return hearts;
+    }
+
+    public ArrayList<DeathAnimation> getDeathAnimations() {
+        return deathAnimations;
+    }
+
+    public void addDeathAnimation(DeathAnimation animation) {
+        this.deathAnimations.add(animation);
+    }
+
+    public void deleteDeathAnimation(DeathAnimation animation) {
+        this.deathAnimations.remove(animation);
     }
 }

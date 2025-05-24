@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.untildawn.Main;
 import com.untildawn.Models.*;
@@ -102,6 +103,19 @@ public class WorldController {
                 effect.render(Main.getBatch(), hitTexture);
             }
         }
+
+        ArrayList<DeathAnimation> deathAnimations = world.getDeathAnimations();
+        ArrayList<DeathAnimation> deathAnimationsToDelete = new ArrayList<>();
+
+        for (DeathAnimation deathAnimation : deathAnimations) {
+            deathAnimation.update(Gdx.graphics.getDeltaTime());
+            deathAnimation.render(Main.getBatch());
+            if (deathAnimation.isFinished()) {
+                deathAnimationsToDelete.add(deathAnimation);
+            }
+        }
+
+        for (DeathAnimation deathAnimation : deathAnimationsToDelete) world.deleteDeathAnimation(deathAnimation);
     }
 
     public void renderShapes(Camera camera) {

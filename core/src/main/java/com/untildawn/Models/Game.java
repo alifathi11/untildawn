@@ -1,6 +1,11 @@
 package com.untildawn.Models;
 
+import com.untildawn.Controllers.GameController;
+
 public class Game {
+
+    private GameController gameController;
+
     private GamePreferences gamePreferences;
     private Player player;
     private float time;
@@ -11,6 +16,10 @@ public class Game {
         this.player = player;
         this.time = 0f;
         this.isWon = false;;
+    }
+
+    public void setController(GameController gameController) {
+        this.gameController = gameController;
     }
 
     public GamePreferences getGamePreferences() {
@@ -46,5 +55,9 @@ public class Game {
 
     public float getElapsedTime() {
         return time;
+    }
+
+    public GameController getGameController() {
+        return gameController;
     }
 }

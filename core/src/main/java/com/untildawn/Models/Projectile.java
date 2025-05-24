@@ -23,6 +23,7 @@ public class Projectile {
         this.sprite = new Sprite(texture);
         sprite.setSize(20, 20);
         if (projectileType == Projectiles.REVOLVER_BULLET) sprite.setSize(70, 70);
+        if (projectileType == Projectiles.SMG_BULLET) sprite.setSize(10, 10);
 
         this.projectileType = projectileType;
 

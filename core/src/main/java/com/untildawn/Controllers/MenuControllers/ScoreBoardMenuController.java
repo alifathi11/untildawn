@@ -74,7 +74,7 @@ public class ScoreBoardMenuController {
                 break;
             case 2:
                 sortedUsers = users.stream()
-                    .sorted(Comparator.comparingInt(user -> ((User) user).getGameProfile().getMaxTimeAlive()).reversed())
+                    .sorted(Comparator.comparingDouble(user -> ((User) user).getGameProfile().getMaxTimeAlive()).reversed())
                     .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case 3:

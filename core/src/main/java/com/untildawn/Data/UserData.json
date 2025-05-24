@@ -1,10 +1,1 @@
-[ {
-  "username" : "ali",
-  "email" : "fathi@gmail.com",
-  "password" : "585178Ali!",
-  "securityQuestion" : {
-    "question" : "What was the name of your first teacher?",
-    "answer" : "ll"
-  },
-  "score" : 0
-} ]
+[]

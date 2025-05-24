@@ -4,7 +4,7 @@ public enum Abilities {
     VITALITY,
     DAMAGER,
     PROCREASE,
-    AMOCREASE,
+    AMMOCREASE,
     SPEEDY,
     ;
 }

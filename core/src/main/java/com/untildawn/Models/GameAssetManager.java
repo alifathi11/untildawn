@@ -68,6 +68,9 @@ public class GameAssetManager {
     private final Animation<Texture> brainMonster_animation = buildBrainMonsterAnimation();
     private final Animation<Texture> eyeMonster_animation = buildEyeMonsterAnimation();
     private final Texture elderMonster_texture  = new Texture(Gdx.files.internal("elderMonster/ElderBrain.png"));
+    private final Animation<Texture> brainMonsterDeathAnimation = buildMonsterDeathAnimation(Monsters.BRAIN_MONSTER);
+    private final Animation<Texture> eyeMonsterDeathAnimation = buildMonsterDeathAnimation(Monsters.EYE_MONSTER);
+    private final Animation<Texture> elderMonsterDeathAnimation = buildMonsterDeathAnimation(Monsters.ELDER_MONSTER);
 
     // XP
     private final Texture xpTexture = new Texture(Gdx.files.internal("xp.png"));
@@ -228,6 +231,18 @@ public class GameAssetManager {
         }
     }
 
+    public Animation<Texture> getMonsterDeathAnimation(Monsters monsterType) {
+        switch (monsterType) {
+            case BRAIN_MONSTER:
+                return brainMonsterDeathAnimation;
+            case EYE_MONSTER:
+                return eyeMonsterDeathAnimation;
+            case ELDER_MONSTER:
+                return elderMonsterDeathAnimation;
+            default: return null;
+        }
+    }
+
     // XP
     public Texture getXpTexture() {
         return xpTexture;
@@ -297,7 +312,7 @@ public class GameAssetManager {
     }
 
     // tree
-    public Animation<Texture> buildTreeAnimation() {
+    private Animation<Texture> buildTreeAnimation() {
         String pathToFolder = "assets/map_elements/tree";
         int numberOfFrames = countFiles(pathToFolder);
 
@@ -313,7 +328,7 @@ public class GameAssetManager {
     }
 
     // monster
-    public Animation<Texture> buildBrainMonsterAnimation() {
+    private Animation<Texture> buildBrainMonsterAnimation() {
         String pathToFolder = "assets/brainMonster";
         int numberOfFrames = countFiles(pathToFolder);
 
@@ -328,7 +343,7 @@ public class GameAssetManager {
         return new Animation<>(0.1f, textureArray);
     }
 
-    public Animation<Texture> buildEyeMonsterAnimation() {
+    private Animation<Texture> buildEyeMonsterAnimation() {
         String pathToFolder = "assets/eyeMonster";
         int numberOfFrames = countFiles(pathToFolder);
 
@@ -343,8 +358,23 @@ public class GameAssetManager {
         return new Animation<>(0.1f, textureArray);
     }
 
+    private Animation<Texture> buildMonsterDeathAnimation(Monsters monsterType) {
+        String pathToFolder = "assets/explosion/" + monsterType.name().toLowerCase();
+        int numberOfFrames = countFiles(pathToFolder);
+
+        Texture[] textureArray = new Texture[numberOfFrames];
+
+        for (int i = 0; i < numberOfFrames; i++) {
+            String rawPath = String.format("explosion/%s/explosion_%d.png", monsterType.name().toLowerCase(), i);
+            Texture texture = new Texture(rawPath);
+            textureArray[i] = texture;
+        }
+
+        return new Animation<>(0.1f, textureArray);
+    }
+
     // heart
-    public Animation<Texture> buildHeartAnimation() {
+    private Animation<Texture> buildHeartAnimation() {
         String pathToFolder = "assets/Heart/heartAnimation";
         int numberOfFrames = countFiles(pathToFolder);
 

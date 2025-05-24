@@ -1,9 +1,9 @@
 package com.untildawn.Enums;
 
 public enum Weapons {
-    REVOLVER(1, 1, 6, 100, 0.5f, Projectiles.REVOLVER_BULLET),
-    SMG(1, 2, 24, 500, 0.1f, Projectiles.SMG_BULLET),
-    SHOTGUN(4, 1, 2, 100, 0.3f, Projectiles.SHOTGUN_BULLET),
+    REVOLVER(1, 1, 6, 12, 0.5f, Projectiles.REVOLVER_BULLET),
+    SMG(1, 2, 24, 48, 0.1f, Projectiles.SMG_BULLET),
+    SHOTGUN(4, 1, 8, 16, 0.3f, Projectiles.SHOTGUN_BULLET),
     ;
 
     private final int projectileCount;

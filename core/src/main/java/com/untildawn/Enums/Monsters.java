@@ -3,7 +3,7 @@ package com.untildawn.Enums;
 public enum Monsters {
     BRAIN_MONSTER(5, 100f, 3),
     EYE_MONSTER(50, 100f, 10),
-    ELDER_MONSTER(400, 100f, 50),
+    ELDER_MONSTER(200, 100f, 50),
     ;
 
     private final int HP;

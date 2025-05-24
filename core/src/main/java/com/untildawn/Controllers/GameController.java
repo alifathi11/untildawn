@@ -1,9 +1,14 @@
 package com.untildawn.Controllers;
 
 import com.badlogic.gdx.Gdx;
+import com.untildawn.Enums.Abilities;
 import com.untildawn.Models.*;
 import com.untildawn.Views.GameView;
 import com.untildawn.Views.PauseMenuView;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class GameController {
     private Game game;
@@ -15,6 +20,7 @@ public class GameController {
     private MonsterController monsterController;
     private CollisionController collisionController;
     private PauseMenuController pauseMenuController;
+    private AbilityController abilityController;
     private PauseMenuView pauseMenuView;
 
     public GameController() {
@@ -42,11 +48,15 @@ public class GameController {
 
         this.collisionController = new CollisionController(this);
 
+        this.abilityController = new AbilityController();
+
 
         this.weaponController.setControllers(this);
         this.playerController.setControllers(this);
         this.worldController.setControllers(this);
         this.monsterController.setControllers(this);
+
+        game.setController(this);
     }
 
     public void updateGame(float deltaTime) {
@@ -60,8 +70,13 @@ public class GameController {
             this.projectileController.update();
             this.monsterController.update(deltaTime);
             this.collisionController.update();
+
+            this.checkGameFinish();
+
+            updateAbilities(deltaTime);
         }
     }
+
 
     public PlayerController getPlayerController() {
         return playerController;
@@ -94,5 +109,61 @@ public class GameController {
     public PauseMenuView getPauseMenuView() {
         return pauseMenuView;
     }
+
+    public AbilityController getAbilityController() {
+        return abilityController;
+    }
+
+    private void updateAbilities(float deltaTime) {
+        Weapon weapon = weaponController.getCurrentWeapon();
+        Player player = playerController.getPlayer();
+
+        if (weapon.isOnDamager()) {
+            weapon.increaseDamagerAbilityTimer(deltaTime);
+            if (weapon.getDamagerAbilityTimer() >= weapon.getDamagerAbilityTime()) {
+                weapon.setDamager(false);
+            }
+        }
+
+        if (player.isOnSpeedy()) {
+            player.increaseSpeedyAbilityTimer(deltaTime);
+            if (player.getSpeedyAbilityTimer() >= player.getSpeedyAbilityTime()) {
+                player.setSpeedy(false);
+                player.setSpeed(player.getHero().getSpeed());
+                player.setRunSpeed(player.getHero().getRunSpeed());
+            }
+        }
+    }
+
+    private void checkGameFinish() {
+        int HP = (int) playerController.getPlayer().getHP();
+        float remainingTime = game.getGamePreferences().getGameTime().getTime() - game.getElapsedTime();
+
+        if (HP <= 0) {
+            view.showDeadScreen();
+            updateGameProfileAfterGame();
+
+        }
+
+        else if (remainingTime <= 0) {
+            view.showWinScreen();
+            updateGameProfileAfterGame();
+        }
+    }
+
+    private void updateGameProfileAfterGame() {
+        Player player = playerController.getPlayer();
+        User user = player.getUser();
+        GameProfile gameProfile = user.getGameProfile();
+
+        gameProfile.increaseScore(player.getScore());
+        gameProfile.increaseKillCount(player.getKill());
+
+        float timeAlive = game.getElapsedTime();
+        if (timeAlive > gameProfile.getMaxTimeAlive()) {
+            gameProfile.setMaxTimeAlive(timeAlive);
+        }
+    }
+
 }
 
