@@ -3,7 +3,11 @@ package com.untildawn.Models;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.untildawn.Enums.Abilities;
 import com.untildawn.Enums.Heros;
+import com.untildawn.Main;
+
+import java.util.ArrayList;
 
 public class Player {
     private Texture playerTexture;
@@ -16,8 +20,6 @@ public class Player {
     private User user;
     private int kill;
     private int level;
-    private int score;
-    // TODO: Longest time alive
 
     private float maxHP;
     private float HP;
@@ -42,6 +44,8 @@ public class Player {
     private float speedyAbilityTimer = 0f;
     private float speedyAbilityTime = 10f;
 
+    private ArrayList<Abilities> abilities;
+
     public Player(User user,
                   Heros hero,
                   Game game) {
@@ -53,7 +57,6 @@ public class Player {
         this.playerSprite = new Sprite(playerTexture);
 
 
-        this.score = 0;
         this.level = 1;
         this.xp = 0;
         this.maxHP = hero.getHP();
@@ -72,6 +75,8 @@ public class Player {
             (float) playerTexture.getWidth(),
             (float) playerTexture.getHeight()
         );
+
+        abilities = new ArrayList<>();
     }
 
     public float getTime() {
@@ -122,9 +127,13 @@ public class Player {
         this.collisionRect = collisionRect;
     }
 
-    public float getSpeed() {
+    public float getCurrentSpeed() {
         if (isPlayerRunning) return runSpeed;
         else return speed;
+    }
+
+    public float getSpeed() {
+        return speed;
     }
 
     public void setSpeed(float speed) {
@@ -255,7 +264,7 @@ public class Player {
     }
 
     public void increaseMaxHP() {
-        this.maxHP++;
+        this.maxHP = Math.min(maxHP + 1, 10);
     }
 
     public float getMaxHP() {
@@ -312,8 +321,8 @@ public class Player {
         return speedyAbilityTimer;
     }
 
-    public void setSpeedyAbilityTimer(float speedyAbilityTime) {
-        this.speedyAbilityTime = speedyAbilityTime;
+    public void setSpeedyAbilityTimer(float speedyAbilityTimer) {
+        this.speedyAbilityTimer = speedyAbilityTimer;
     }
 
     public void setRunSpeed(float runSpeed) {
@@ -326,5 +335,13 @@ public class Player {
 
     public int getScore() {
         return (int) game.getElapsedTime() * kill;
+    }
+
+    public void addAbility(Abilities ability) {
+        this.abilities.add(ability);
+    }
+
+    public ArrayList<Abilities> getAbilities() {
+        return abilities;
     }
 }

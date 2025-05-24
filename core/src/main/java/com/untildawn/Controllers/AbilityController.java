@@ -1,13 +1,10 @@
 package com.untildawn.Controllers;
 
 import com.untildawn.Enums.Abilities;
-import com.untildawn.Main;
 import com.untildawn.Models.App;
 import com.untildawn.Models.Player;
-import com.untildawn.Models.SFXManager;
 import com.untildawn.Models.Weapon;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class AbilityController {
@@ -47,6 +44,7 @@ public class AbilityController {
                 weapon.setTotalAmmo(Math.max(weapon.getTotalAmmo(), weapon.getAmmoPerMagazine()));
                 break;
             case SPEEDY:
+                if (player.isOnSpeedy()) return;
                 player.setSpeed(player.getSpeed() * 2);
                 player.setRunSpeed(player.getRunSpeed() * 2);
                 player.setSpeedyAbilityTimer(0f);
@@ -56,5 +54,7 @@ public class AbilityController {
                 weapon.setProjectileCount(weapon.getProjectileCount() * 2);
                 break;
         }
+
+        player.addAbility(ability);
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.untildawn.Models.App;
 import com.untildawn.Models.Game;
+import com.untildawn.Models.SFXManager;
 import com.untildawn.Views.GameView;
 import com.untildawn.Views.PauseMenuView;
 
@@ -61,7 +62,10 @@ public class PauseMenuController {
             view.getGiveUpButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    // TODO: dead screen, give up logic
+                    game.setGaveUp(true);
+                    SFXManager.play("dead_screen");
+                    setPaused(false);
+                    view.getTable().setVisible(false);
                 }
             });
 

@@ -28,6 +28,8 @@ public class SFXManager {
         sounds.put("tree_damage", Gdx.audio.newSound(Gdx.files.internal("sounds/damage/tree_damage.mp3")));
         sounds.put("monster_damage", Gdx.audio.newSound(Gdx.files.internal("sounds/damage/monster_damage.mp3")));
         sounds.put("projectile_damage", Gdx.audio.newSound(Gdx.files.internal("sounds/damage/projectile_damage.mp3")));
+        sounds.put("dead_screen", Gdx.audio.newSound(Gdx.files.internal("sounds/endScreen/dead_screen.wav")));
+        sounds.put("win_screen", Gdx.audio.newSound(Gdx.files.internal("sounds/endScreen/win_screen.wav")));
     }
 
     public static void play(String name) {

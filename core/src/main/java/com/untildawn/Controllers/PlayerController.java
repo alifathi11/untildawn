@@ -1,7 +1,6 @@
 package com.untildawn.Controllers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -81,7 +80,7 @@ public class PlayerController {
         boolean isPlayerMoving = false;
         boolean isPlayerIdle = false;
         boolean isPlayerRunning = false;
-
+        
         InputBinding shootBinding = playerInputPreferences.getInputBinding(Actions.SHOOT);
 
         if (!weaponController.getCurrentWeapon().isReloading()) {
@@ -107,26 +106,26 @@ public class PlayerController {
 
 
         if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_UP).getCode())
-            && canMoveTo(player.getPosition().getX(), player.getPosition().getY() + player.getSpeed())) {
-            player.getPosition().setY((int) (player.getPosition().getY() + player.getSpeed()));
+            && canMoveTo(player.getPosition().getX(), player.getPosition().getY() + player.getCurrentSpeed())) {
+            player.getPosition().setY((int) (player.getPosition().getY() + player.getCurrentSpeed()));
             isPlayerMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_DOWN).getCode())
-            && canMoveTo(player.getPosition().getX(), player.getPosition().getY() - player.getSpeed())) {
-            player.getPosition().setY((int) (player.getPosition().getY() - player.getSpeed()));
+            && canMoveTo(player.getPosition().getX(), player.getPosition().getY() - player.getCurrentSpeed())) {
+            player.getPosition().setY((int) (player.getPosition().getY() - player.getCurrentSpeed()));
             isPlayerMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_RIGHT).getCode())
-        && canMoveTo(player.getPosition().getX() + player.getSpeed(), player.getPosition().getY())) {
-            player.getPosition().setX((int) (player.getPosition().getX() + player.getSpeed()));
+        && canMoveTo(player.getPosition().getX() + player.getCurrentSpeed(), player.getPosition().getY())) {
+            player.getPosition().setX((int) (player.getPosition().getX() + player.getCurrentSpeed()));
             isPlayerMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(playerInputPreferences.getInputBinding(Actions.MOVE_LEFT).getCode())
-        && canMoveTo(player.getPosition().getX() - player.getSpeed(), player.getPosition().getY())) {
-            player.getPosition().setX((int) (player.getPosition().getX() - player.getSpeed()));
+        && canMoveTo(player.getPosition().getX() - player.getCurrentSpeed(), player.getPosition().getY())) {
+            player.getPosition().setX((int) (player.getPosition().getX() - player.getCurrentSpeed()));
             isPlayerMoving = true;
         }
 

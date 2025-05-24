@@ -10,12 +10,16 @@ public class Game {
     private Player player;
     private float time;
     private boolean isWon;
+    private boolean isLost;
+    private boolean isGaveUp;
 
     public Game(GamePreferences gameSetting, Player player) {
         this.gamePreferences = gameSetting;
         this.player = player;
         this.time = 0f;
-        this.isWon = false;;
+        this.isWon = false;
+        this.isLost = false;
+        this.isGaveUp = false;
     }
 
     public void setController(GameController gameController) {
@@ -39,10 +43,14 @@ public class Game {
     }
     public void increaseElapsedTime(float deltaTime) {
         this.time += deltaTime;
+    }
 
-        if (time >= gamePreferences.getGameTime().getTime()) {
-            isWon = true;
-        }
+    public void setLost(boolean lost) {
+        isLost = lost;
+    }
+
+    public boolean isLost() {
+        return isLost;
     }
 
     public boolean isWon() {
@@ -59,5 +67,13 @@ public class Game {
 
     public GameController getGameController() {
         return gameController;
+    }
+
+    public void setGaveUp(boolean gaveUp) {
+        isGaveUp = gaveUp;
+    }
+
+    public boolean isGaveUp() {
+        return isGaveUp;
     }
 }

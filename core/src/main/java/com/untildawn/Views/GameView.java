@@ -54,6 +54,9 @@ public class GameView implements Screen, InputProcessor {
 
     private CheatCodesScreen cheatCodesScreen;
 
+    private WinScreen winScreen;
+    private DeadScreen deadScreen;
+
     private Texture activeHeartTexture;
     private Texture inactiveHeartTexture;
     private float heartAnimTime = 0f;
@@ -61,7 +64,6 @@ public class GameView implements Screen, InputProcessor {
     private Texture coinTexture;
     private Texture skeletonTexture;
 
-    private float remainingTime;
     private BitmapFont timerFont;
     private Label timeLabel;
 
@@ -95,7 +97,9 @@ public class GameView implements Screen, InputProcessor {
 
         this.game = App.getCurrentGame();
         this.player = game.getPlayer();
-        this.remainingTime = game.getGamePreferences().getGameTime().getTime();
+
+        this.deadScreen = new DeadScreen(game);
+        this.winScreen = new WinScreen(game);
     }
 
     @Override
@@ -163,16 +167,30 @@ public class GameView implements Screen, InputProcessor {
         if (!cheatConsoleView.isVisible()) {
             Main.getBatch().begin();
 
-            if (!pauseMenuController.isPaused()) {
+            if (pauseMenuController.isPaused()) {
+
+                Gdx.input.setInputProcessor(pauseMenuView.getStage());
+                pauseMenuView.show();
+
+            } else if (game.isLost() || game.isGaveUp()) {
+
+                Gdx.input.setInputProcessor(deadScreen.getStage());
+                deadScreen.show();
+
+            } else if (game.isWon()) {
+
+                Gdx.input.setInputProcessor(winScreen.getStage());
+                winScreen.show();
+
+            } else {
 
                 Gdx.input.setInputProcessor(this);
                 controller.updateGame(delta);
 
-            } else {
-                Gdx.input.setInputProcessor(pauseMenuView.getStage());
-                pauseMenuView.show();
             }
 
+            deadScreen.render(Main.getBatch());
+            winScreen.render(Main.getBatch());
             pauseMenuView.render(Main.getBatch());
             Main.getBatch().end();
         } else {
@@ -184,12 +202,17 @@ public class GameView implements Screen, InputProcessor {
         controller.getWorldController().renderShapes(camera);
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
-        drawHUDText();
-        drawAmmo();
-        drawHearts(delta);
-        drawTime(delta);
-        drawXPBar();
+
+        if (!game.isGaveUp()
+            && !game.isLost()
+            && !game.isWon()) {
+            stage.draw();
+            drawHUDText();
+            drawAmmo();
+            drawHearts(delta);
+            drawTime();
+            drawXPBar();
+        }
     }
 
 
@@ -202,11 +225,9 @@ public class GameView implements Screen, InputProcessor {
 
         float padding = 10f;
 
-        // === BOTTOM LEFT ===
         layout.setText(font, bottomLeftText);
         font.draw(Main.getBatch(), bottomLeftText, padding, 20);
 
-        // === TOP RIGHT: Coin + Score ===
         float coinSize = 50;
         float coinX = hudCamera.viewportWidth - coinSize - padding;
         float coinY = hudCamera.viewportHeight - coinSize - padding;
@@ -217,7 +238,6 @@ public class GameView implements Screen, InputProcessor {
         layout.setText(font, scoreText);
         font.draw(Main.getBatch(), scoreText, coinX - layout.width - 5, coinY + coinSize / 2 + layout.height / 2);
 
-        // === BELOW COIN: Skeleton + Kill Count ===
         float skeletonSize = 50;
         float skeletonX = coinX;
         float skeletonY = coinY - skeletonSize - 5;
@@ -291,8 +311,8 @@ public class GameView implements Screen, InputProcessor {
         Main.getBatch().end();
     }
 
-    private void drawTime(float deltaTime) {
-        remainingTime -= deltaTime;
+    private void drawTime() {
+        float remainingTime = game.getGamePreferences().getGameTime().getTime() - game.getElapsedTime();
 
         int minutes = (int)(remainingTime / 60);
         int seconds = (int)(remainingTime % 60);
@@ -359,13 +379,6 @@ public class GameView implements Screen, InputProcessor {
 
         cheatCodesScreen.show();
         Gdx.input.setInputProcessor(cheatCodesScreen.getStage());
-    }
-
-    public void showDeadScreen() {
-
-    }
-    public void showWinScreen() {
-
     }
 
     @Override
@@ -445,5 +458,13 @@ public class GameView implements Screen, InputProcessor {
 
     public CheatConsoleController getCheatConsoleController() {
         return cheatConsoleController;
+    }
+
+    public DeadScreen getDeadScreen() {
+        return deadScreen;
+    }
+
+    public WinScreen getWinScreen() {
+        return winScreen;
     }
 }

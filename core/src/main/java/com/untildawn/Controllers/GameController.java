@@ -1,7 +1,11 @@
 package com.untildawn.Controllers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.untildawn.Enums.Abilities;
+import com.untildawn.Enums.Menus;
+import com.untildawn.Main;
 import com.untildawn.Models.*;
 import com.untildawn.Views.GameView;
 import com.untildawn.Views.PauseMenuView;
@@ -140,13 +144,19 @@ public class GameController {
         float remainingTime = game.getGamePreferences().getGameTime().getTime() - game.getElapsedTime();
 
         if (HP <= 0) {
-            view.showDeadScreen();
+            SFXManager.play("dead_screen");
+            game.setLost(true);
             updateGameProfileAfterGame();
 
         }
 
         else if (remainingTime <= 0) {
-            view.showWinScreen();
+            SFXManager.play("win_screen");
+            game.setWon(true);
+            updateGameProfileAfterGame();
+        }
+
+        else if (game.isGaveUp()) {
             updateGameProfileAfterGame();
         }
     }
@@ -163,6 +173,23 @@ public class GameController {
         if (timeAlive > gameProfile.getMaxTimeAlive()) {
             gameProfile.setMaxTimeAlive(timeAlive);
         }
+    }
+
+    public void handleEndGameMenuButtons() {
+        view.getWinScreen().getContinueButton().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                App.setCurrentGame(null);
+                MenuManager.setScreen(Menus.MAIN_MENU);
+            }
+        });
+        view.getDeadScreen().getContinueButton().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                App.setCurrentGame(null);
+                MenuManager.setScreen(Menus.MAIN_MENU);
+            }
+        });
     }
 
 }
