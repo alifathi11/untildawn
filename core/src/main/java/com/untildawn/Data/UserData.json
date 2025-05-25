@@ -1,1 +1,75 @@
-[]
+[ {
+  "username" : "alifathi",
+  "email" : "ali@gmail.com",
+  "password" : "585178Ali!",
+  "avatarPath" : "C:/Users/ASUS/Pictures/Camera Roll/WIN_20241015_10_26_34_Pro.jpg",
+  "securityQuestion" : {
+    "question" : "What was the name of your first pet?",
+    "answer" : "leo"
+  },
+  "gameProfile" : {
+    "score" : 10725,
+    "killCount" : 118,
+    "maxTimeAlive" : 120.81732
+  },
+  "inputPreferences" : {
+    "inputBindings" : {
+      "WEAPON_1" : {
+        "type" : "KEYBOARD",
+        "code" : 8
+      },
+      "MOVE_UP" : {
+        "type" : "KEYBOARD",
+        "code" : 51
+      },
+      "AUTO_SHOOTING" : {
+        "type" : "KEYBOARD",
+        "code" : 62
+      },
+      "MOVE_DOWN" : {
+        "type" : "KEYBOARD",
+        "code" : 47
+      },
+      "RUN" : {
+        "type" : "KEYBOARD",
+        "code" : 59
+      },
+      "WEAPON_3" : {
+        "type" : "KEYBOARD",
+        "code" : 10
+      },
+      "MOVE_LEFT" : {
+        "type" : "KEYBOARD",
+        "code" : 29
+      },
+      "OPEN_CHEAT_CONSOLE" : {
+        "type" : "KEYBOARD",
+        "code" : 49
+      },
+      "PAUSE" : {
+        "type" : "KEYBOARD",
+        "code" : 111
+      },
+      "MOVE_RIGHT" : {
+        "type" : "KEYBOARD",
+        "code" : 32
+      },
+      "DANCE" : {
+        "type" : "KEYBOARD",
+        "code" : 33
+      },
+      "WEAPON_2" : {
+        "type" : "KEYBOARD",
+        "code" : 9
+      },
+      "RELOAD" : {
+        "type" : "KEYBOARD",
+        "code" : 46
+      },
+      "SHOOT" : {
+        "type" : "MOUSE",
+        "code" : 0
+      }
+    }
+  }
+} ]

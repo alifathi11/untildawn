@@ -134,4 +134,7 @@ public class WinScreen {
         return table;
     }
 
+    public void dispose() {
+        stage.dispose();
+    }
 }

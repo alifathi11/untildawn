@@ -33,6 +33,14 @@ public class ProfileMenuController {
                    deleteCurrentUser();
                }
             });
+
+            this.view.getAvatarContainer().addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    view.dispose();
+                    MenuManager.setScreen(Menus.AVATAR_MENU);
+                }
+            });
         }
     }
 
@@ -76,10 +84,12 @@ public class ProfileMenuController {
         currentUser.setUsername(username);
         currentUser.setPassword(password);
         if (username.equalsIgnoreCase(oldUsername) && password.equals(oldPassword)) {
+            view.dispose();
             MenuManager.setScreen(Menus.MAIN_MENU);
         }
         else {
             this.view.showMessageAndExecute("Your profile is updated.", () -> {
+                view.dispose();
                 MenuManager.setScreen(Menus.MAIN_MENU);
             });
         }
@@ -92,6 +102,7 @@ public class ProfileMenuController {
             (result) -> {
                 if (result) {
                     App.removeUser(currentuser);
+                    view.dispose();
                     MenuManager.setScreen(Menus.LOGIN_MENU);
                 }
             });

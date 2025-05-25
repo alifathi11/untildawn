@@ -10,6 +10,8 @@ public class InputBinding {
     private InputType type;
     private int code;
 
+    public InputBinding() {}
+
     public InputBinding(InputType type, int code) {
         this.type = type;
         this.code = code;

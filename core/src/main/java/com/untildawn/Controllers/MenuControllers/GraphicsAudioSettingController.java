@@ -47,6 +47,7 @@ public class GraphicsAudioSettingController {
             view.getSubmitButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    view.dispose();
                     MenuManager.setScreen(Menus.MAIN_MENU);
                 }
             });

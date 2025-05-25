@@ -2,7 +2,7 @@ package com.untildawn.Enums;
 
 public enum Heros {
     SHANA(4, 4, 6),
-    DIAMOND(7, 1, 3),
+    DIAMOND(7, 2, 4),
     SCARLET(3, 5, 7),
     LILITH(5, 3, 5),
     DASHER(2, 10, 12),

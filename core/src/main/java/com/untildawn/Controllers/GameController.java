@@ -181,6 +181,8 @@ public class GameController {
             public void clicked(InputEvent event, float x, float y) {
                 App.setCurrentGame(null);
                 MenuManager.setScreen(Menus.MAIN_MENU);
+                SFXManager.dispose();
+                MusicManager.play();
             }
         });
         view.getDeadScreen().getContinueButton().addListener(new ClickListener() {
@@ -188,6 +190,8 @@ public class GameController {
             public void clicked(InputEvent event, float x, float y) {
                 App.setCurrentGame(null);
                 MenuManager.setScreen(Menus.MAIN_MENU);
+                SFXManager.dispose();
+                MusicManager.play();
             }
         });
     }

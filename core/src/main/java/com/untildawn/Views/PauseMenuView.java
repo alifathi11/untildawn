@@ -65,6 +65,7 @@ public class PauseMenuView {
         grayScaleButton = new TextButton(gamePreferences.isGrayScaleOn() ? "ON" : "OFF", skin);
 
         controller.setView(this);
+        controller.handlePauseMenuButtons();
     }
 
     private Texture createOverlayTexture() {
@@ -101,8 +102,6 @@ public class PauseMenuView {
         stage.addActor(table);
 
         table.setVisible(true);
-
-        controller.handlePauseMenuButtons();
     }
 
     public void render(Batch batch) {
@@ -148,5 +147,9 @@ public class PauseMenuView {
 
     public Table getTable() {
         return table;
+    }
+
+    public void dispose() {
+        stage.dispose();
     }
 }

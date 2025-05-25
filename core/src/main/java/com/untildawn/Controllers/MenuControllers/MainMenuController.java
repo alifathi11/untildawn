@@ -19,6 +19,7 @@ public class MainMenuController {
             this.view.getResumeSavedGameButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    view.dispose();
                     MenuManager.setScreen(Menus.RESUME_LAST_GAME_MENU);
                 }
             });
@@ -31,6 +32,7 @@ public class MainMenuController {
             this.view.getHintMenuButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    view.dispose();
                     MenuManager.setScreen(Menus.HINT_MENU);
                 }
             });
@@ -38,6 +40,7 @@ public class MainMenuController {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (!App.isIsPlayingAsGuest()) {
+                        view.dispose();
                         MenuManager.setScreen(Menus.PROFILE_MENU);
                     }
                 }
@@ -45,6 +48,7 @@ public class MainMenuController {
             this.view.getSettingMenuButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    view.dispose();
                     MenuManager.setScreen(Menus.GRAPHICS_AUDIO_SETTING_MENU);
                 }
             });
@@ -52,6 +56,7 @@ public class MainMenuController {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (!App.isIsPlayingAsGuest()) {
+                        view.dispose();
                         MenuManager.setScreen(Menus.SCOREBOARD_MENU);
                     }
                 }
@@ -59,7 +64,10 @@ public class MainMenuController {
             this.view.getLogoutButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    MenuManager.setScreen(Menus.LOGOUT_MENU);
+                    view.dispose();
+                    MenuManager.setScreen(Menus.LOGIN_MENU);
+                    App.setPlayingAsGuest(false);
+                    App.setCurrentUser(null);
                 }
             });
         }

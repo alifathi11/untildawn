@@ -10,6 +10,7 @@ public class ProtectiveField {
     private float width, height;
     private float shrinkSpeed;
     private boolean active;
+    private Game game;
 
     public ProtectiveField(float initialWidth, float initialHeight, float shrinkSpeed, float centerX, float centerY) {
         this.width = initialWidth;
@@ -18,6 +19,7 @@ public class ProtectiveField {
         this.centerX = centerX;
         this.centerY = centerY;
         this.active = false;
+        this.game = App.getCurrentGame();
     }
 
     public void activate() {
@@ -73,6 +75,11 @@ public class ProtectiveField {
 
     public void render(ShapeRenderer shapeRenderer) {
         if (!active) return;
+
+        if (game.isWon() ||
+            game.isLost() ||
+            game.isGaveUp() ||
+            game.getGameController().getPauseMenuController().isPaused()) return;
 
         float halfW = width / 2f;
         float halfH = height / 2f;

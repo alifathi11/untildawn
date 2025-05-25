@@ -72,4 +72,8 @@ public class CheatConsoleView {
     public Stage getStage() {
         return stage;
     }
+
+    public void dispose() {
+        stage.dispose();
+    }
 }

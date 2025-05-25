@@ -38,6 +38,7 @@ public class LoginMenuController {
             view.getSignupButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    view.dispose();
                     MenuManager.setScreen(Menus.SIGNUP_MENU);
                 }
             });
@@ -73,6 +74,7 @@ public class LoginMenuController {
 
         App.setCurrentUser(targetUser);
         this.view.showMessageAndExecute("You have logged in successfully.", () -> {
+            view.dispose();
             MenuManager.setScreen(Menus.MAIN_MENU);
         });
     }

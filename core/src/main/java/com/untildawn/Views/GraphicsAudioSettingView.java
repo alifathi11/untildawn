@@ -69,6 +69,7 @@ public class GraphicsAudioSettingView implements Screen, AppMenu {
         backgroundImage = new Image(backgroundTexture);
 
         controller.setView(this);
+        controller.handleGraphicAudioSettingMenuButtons();
     }
     @Override
     public void show() {
@@ -112,7 +113,6 @@ public class GraphicsAudioSettingView implements Screen, AppMenu {
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);
         stage.addActor(table);
-        controller.handleGraphicAudioSettingMenuButtons();
     }
 
     @Override
@@ -142,11 +142,6 @@ public class GraphicsAudioSettingView implements Screen, AppMenu {
 
     @Override
     public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
 
     }
 
@@ -266,5 +261,9 @@ public class GraphicsAudioSettingView implements Screen, AppMenu {
 
     public ImageButton getKeyboardSettingButton() {
         return keyboardSettingButton;
+    }
+
+    public void dispose() {
+        stage.dispose();
     }
 }

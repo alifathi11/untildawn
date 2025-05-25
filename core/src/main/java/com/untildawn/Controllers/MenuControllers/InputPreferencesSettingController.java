@@ -30,7 +30,7 @@ public class InputPreferencesSettingController {
     private InputPreferences inputPreferences;
 
     public InputPreferencesSettingController() {
-        inputPreferences = App.getCurrentUser().getInputPreferences();
+
     }
 
     public void setView(InputPreferencesSettingView view) {
@@ -38,6 +38,8 @@ public class InputPreferencesSettingController {
     }
 
     public void handleInputPreferencesSettingButton() {
+
+        inputPreferences = App.getCurrentUser().getInputPreferences();
 
         changeButtons = view.getChangeButtons();
         buttonActionMap = view.getButtonActionMap();
@@ -61,6 +63,7 @@ public class InputPreferencesSettingController {
             view.getSubmitButton().addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    view.dispose();
                     MenuManager.setScreen(Menus.MAIN_MENU);
                 }
             });

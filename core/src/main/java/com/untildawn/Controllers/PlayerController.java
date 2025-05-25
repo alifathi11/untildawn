@@ -80,7 +80,7 @@ public class PlayerController {
         boolean isPlayerMoving = false;
         boolean isPlayerIdle = false;
         boolean isPlayerRunning = false;
-        
+
         InputBinding shootBinding = playerInputPreferences.getInputBinding(Actions.SHOOT);
 
         if (!weaponController.getCurrentWeapon().isReloading()) {

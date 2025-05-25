@@ -69,6 +69,7 @@ public class SignupMenuView implements Screen, AppMenu {
         backgroundImage = new Image(backgroundTexture);
 
         controller.setView(this);
+        controller.handleSignupMenuButtons();
     }
 
     @Override
@@ -104,7 +105,6 @@ public class SignupMenuView implements Screen, AppMenu {
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);
         stage.addActor(table);
-        controller.handleSignupMenuButtons();
     }
 
     @Override
@@ -137,14 +137,13 @@ public class SignupMenuView implements Screen, AppMenu {
 
     }
 
-    @Override
     public void dispose() {
-
+        stage.dispose();
     }
 
     private void resetUI() {
-        stage.clear();
         table.clear();
+        stage.clear();
 
     }
 

@@ -5,6 +5,8 @@ public class GameProfile {
     private int killCount;
     private float maxTimeAlive;
 
+    public GameProfile() {}
+
     public GameProfile(int score,
                        int killCount,
                        float maxTimeAlive) {

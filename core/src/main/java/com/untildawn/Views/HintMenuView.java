@@ -53,6 +53,7 @@ public class HintMenuView implements Screen, AppMenu {
         backgroundImage = new Image(backgroundTexture);
 
         controller.setView(this);
+        controller.handleHintMenuButtons();
     }
 
     @Override
@@ -84,8 +85,6 @@ public class HintMenuView implements Screen, AppMenu {
         stage.addActor(table);
 
         table.setVisible(true);
-
-        controller.handleHintMenuButtons();
     }
 
     public void showCheatScreen() {
@@ -181,9 +180,8 @@ public class HintMenuView implements Screen, AppMenu {
 
     }
 
-    @Override
     public void dispose() {
-
+        stage.dispose();
     }
 
     private void resetUI() {

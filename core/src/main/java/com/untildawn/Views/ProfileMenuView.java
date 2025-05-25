@@ -11,6 +11,7 @@ import com.untildawn.Controllers.MenuControllers.ProfileMenuController;
 import com.untildawn.Main;
 import com.untildawn.Models.App;
 import com.untildawn.Models.GameAssetManager;
+import com.untildawn.Models.User;
 
 import java.util.function.Consumer;
 
@@ -25,7 +26,10 @@ public class ProfileMenuView implements Screen, AppMenu {
     private TextField passwordField;
     private final TextButton submitButton;
     private final TextButton deleteUserButton;
-    // TODO: change profile avatars
+
+    private Texture avatarTexture;
+    private Image avatarImage;
+    private Container<Image> avatarContainer;
 
     private Table table;
 
@@ -34,7 +38,7 @@ public class ProfileMenuView implements Screen, AppMenu {
     public ProfileMenuView(ProfileMenuController controller, Skin skin) {
         this.controller = controller;
 
-        this.profileLabel = new Label("PROFILEs", skin);
+        this.profileLabel = new Label("PROFILE", skin);
         this.submitButton = new TextButton("SUBMIT", skin);
         this.deleteUserButton = new TextButton("Delete my account", skin, "textButtonNoBg");
 
@@ -42,6 +46,8 @@ public class ProfileMenuView implements Screen, AppMenu {
 
         this.backgroundTexture = new Texture("images/background-image-2.png");
         backgroundImage = new Image(backgroundTexture);
+
+        avatarContainer = new Container<>();
 
         controller.setView(this);
     }
@@ -64,9 +70,19 @@ public class ProfileMenuView implements Screen, AppMenu {
         this.passwordField = new TextField(currentPassword, skin);
         this.passwordField.setMessageText("Enter your password");
 
+        User user = App.getCurrentUser();
+
+        avatarTexture = new Texture(user.getAvatarPath());
+        avatarImage = new Image(avatarTexture);
+        avatarContainer = new Container<>(avatarImage);
+
+        avatarContainer.size(100, 100);
+
         table.setFillParent(true);
         table.center();
         table.add(profileLabel);
+        table.row().pad(100, 5, 10, 5);
+        table.add(avatarContainer);
         table.row().pad(20, 5, 10, 5);
         table.add(usernameField).width(800).height(80);
         table.row().pad(10, 5, 10, 5);
@@ -79,6 +95,7 @@ public class ProfileMenuView implements Screen, AppMenu {
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);
         stage.addActor(table);
+
         controller.handleProfileMenuButtons();
     }
 
@@ -112,9 +129,8 @@ public class ProfileMenuView implements Screen, AppMenu {
 
     }
 
-    @Override
     public void dispose() {
-
+        stage.dispose();
     }
 
     public void showError(String error) {
@@ -225,5 +241,9 @@ public class ProfileMenuView implements Screen, AppMenu {
 
     public TextButton getDeleteUserButton() {
         return deleteUserButton;
+    }
+
+    public Container<Image> getAvatarContainer() {
+        return avatarContainer;
     }
 }

@@ -12,6 +12,7 @@ import com.untildawn.Enums.Monsters;
 import com.untildawn.Enums.Weapons;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,8 @@ public class GameAssetManager {
     private Map<String, Animation<Texture>> characterAnimations = new HashMap<>();
     private Map<String, Animation<Texture>> weaponAnimations = new HashMap<>();
     private Map<String, Texture> bulletTextures = new HashMap<>();
+
+    private ArrayList<String> avatarPaths = loadAvatars();
 
     // character
     private Animation<Texture> diamond_idle_animation = buildCharacterAnimation("diamond", "idle");
@@ -127,6 +130,23 @@ public class GameAssetManager {
 
     public Skin getSkin() {
         return skin;
+    }
+
+    public ArrayList<String> loadAvatars() {
+        String folderPath = "assets/userAvatars";
+        int filesNumber = countFiles(folderPath);
+
+        ArrayList<String> avatarPaths = new ArrayList<>();
+        for (int i = 0; i < filesNumber; i++) {
+            String avatarPath = String.format("userAvatars/%d.png", i);
+            avatarPaths.add(avatarPath);
+        }
+
+        return avatarPaths;
+    }
+
+    public ArrayList<String> getAvatarPaths() {
+        return avatarPaths;
     }
 
     // character
@@ -414,16 +434,5 @@ public class GameAssetManager {
         return new Texture(Gdx.files.internal("hitFlash.png"));
     }
 
-
-    public Texture getWhitePixelTexture() {
-        if (whitePixel == null) {
-            Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-            pixmap.setColor(Color.WHITE);
-            pixmap.fill();
-            whitePixel = new Texture(pixmap);
-            pixmap.dispose();
-        }
-        return whitePixel;
-    }
 
 }

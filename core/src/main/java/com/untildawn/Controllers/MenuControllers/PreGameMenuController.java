@@ -106,6 +106,7 @@ public class PreGameMenuController {
             view.getBackButton().addListener(new ClickListener() {
                @Override
                public void clicked(InputEvent event, float x, float y) {
+                   view.dispose();
                    MenuManager.setScreen(Menus.MAIN_MENU);
                }
             });
@@ -145,7 +146,6 @@ public class PreGameMenuController {
                             game.setPlayer(player);
 
                             App.setCurrentGame(game);
-
                             Main.getMain().getScreen().dispose();
                             Main.getMain().setScreen(
                                 new GameView(

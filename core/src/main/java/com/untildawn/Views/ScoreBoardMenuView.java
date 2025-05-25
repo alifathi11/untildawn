@@ -85,6 +85,7 @@ public class ScoreBoardMenuView implements Screen, AppMenu {
         this.usersList = controller.getUsersBySelectedOrder();
 
         controller.setView(this);
+        controller.handleScoreBoardMenuButtons();
     }
     @Override
     public void show() {
@@ -124,7 +125,6 @@ public class ScoreBoardMenuView implements Screen, AppMenu {
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);
         stage.addActor(table);
-        controller.handleScoreBoardMenuButtons();
     }
 
     private Table getTableHeader(Skin skin) {
@@ -235,11 +235,9 @@ public class ScoreBoardMenuView implements Screen, AppMenu {
 
     }
 
-    @Override
     public void dispose() {
-
+        stage.dispose();
     }
-
     public void showError(String error) {
         Skin skin = GameAssetManager.getGameAssetManager().getSkin();
         Dialog errorDialog = new Dialog("Error", skin) {

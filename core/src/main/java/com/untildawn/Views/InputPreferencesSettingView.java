@@ -72,7 +72,6 @@ public class InputPreferencesSettingView implements Screen, AppMenu {
         this.backgroundTexture = new Texture("images/background-image-2.png");
         backgroundImage = new Image(backgroundTexture);
 
-        this.inputPreferences = App.getCurrentUser().getInputPreferences();
         this.changeButtons = new ArrayList<>();
         this.buttonActionMap = new HashMap<>();
 
@@ -103,6 +102,8 @@ public class InputPreferencesSettingView implements Screen, AppMenu {
         table.row().pad(40, 5, 10, 5);
         table.add(settingIcons).center().width(800).height(80);
 
+        this.inputPreferences = App.getCurrentUser().getInputPreferences();
+
         addRow(Actions.MOVE_UP, getReadableInputName(inputPreferences.getInputBinding(Actions.MOVE_UP)));
         addRow(Actions.MOVE_DOWN, getReadableInputName(inputPreferences.getInputBinding(Actions.MOVE_DOWN)));
         addRow(Actions.MOVE_LEFT, getReadableInputName(inputPreferences.getInputBinding(Actions.MOVE_LEFT)));
@@ -124,6 +125,7 @@ public class InputPreferencesSettingView implements Screen, AppMenu {
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);
         stage.addActor(table);
+
         controller.handleInputPreferencesSettingButton();
     }
 
@@ -184,9 +186,8 @@ public class InputPreferencesSettingView implements Screen, AppMenu {
 
     }
 
-    @Override
     public void dispose() {
-
+        stage.dispose();
     }
 
     public void showError(String error) {

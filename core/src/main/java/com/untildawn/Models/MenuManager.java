@@ -18,6 +18,7 @@ public class MenuManager {
         screens.put(Menus.MAIN_MENU, new MainMenuView(new MainMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
         screens.put(Menus.PREGAME_MENU, new PreGameMenuView(new PreGameMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
         screens.put(Menus.PROFILE_MENU, new ProfileMenuView(new ProfileMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
+        screens.put(Menus.AVATAR_MENU, new AvatarScreen());
         screens.put(Menus.GRAPHICS_AUDIO_SETTING_MENU, new GraphicsAudioSettingView(new GraphicsAudioSettingController(), GameAssetManager.getGameAssetManager().getSkin()));
         screens.put(Menus.KEYBOARD_SETTING_MENU, new InputPreferencesSettingView(new InputPreferencesSettingController(), GameAssetManager.getGameAssetManager().getSkin()));
         screens.put(Menus.SCOREBOARD_MENU, new ScoreBoardMenuView(new ScoreBoardMenuController(), GameAssetManager.getGameAssetManager().getSkin()));

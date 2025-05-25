@@ -122,5 +122,6 @@ public class HeroStatsScreen {
     public void dispose() {
         stage.dispose();
     }
+
 }
 

@@ -63,6 +63,7 @@ public class PreGameMenuView implements Screen, AppMenu {
         backgroundImage = new Image(backgroundTexture);
 
         controller.setView(this);
+        controller.handlePreGameMenuButtons();
     }
     @Override
     public void show() {
@@ -104,7 +105,6 @@ public class PreGameMenuView implements Screen, AppMenu {
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);
         stage.addActor(table);
-        controller.handlePreGameMenuButtons();
     }
 
     @Override
@@ -138,9 +138,8 @@ public class PreGameMenuView implements Screen, AppMenu {
 
     }
 
-    @Override
     public void dispose() {
-
+        stage.dispose();
     }
 
     public void showError(String error) {

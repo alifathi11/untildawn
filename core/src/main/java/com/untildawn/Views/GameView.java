@@ -53,6 +53,7 @@ public class GameView implements Screen, InputProcessor {
     private CheatConsoleController cheatConsoleController;
 
     private CheatCodesScreen cheatCodesScreen;
+    private GainedAbilitiesScreen gainedAbilitiesScreen;
 
     private WinScreen winScreen;
     private DeadScreen deadScreen;
@@ -164,6 +165,12 @@ public class GameView implements Screen, InputProcessor {
             return;
         }
 
+        if (gainedAbilitiesScreen != null && gainedAbilitiesScreen.isVisible()) {
+            Gdx.input.setInputProcessor(gainedAbilitiesScreen.getStage());
+            gainedAbilitiesScreen.render(delta);
+            return;
+        }
+
         if (!cheatConsoleView.isVisible()) {
             Main.getBatch().begin();
 
@@ -205,7 +212,8 @@ public class GameView implements Screen, InputProcessor {
 
         if (!game.isGaveUp()
             && !game.isLost()
-            && !game.isWon()) {
+            && !game.isWon()
+            && !pauseMenuController.isPaused()) {
             stage.draw();
             drawHUDText();
             drawAmmo();
@@ -381,6 +389,18 @@ public class GameView implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(cheatCodesScreen.getStage());
     }
 
+    public void showGainedAbilitiesScreen() {
+        gainedAbilitiesScreen = new GainedAbilitiesScreen(() -> {
+            pauseMenuView.show();
+            Gdx.input.setInputProcessor(pauseMenuView.getStage());
+            gainedAbilitiesScreen = null;
+        }, game);
+
+        gainedAbilitiesScreen.show();
+        Gdx.input.setInputProcessor(gainedAbilitiesScreen.getStage());
+    }
+
+
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -401,10 +421,6 @@ public class GameView implements Screen, InputProcessor {
 
     }
 
-    @Override
-    public void dispose() {
-
-    }
 
     @Override
     public boolean keyDown(int keycode) {
@@ -466,5 +482,9 @@ public class GameView implements Screen, InputProcessor {
 
     public WinScreen getWinScreen() {
         return winScreen;
+    }
+
+    public void dispose() {
+        stage.dispose();
     }
 }

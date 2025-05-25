@@ -126,4 +126,8 @@ public class DeadScreen {
     public Table getTable() {
         return table;
     }
+
+    public void dispose() {
+        stage.dispose();
+    }
 }

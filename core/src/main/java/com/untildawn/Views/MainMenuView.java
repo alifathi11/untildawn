@@ -65,6 +65,7 @@ public class MainMenuView implements Screen, AppMenu {
         backgroundImage = new Image(backgroundTexture);
 
         controller.setView(this);
+        controller.handleMainMenuButtons();
     }
     @Override
     public void show() {
@@ -121,7 +122,6 @@ public class MainMenuView implements Screen, AppMenu {
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);
         stage.addActor(table);
-        controller.handleMainMenuButtons();
     }
 
     @Override
@@ -155,9 +155,8 @@ public class MainMenuView implements Screen, AppMenu {
 
     }
 
-    @Override
     public void dispose() {
-
+        stage.dispose();
     }
 
     @Override

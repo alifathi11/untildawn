@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class InputPreferences {
 
-    private final Map<Actions, InputBinding> inputBindings;
+    private Map<Actions, InputBinding> inputBindings;
 
     public InputPreferences() {
         inputBindings = new HashMap<>();
@@ -50,5 +50,13 @@ public class InputPreferences {
             }
         }
         return false;
+    }
+
+    public Map<Actions, InputBinding> getInputBindings() {
+        return inputBindings;
+    }
+
+    public void setInputBindings(Map<Actions, InputBinding> inputBindings) {
+        this.inputBindings = inputBindings;
     }
 }

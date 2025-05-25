@@ -47,6 +47,7 @@ public class LoginMenuView implements Screen, AppMenu {
         backgroundImage = new Image(backgroundTexture);
 
         controller.setView(this);
+        controller.handleLoginMenuButtons();
     }
     @Override
     public void show() {
@@ -74,7 +75,6 @@ public class LoginMenuView implements Screen, AppMenu {
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);
         stage.addActor(table);
-        controller.handleLoginMenuButtons();
     }
 
     @Override
@@ -107,10 +107,8 @@ public class LoginMenuView implements Screen, AppMenu {
     public void hide() {
 
     }
-
-    @Override
     public void dispose() {
-
+        stage.dispose();
     }
 
     public void showError(String error) {

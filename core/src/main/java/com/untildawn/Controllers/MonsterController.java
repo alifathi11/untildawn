@@ -90,7 +90,7 @@ public class MonsterController {
         float spawnInterval = 10f / eyeMonsterSpawnRate;
 
         if (eyeMonsterSpawnTimer >= spawnInterval
-            && eyeMonstersInWorld < 5) {
+            && eyeMonstersInWorld < 4) {
             spawnMonster(Monsters.EYE_MONSTER);
             eyeMonstersInWorld++;
             eyeMonsterSpawnTimer = 0f;
